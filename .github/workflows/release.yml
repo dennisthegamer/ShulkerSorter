@@ -145,8 +145,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ needs.build.outputs.mod_version }}
-          name: ShulkerSort v${{ needs.build.outputs.mod_version }}
+          tag_name: v${{ needs.build.outputs.mod_version }}-mc1.21.9-1.21.11
+          name: ShulkerSort v${{ needs.build.outputs.mod_version }} (MC 1.21.9–1.21.11)
           prerelease: false
           body_path: release_body.md
           files: |

@@ -30,9 +30,9 @@ public class ShulkerSortEngine {
 
         if (sortableBoxes.isEmpty()) {
             if (lockedCount > 0) {
-                return SortResult.error("Alle Shulker Boxes sind gesperrt!");
+                return SortResult.error("shulkersort.message.error.all_locked");
             }
-            return SortResult.error("Keine Shulker Boxes im Inventar gefunden!");
+            return SortResult.error("shulkersort.message.error.no_boxes");
         }
 
         // Phase 2: CATEGORIZE - Extract and categorize all items
@@ -53,7 +53,7 @@ public class ShulkerSortEngine {
         }
 
         if (totalItems == 0) {
-            return SortResult.error("Alle Shulker Boxes sind leer!");
+            return SortResult.error("shulkersort.message.error.all_empty");
         }
 
         // Phase 3: MERGE - Merge stacks of same items
@@ -69,10 +69,7 @@ public class ShulkerSortEngine {
         int totalSlotsAvailable = sortableBoxes.size() * 27;
 
         if (totalSlotsNeeded > totalSlotsAvailable) {
-            return SortResult.error(
-                    "Nicht genug Shulker Boxes für alle Items! Sortierung abgebrochen. " +
-                    "(Benötigt: " + totalSlotsNeeded + " Slots, Verfügbar: " + totalSlotsAvailable + " Slots)"
-            );
+            return SortResult.error("shulkersort.message.error.not_enough_space");
         }
 
         // Phase 5: DISTRIBUTE - Fill boxes sequentially per category
@@ -98,7 +95,7 @@ public class ShulkerSortEngine {
             for (ItemStack item : items) {
                 if (currentBoxIndex >= sortableBoxes.size()) {
                     // Should not happen due to validation, but safety check
-                    return SortResult.error("Interner Fehler bei der Verteilung!");
+                    return SortResult.error("shulkersort.message.error.internal");
                 }
 
                 newBoxContents.get(currentBoxIndex).set(currentSlotIndex, item);
@@ -128,7 +125,7 @@ public class ShulkerSortEngine {
                 CategoryDefinition catDef = config.getCategory(category);
                 String prefix = catDef != null ? catDef.getLabelPrefix() : category;
                 int count = categoryCounters.merge(category, 1, Integer::sum);
-                newNames.add(Text.literal(prefix + " #" + count));
+                newNames.add(Text.translatable(prefix).append(Text.literal(" #" + count)));
             } else {
                 newNames.add(null); // Don't rename empty boxes
             }

@@ -48,14 +48,14 @@ public class ShulkerSortConfig {
     }
 
     private void initDefaultCategories() {
-        categories.put("blocks", new CategoryDefinition("blocks", "Blöcke", List.of(
+        categories.put("blocks", new CategoryDefinition("blocks", "shulkersort.category.blocks", List.of(
                 "_log", "_planks", "_stone", "_brick", "_slab", "_stairs", "_wall", "_fence",
                 "sand", "gravel", "dirt", "glass", "_terracotta", "_concrete", "_wool",
                 "_carpet", "_door", "_trapdoor", "_pressure_plate", "_button",
                 "cobblestone", "deepslate", "granite", "diorite", "andesite", "tuff",
                 "calcite", "mud", "clay", "moss_block", "moss_carpet"
         )));
-        categories.put("tools", new CategoryDefinition("tools", "Werkzeuge", List.of(
+        categories.put("tools", new CategoryDefinition("tools", "shulkersort.category.tools", List.of(
                 "_sword", "_pickaxe", "_axe", "_shovel", "_hoe",
                 "_helmet", "_chestplate", "_leggings", "_boots",
                 "bow", "crossbow", "shield", "trident", "fishing_rod",
@@ -63,7 +63,7 @@ public class ShulkerSortConfig {
                 "elytra", "lead", "name_tag", "compass", "clock", "map",
                 "mace", "wind_charge"
         )));
-        categories.put("food", new CategoryDefinition("food", "Nahrung", List.of(
+        categories.put("food", new CategoryDefinition("food", "shulkersort.category.food", List.of(
                 "_seeds", "_sapling", "apple", "bread", "carrot", "potato",
                 "beetroot", "melon_slice", "sweet_berries", "glow_berries",
                 "cookie", "pumpkin_pie", "cake", "mushroom_stew",
@@ -71,13 +71,13 @@ public class ShulkerSortConfig {
                 "wheat", "sugar_cane", "bamboo", "cocoa_beans",
                 "_flower", "lily_pad", "vine", "fern", "grass"
         )));
-        categories.put("ores", new CategoryDefinition("ores", "Erze", List.of(
+        categories.put("ores", new CategoryDefinition("ores", "shulkersort.category.ores", List.of(
                 "_ore", "_ingot", "_nugget", "raw_", "_gem",
                 "coal", "diamond", "emerald", "redstone", "lapis_lazuli",
                 "quartz", "ancient_debris", "netherite_scrap", "netherite_ingot",
                 "amethyst_shard", "copper_ingot", "raw_copper", "raw_iron", "raw_gold"
         )));
-        categories.put("brewing", new CategoryDefinition("brewing", "Brauen", List.of(
+        categories.put("brewing", new CategoryDefinition("brewing", "shulkersort.category.brewing", List.of(
                 "potion", "splash_potion", "lingering_potion", "brewing_stand",
                 "_dye", "glass_bottle", "blaze_powder", "blaze_rod",
                 "nether_wart", "ghast_tear", "magma_cream", "fermented_spider_eye",
@@ -85,7 +85,7 @@ public class ShulkerSortConfig {
                 "dragon_breath", "phantom_membrane", "spider_eye",
                 "sugar", "gunpowder", "redstone_dust"
         )));
-        categories.put("misc", new CategoryDefinition("misc", "Sonstiges", List.of()));
+        categories.put("misc", new CategoryDefinition("misc", "shulkersort.category.misc", List.of()));
     }
 
     public void load() {

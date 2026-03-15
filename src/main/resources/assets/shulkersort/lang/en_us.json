@@ -1,0 +1,44 @@
+{
+  "key.shulkersort.sort": "Sort Shulker Boxes",
+  "category.shulkersort": "ShulkerSort",
+  "shulkersort.hud.sorting": "Sorting",
+  "shulkersort.tooltip.empty": "Empty",
+  "shulkersort.tooltip.contents": "Contents:",
+  "shulkersort.tooltip.more": "... and %d more items",
+  "shulkersort.message.success": "ShulkerSort: %d boxes sorted.",
+  "shulkersort.message.error.no_boxes": "No shulker boxes found in inventory!",
+  "shulkersort.message.error.all_locked": "All shulker boxes are locked!",
+  "shulkersort.message.error.all_empty": "All shulker boxes are empty!",
+  "shulkersort.message.error.not_enough_space": "Not enough shulker boxes for all items! Sorting cancelled.",
+
+  "config.shulkersort.title": "ShulkerSort Settings",
+
+  "config.shulkersort.category.sorting": "Sorting",
+  "config.shulkersort.category.tooltip": "Tooltip",
+  "config.shulkersort.category.feedback": "Notifications & Feedback",
+  "config.shulkersort.category.advanced": "Advanced Options",
+
+  "config.shulkersort.auto_label": "Auto-Label Boxes",
+  "config.shulkersort.auto_label.tooltip": "Automatically rename shulker boxes after sorting (e.g. 'Blocks #1', 'Ores #2')",
+
+  "config.shulkersort.locked_tag": "Locked Tag",
+  "config.shulkersort.locked_tag.tooltip": "Shulker boxes with this text in their name will be skipped during sorting",
+
+  "config.shulkersort.tooltip_enabled": "Show Tooltip",
+  "config.shulkersort.tooltip_enabled.tooltip": "Show shulker box contents when hovering over them",
+
+  "config.shulkersort.tooltip_max_lines": "Tooltip Max Lines",
+  "config.shulkersort.tooltip_max_lines.tooltip": "Maximum number of item lines shown in the tooltip (1-27)",
+
+  "config.shulkersort.enable_chat_notifications": "Chat Notifications",
+  "config.shulkersort.enable_chat_notifications.tooltip": "Show chat messages when sorting completes or fails",
+
+  "config.shulkersort.enable_sound_effects": "Sound Effects",
+  "config.shulkersort.enable_sound_effects.tooltip": "Play a sound when sorting completes successfully",
+
+  "config.shulkersort.enable_hud_overlay": "HUD Overlay",
+  "config.shulkersort.enable_hud_overlay.tooltip": "Show an animated 'Sorting...' overlay on the HUD during sorting",
+
+  "config.shulkersort.enable_debug_logging": "Debug Logging",
+  "config.shulkersort.enable_debug_logging.tooltip": "Enable detailed logging for troubleshooting (visible in game log)"
+}

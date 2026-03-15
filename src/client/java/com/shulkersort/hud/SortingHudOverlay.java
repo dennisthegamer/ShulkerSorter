@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class SortingHudOverlay {
@@ -34,10 +35,11 @@ public class SortingHudOverlay {
         // Animated dots
         int dots = (int) ((now / 300) % 4);
         String dotStr = ".".repeat(dots);
-        String text = Formatting.YELLOW + "Sortiere" + dotStr;
+        String sortingText = Text.translatable("shulkersort.hud.sorting").getString();
+        String text = Formatting.YELLOW + sortingText + dotStr;
 
         int screenWidth = client.getWindow().getScaledWidth();
-        int x = (screenWidth - textRenderer.getWidth("Sortiere...")) / 2;
+        int x = (screenWidth - textRenderer.getWidth(sortingText + "...")) / 2;
         int y = 20;
 
         context.drawTextWithShadow(textRenderer, text, x, y, 0xFFFFAA00);

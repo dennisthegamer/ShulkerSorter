@@ -37,11 +37,11 @@ public class ShulkerTooltipRenderer {
             }
 
             if (itemCounts.isEmpty()) {
-                lines.add(Text.literal("  Leer").formatted(Formatting.GRAY, Formatting.ITALIC));
+                lines.add(Text.literal("  ").append(Text.translatable("shulkersort.tooltip.empty")).formatted(Formatting.GRAY, Formatting.ITALIC));
                 return;
             }
 
-            lines.add(Text.literal("  Inhalt:").formatted(Formatting.GRAY));
+            lines.add(Text.literal("  ").append(Text.translatable("shulkersort.tooltip.contents")).formatted(Formatting.GRAY));
 
             int shown = 0;
             int maxLines = config.tooltipMaxLines;
@@ -60,7 +60,7 @@ public class ShulkerTooltipRenderer {
 
             if (remaining > 0) {
                 int hiddenTypes = itemNames.size() - maxLines;
-                lines.add(Text.literal("  ... und " + hiddenTypes + " weitere Items")
+                lines.add(Text.literal("  ").append(Text.translatable("shulkersort.tooltip.more", hiddenTypes))
                         .formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
             }
         });

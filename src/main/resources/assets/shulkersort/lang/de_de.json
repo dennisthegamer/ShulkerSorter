@@ -4,7 +4,7 @@
   "shulkersort.hud.sorting": "Sortiere",
   "shulkersort.tooltip.empty": "Leer",
   "shulkersort.tooltip.contents": "Inhalt:",
-  "shulkersort.tooltip.more": "... und %d weitere Items",
+  "shulkersort.tooltip.more": "... und %1$s weitere Items",
   "shulkersort.message.success": "ShulkerSort: %1$s Boxen sortiert.",
   "shulkersort.message.error.no_boxes": "Keine Shulker Boxes im Inventar gefunden!",
   "shulkersort.message.error.all_locked": "Alle Shulker Boxes sind gesperrt!",

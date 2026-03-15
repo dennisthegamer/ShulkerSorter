@@ -13,7 +13,7 @@ public class NotificationHelper {
         ShulkerSortConfig config = ShulkerSortConfig.getInstance();
 
         if (config.enableChatNotifications) {
-            Text message = Text.literal("ShulkerSort: " + boxCount + " Boxen sortiert.")
+            Text message = Text.translatable("shulkersort.message.success", boxCount)
                     .formatted(Formatting.GREEN);
             player.sendMessage(message, false);
         }
@@ -34,7 +34,7 @@ public class NotificationHelper {
         ShulkerSortConfig config = ShulkerSortConfig.getInstance();
 
         if (config.enableChatNotifications) {
-            Text text = Text.literal("ShulkerSort: " + message)
+            Text text = Text.translatable(message)
                     .formatted(Formatting.RED);
             player.sendMessage(text, false);
         }

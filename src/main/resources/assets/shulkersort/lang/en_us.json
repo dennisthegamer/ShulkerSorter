@@ -5,11 +5,19 @@
   "shulkersort.tooltip.empty": "Empty",
   "shulkersort.tooltip.contents": "Contents:",
   "shulkersort.tooltip.more": "... and %d more items",
-  "shulkersort.message.success": "ShulkerSort: %d boxes sorted.",
+  "shulkersort.message.success": "ShulkerSort: %1$s boxes sorted.",
   "shulkersort.message.error.no_boxes": "No shulker boxes found in inventory!",
   "shulkersort.message.error.all_locked": "All shulker boxes are locked!",
   "shulkersort.message.error.all_empty": "All shulker boxes are empty!",
   "shulkersort.message.error.not_enough_space": "Not enough shulker boxes for all items! Sorting cancelled.",
+  "shulkersort.message.error.internal": "Internal error during distribution!",
+
+  "shulkersort.category.blocks": "Blocks",
+  "shulkersort.category.tools": "Tools",
+  "shulkersort.category.food": "Food",
+  "shulkersort.category.ores": "Ores",
+  "shulkersort.category.brewing": "Brewing",
+  "shulkersort.category.misc": "Misc",
 
   "config.shulkersort.title": "ShulkerSort Settings",
 

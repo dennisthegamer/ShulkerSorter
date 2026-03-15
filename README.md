@@ -10,7 +10,7 @@ A client-side Fabric mod that automatically sorts, merges and labels shulker box
 ## Features
 
 ### Sorting Engine
-- Press **S** to sort all shulker boxes in your inventory
+- Press **J** to sort all shulker boxes in your inventory
 - Items are categorized into groups: Blocks, Tools, Food, Ores, Brewing, Misc
 - Partial stacks of the same item are merged automatically
 - Each category starts in a new shulker box
@@ -76,7 +76,7 @@ Categories can be customized in the TOML config. Each category has a label and a
 
 | Key | Action |
 |-----|--------|
-| **S** | Sort all shulker boxes in inventory |
+| **J** | Sort all shulker boxes in inventory |
 
 ## Building from Source
 

@@ -9,7 +9,7 @@ ShulkerSort is a lightweight, client-side Fabric mod that automatically organize
 ## ✨ Features
 
 ### 🗂️ One-Key Sorting
-- **Press S** to sort all shulker boxes in your inventory instantly
+- **Press J** to sort all shulker boxes in your inventory instantly
 - **Smart categorization** — Items are grouped into categories: Blocks, Tools, Food, Ores, Brewing, Misc
 - **Stack merging** — Partial stacks of the same item are merged before distributing
 - **Category separation** — Each category starts in a fresh shulker box
@@ -32,9 +32,9 @@ ShulkerSort is a lightweight, client-side Fabric mod that automatically organize
 
 ## 🎮 Controls
 
-| Key | Action |
-|-----|--------|
-| **S** | Sort all shulker boxes in inventory |
+| Key   | Action |
+|-------|--------|
+| **J** | Sort all shulker boxes in inventory |
 
 ---
 
@@ -66,7 +66,7 @@ Configure the mod via [Mod Menu](https://modrinth.com/mod/modmenu) + [Cloth Conf
 
 1. Fill some shulker boxes with mixed items
 2. Keep the shulker boxes in your inventory
-3. Press **S** — all items are categorized, merged, and distributed
+3. Press **J** — all items are categorized, merged, and distributed
 4. Each box gets labeled by its category (e.g. "Tools #1", "Ores #2")
 5. Done! Your shulker boxes are organized.
 

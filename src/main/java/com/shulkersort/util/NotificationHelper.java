@@ -19,7 +19,7 @@ public class NotificationHelper {
         }
 
         if (config.enableSoundEffects) {
-            player.getWorld().playSound(
+            player.getEntityWorld().playSound(
                     null,
                     player.getBlockPos(),
                     SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP,

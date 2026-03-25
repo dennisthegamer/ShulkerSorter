@@ -1,14 +1,14 @@
 package com.shulkersort.util;
 
 import com.shulkersort.config.ShulkerSortConfig;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ContainerComponent;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +24,11 @@ public class ShulkerBoxHelper {
     public static List<ItemStack> getContents(ItemStack shulkerStack) {
         if (!isShulkerBox(shulkerStack)) return List.of();
 
-        ContainerComponent container = shulkerStack.getOrDefault(
-                DataComponentTypes.CONTAINER, ContainerComponent.DEFAULT);
+        ItemContainerContents container = shulkerStack.getOrDefault(
+                DataComponents.CONTAINER, ItemContainerContents.EMPTY);
 
-        DefaultedList<ItemStack> items = DefaultedList.ofSize(27, ItemStack.EMPTY);
-        container.copyTo(items);
+        NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
+        container.copyInto(items);
 
         return new ArrayList<>(items);
     }
@@ -37,17 +37,17 @@ public class ShulkerBoxHelper {
         if (!isShulkerBox(shulkerStack)) return;
 
         // Pad to 27 slots
-        DefaultedList<ItemStack> items = DefaultedList.ofSize(27, ItemStack.EMPTY);
+        NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
         for (int i = 0; i < Math.min(contents.size(), 27); i++) {
             items.set(i, contents.get(i));
         }
 
-        ContainerComponent container = ContainerComponent.fromStacks(items);
-        shulkerStack.set(DataComponentTypes.CONTAINER, container);
+        ItemContainerContents container = ItemContainerContents.fromItems(items);
+        shulkerStack.set(DataComponents.CONTAINER, container);
     }
 
     public static boolean isLocked(ItemStack shulkerStack) {
-        Text name = getCustomName(shulkerStack);
+        Component name = getCustomName(shulkerStack);
         if (name == null) return false;
         String nameStr = name.getString();
         return nameStr.contains(ShulkerSortConfig.getInstance().lockedTag);
@@ -61,18 +61,18 @@ public class ShulkerBoxHelper {
         return true;
     }
 
-    public static Text getCustomName(ItemStack shulkerStack) {
-        return shulkerStack.get(DataComponentTypes.CUSTOM_NAME);
+    public static Component getCustomName(ItemStack shulkerStack) {
+        return shulkerStack.get(DataComponents.CUSTOM_NAME);
     }
 
-    public static void setCustomName(ItemStack shulkerStack, Text name) {
-        shulkerStack.set(DataComponentTypes.CUSTOM_NAME, name);
+    public static void setCustomName(ItemStack shulkerStack, Component name) {
+        shulkerStack.set(DataComponents.CUSTOM_NAME, name);
     }
 
-    public static List<ShulkerBoxInfo> findShulkerBoxes(PlayerInventory inventory) {
+    public static List<ShulkerBoxInfo> findShulkerBoxes(Inventory inventory) {
         List<ShulkerBoxInfo> result = new ArrayList<>();
         for (int i = 0; i < 36; i++) {
-            ItemStack stack = inventory.getStack(i);
+            ItemStack stack = inventory.getItem(i);
             if (isShulkerBox(stack)) {
                 result.add(new ShulkerBoxInfo(i, stack));
             }

@@ -5,23 +5,23 @@ import com.shulkersort.sort.ShulkerSortEngine;
 import com.shulkersort.sort.SortResult;
 import com.shulkersort.util.NotificationHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
+import com.mojang.blaze3d.platform.InputConstants;
 import org.lwjgl.glfw.GLFW;
 
 public class SortKeybindHandler {
-    private static final KeyBinding.Category CATEGORY =
-            KeyBinding.Category.create(Identifier.of("shulkersort", "shulkersort"));
+    private static final KeyMapping.Category CATEGORY =
+            KeyMapping.Category.register(Identifier.fromNamespaceAndPath("shulkersort", "shulkersort"));
 
-    private static KeyBinding sortKeybind;
+    private static KeyMapping sortKeybind;
 
     public static void register() {
-        sortKeybind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        sortKeybind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.shulkersort.sort",
-                InputUtil.Type.KEYSYM,
+                InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_J, // Using J to avoid conflicting with S (sneak)
                 CATEGORY
         ));
@@ -29,10 +29,10 @@ public class SortKeybindHandler {
         ClientTickEvents.END_CLIENT_TICK.register(SortKeybindHandler::onClientTick);
     }
 
-    private static void onClientTick(MinecraftClient client) {
-        while (sortKeybind.wasPressed()) {
+    private static void onClientTick(Minecraft client) {
+        while (sortKeybind.consumeClick()) {
             if (client.player == null) continue;
-            if (client.currentScreen != null) continue; // Don't trigger when a screen is open
+            if (client.screen != null) continue; // Don't trigger when a screen is open
 
             // Show HUD overlay
             SortingHudOverlay.show();

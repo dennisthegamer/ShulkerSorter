@@ -4,15 +4,15 @@ import com.shulkersort.config.CategoryDefinition;
 import com.shulkersort.config.ShulkerSortConfig;
 import com.shulkersort.util.ShulkerBoxHelper;
 import com.shulkersort.util.ShulkerBoxHelper.ShulkerBoxInfo;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 
 public class ShulkerSortEngine {
 
-    public static SortResult sort(PlayerInventory inventory) {
+    public static SortResult sort(Inventory inventory) {
         ShulkerSortConfig config = ShulkerSortConfig.getInstance();
 
         // Phase 1: SCAN - Find all shulker boxes, filter locked/empty
@@ -116,7 +116,7 @@ public class ShulkerSortEngine {
 
         // Phase 6: LABEL - Auto-label boxes
         Map<String, Integer> categoryCounters = new LinkedHashMap<>();
-        List<Text> newNames = new ArrayList<>();
+        List<Component> newNames = new ArrayList<>();
 
         for (int i = 0; i < sortableBoxes.size(); i++) {
             String category = (i < boxCategories.size()) ? boxCategories.get(i) : null;
@@ -125,7 +125,7 @@ public class ShulkerSortEngine {
                 CategoryDefinition catDef = config.getCategory(category);
                 String prefix = catDef != null ? catDef.getLabelPrefix() : category;
                 int count = categoryCounters.merge(category, 1, Integer::sum);
-                newNames.add(Text.translatable(prefix).append(Text.literal(" #" + count)));
+                newNames.add(Component.translatable(prefix).append(Component.literal(" #" + count)));
             } else {
                 newNames.add(null); // Don't rename empty boxes
             }
@@ -158,13 +158,13 @@ public class ShulkerSortEngine {
 
             boolean found = false;
             for (ItemStack existing : merged) {
-                if (ItemStack.areItemsAndComponentsEqual(existing, item)) {
-                    int maxSize = existing.getMaxCount();
+                if (ItemStack.isSameItemSameComponents(existing, item)) {
+                    int maxSize = existing.getMaxStackSize();
                     int canAdd = maxSize - existing.getCount();
                     if (canAdd > 0) {
                         int toAdd = Math.min(canAdd, item.getCount());
-                        existing.increment(toAdd);
-                        item.decrement(toAdd);
+                        existing.grow(toAdd);
+                        item.shrink(toAdd);
                         if (item.isEmpty()) {
                             found = true;
                             break;

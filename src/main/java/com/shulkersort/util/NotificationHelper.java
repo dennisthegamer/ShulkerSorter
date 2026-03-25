@@ -1,42 +1,42 @@
 package com.shulkersort.util;
 
 import com.shulkersort.config.ShulkerSortConfig;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 
 public class NotificationHelper {
 
-    public static void sendSuccess(PlayerEntity player, int boxCount) {
+    public static void sendSuccess(Player player, int boxCount) {
         ShulkerSortConfig config = ShulkerSortConfig.getInstance();
 
         if (config.enableChatNotifications) {
-            Text message = Text.translatable("shulkersort.message.success", boxCount)
-                    .formatted(Formatting.GREEN);
-            player.sendMessage(message, false);
+            Component message = Component.translatable("shulkersort.message.success", boxCount)
+                    .withStyle(ChatFormatting.GREEN);
+            player.sendSystemMessage(message);
         }
 
         if (config.enableSoundEffects) {
-            player.getEntityWorld().playSound(
+            player.level().playSound(
                     null,
-                    player.getBlockPos(),
-                    SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP,
-                    SoundCategory.PLAYERS,
+                    player.blockPosition(),
+                    SoundEvents.EXPERIENCE_ORB_PICKUP,
+                    SoundSource.PLAYERS,
                     0.5f,
                     1.0f
             );
         }
     }
 
-    public static void sendError(PlayerEntity player, String message) {
+    public static void sendError(Player player, String message) {
         ShulkerSortConfig config = ShulkerSortConfig.getInstance();
 
         if (config.enableChatNotifications) {
-            Text text = Text.translatable(message)
-                    .formatted(Formatting.RED);
-            player.sendMessage(text, false);
+            Component text = Component.translatable(message)
+                    .withStyle(ChatFormatting.RED);
+            player.sendSystemMessage(text);
         }
     }
 }

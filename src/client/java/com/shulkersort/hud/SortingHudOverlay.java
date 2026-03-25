@@ -1,20 +1,25 @@
 package com.shulkersort.hud;
 
 import com.shulkersort.config.ShulkerSortConfig;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
-public class SortingHudOverlay {
+public class SortingHudOverlay implements HudElement {
     private static long showUntil = 0;
     private static final long DISPLAY_DURATION_MS = 1000;
 
     public static void register() {
-        HudRenderCallback.EVENT.register(SortingHudOverlay::onHudRender);
+        HudElementRegistry.addLast(
+                Identifier.fromNamespaceAndPath("shulkersort", "sorting_overlay"),
+                new SortingHudOverlay()
+        );
     }
 
     public static void show() {
@@ -23,25 +28,26 @@ public class SortingHudOverlay {
         }
     }
 
-    private static void onHudRender(DrawContext context, RenderTickCounter tickCounter) {
+    @Override
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
         long now = System.currentTimeMillis();
         if (now >= showUntil) return;
 
-        MinecraftClient client = MinecraftClient.getInstance();
+        Minecraft client = Minecraft.getInstance();
         if (client == null) return;
 
-        TextRenderer textRenderer = client.textRenderer;
+        Font font = client.font;
 
         // Animated dots
         int dots = (int) ((now / 300) % 4);
         String dotStr = ".".repeat(dots);
-        String sortingText = Text.translatable("shulkersort.hud.sorting").getString();
-        String text = Formatting.YELLOW + sortingText + dotStr;
+        String sortingText = Component.translatable("shulkersort.hud.sorting").getString();
+        String text = ChatFormatting.YELLOW + sortingText + dotStr;
 
-        int screenWidth = client.getWindow().getScaledWidth();
-        int x = (screenWidth - textRenderer.getWidth(sortingText + "...")) / 2;
+        int screenWidth = guiGraphics.guiWidth();
+        int x = (screenWidth - font.width(sortingText + "...")) / 2;
         int y = 20;
 
-        context.drawTextWithShadow(textRenderer, text, x, y, 0xFFFFAA00);
+        guiGraphics.text(font, text, x, y, 0xFFFFAA00);
     }
 }

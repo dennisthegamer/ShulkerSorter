@@ -3,10 +3,9 @@ package com.shulkersort.tooltip;
 import com.shulkersort.config.ShulkerSortConfig;
 import com.shulkersort.util.ShulkerBoxHelper;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -29,7 +28,7 @@ public class ShulkerTooltipRenderer {
 
             for (ItemStack item : contents) {
                 if (item.isEmpty()) continue;
-                String name = item.getName().getString();
+                String name = item.getHoverName().getString();
                 itemCounts.merge(name, item.getCount(), Integer::sum);
                 if (!itemNames.contains(name)) {
                     itemNames.add(name);
@@ -37,11 +36,11 @@ public class ShulkerTooltipRenderer {
             }
 
             if (itemCounts.isEmpty()) {
-                lines.add(Text.literal("  ").append(Text.translatable("shulkersort.tooltip.empty")).formatted(Formatting.GRAY, Formatting.ITALIC));
+                lines.add(Component.literal("  ").append(Component.translatable("shulkersort.tooltip.empty")).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
                 return;
             }
 
-            lines.add(Text.literal("  ").append(Text.translatable("shulkersort.tooltip.contents")).formatted(Formatting.GRAY));
+            lines.add(Component.literal("  ").append(Component.translatable("shulkersort.tooltip.contents")).withStyle(ChatFormatting.GRAY));
 
             int shown = 0;
             int maxLines = config.tooltipMaxLines;
@@ -53,15 +52,15 @@ public class ShulkerTooltipRenderer {
                     continue;
                 }
                 int count = itemCounts.get(name);
-                lines.add(Text.literal("  " + name + " x" + count)
-                        .formatted(Formatting.GRAY));
+                lines.add(Component.literal("  " + name + " x" + count)
+                        .withStyle(ChatFormatting.GRAY));
                 shown++;
             }
 
             if (remaining > 0) {
                 int hiddenTypes = itemNames.size() - maxLines;
-                lines.add(Text.literal("  ").append(Text.translatable("shulkersort.tooltip.more", hiddenTypes))
-                        .formatted(Formatting.DARK_GRAY, Formatting.ITALIC));
+                lines.add(Component.literal("  ").append(Component.translatable("shulkersort.tooltip.more", hiddenTypes))
+                        .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             }
         });
     }

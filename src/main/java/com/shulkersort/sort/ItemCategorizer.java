@@ -2,10 +2,10 @@ package com.shulkersort.sort;
 
 import com.shulkersort.config.CategoryDefinition;
 import com.shulkersort.config.ShulkerSortConfig;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ public class ItemCategorizer {
         if (stack.isEmpty()) return "misc";
 
         ShulkerSortConfig config = ShulkerSortConfig.getInstance();
-        Identifier id = Registries.ITEM.getId(stack.getItem());
+        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
         String itemId = id.getPath(); // e.g. "oak_planks"
 
         // Check food component first (special handling)
-        boolean isFood = stack.contains(DataComponentTypes.FOOD);
+        boolean isFood = stack.has(DataComponents.FOOD);
 
         for (String categoryKey : config.categoryOrder) {
             CategoryDefinition category = config.getCategory(categoryKey);

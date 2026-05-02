@@ -1,6 +1,7 @@
 {
   "key.shulkersort.sort": "Sort Shulker Boxes",
   "category.shulkersort": "ShulkerSort",
+  "key.category.shulkersort.shulkersort": "ShulkerSort",
   "shulkersort.hud.sorting": "Sorting",
   "shulkersort.tooltip.empty": "Empty",
   "shulkersort.tooltip.contents": "Contents:",
@@ -11,6 +12,7 @@
   "shulkersort.message.error.all_empty": "All shulker boxes are empty!",
   "shulkersort.message.error.not_enough_space": "Not enough shulker boxes for all items! Sorting cancelled.",
   "shulkersort.message.error.internal": "Internal error during distribution!",
+  "shulkersort.message.error.multiplayer_survival": "Sorting in multiplayer survival requires the mod on the server!",
 
   "shulkersort.category.blocks": "Blocks",
   "shulkersort.category.tools": "Tools",
@@ -24,10 +26,18 @@
   "config.shulkersort.category.sorting": "Sorting",
   "config.shulkersort.category.tooltip": "Tooltip",
   "config.shulkersort.category.feedback": "Notifications & Feedback",
-  "config.shulkersort.category.advanced": "Advanced Options",
+
+  "config.shulkersort.keybind": "Sort Keybind",
+  "config.shulkersort.keybind.tooltip": "Key to press for sorting shulker boxes",
 
   "config.shulkersort.auto_label": "Auto-Label Boxes",
   "config.shulkersort.auto_label.tooltip": "Automatically rename shulker boxes after sorting (e.g. 'Blocks #1', 'Ores #2')",
+
+  "config.shulkersort.include_loose_items": "Include Loose Items",
+  "config.shulkersort.include_loose_items.tooltip": "Also sort loose items from your inventory into shulker boxes (disabled by default)",
+
+  "config.shulkersort.loose_item_ignore_tag": "Loose Item Ignore Tag",
+  "config.shulkersort.loose_item_ignore_tag.tooltip": "Items with this text in their name will not be sorted into shulker boxes (e.g. rename an item to '[KEEP] Diamond Sword')",
 
   "config.shulkersort.locked_tag": "Locked Tag",
   "config.shulkersort.locked_tag.tooltip": "Shulker boxes with this text in their name will be skipped during sorting",
@@ -45,8 +55,5 @@
   "config.shulkersort.enable_sound_effects.tooltip": "Play a sound when sorting completes successfully",
 
   "config.shulkersort.enable_hud_overlay": "HUD Overlay",
-  "config.shulkersort.enable_hud_overlay.tooltip": "Show an animated 'Sorting...' overlay on the HUD during sorting",
-
-  "config.shulkersort.enable_debug_logging": "Debug Logging",
-  "config.shulkersort.enable_debug_logging.tooltip": "Enable detailed logging for troubleshooting (visible in game log)"
+  "config.shulkersort.enable_hud_overlay.tooltip": "Show an animated 'Sorting...' overlay on the HUD during sorting"
 }

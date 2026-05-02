@@ -26,8 +26,9 @@ public class ShulkerSortConfig {
     public boolean enableSoundEffects = true;
     public boolean enableHudOverlay = true;
 
-    // Advanced Settings
-    public boolean enableDebugLogging = false;
+    // Sorting Behavior
+    public boolean includeLooseItems = false;
+    public String looseItemIgnoreTag = "[KEEP]";
 
     public List<String> categoryOrder = new ArrayList<>(List.of(
             "blocks", "tools", "food", "ores", "brewing", "misc"
@@ -105,7 +106,8 @@ public class ShulkerSortConfig {
             enableChatNotifications = TomlParser.getBoolean(data, "enable_chat_notifications", enableChatNotifications);
             enableSoundEffects = TomlParser.getBoolean(data, "enable_sound_effects", enableSoundEffects);
             enableHudOverlay = TomlParser.getBoolean(data, "enable_hud_overlay", enableHudOverlay);
-            enableDebugLogging = TomlParser.getBoolean(data, "enable_debug_logging", enableDebugLogging);
+            includeLooseItems = TomlParser.getBoolean(data, "include_loose_items", includeLooseItems);
+            looseItemIgnoreTag = TomlParser.getString(data, "loose_item_ignore_tag", looseItemIgnoreTag);
             categoryOrder = TomlParser.getStringList(data, "category_order", categoryOrder);
 
             // Load custom categories if present
@@ -115,8 +117,11 @@ public class ShulkerSortConfig {
                     if (entry.getValue() instanceof Map) {
                         @SuppressWarnings("unchecked")
                         Map<String, Object> catData = (Map<String, Object>) entry.getValue();
-                        String label = TomlParser.getString(catData, "label", entry.getKey());
                         List<String> patterns = TomlParser.getStringList(catData, "patterns", List.of());
+                        // For built-in categories, always use the translation key from code
+                        CategoryDefinition existing = categories.get(entry.getKey());
+                        String label = existing != null ? existing.getLabelPrefix()
+                                : TomlParser.getString(catData, "label", entry.getKey());
                         categories.put(entry.getKey(), new CategoryDefinition(entry.getKey(), label, patterns));
                     }
                 }
@@ -137,7 +142,8 @@ public class ShulkerSortConfig {
             data.put("enable_chat_notifications", enableChatNotifications);
             data.put("enable_sound_effects", enableSoundEffects);
             data.put("enable_hud_overlay", enableHudOverlay);
-            data.put("enable_debug_logging", enableDebugLogging);
+            data.put("include_loose_items", includeLooseItems);
+            data.put("loose_item_ignore_tag", looseItemIgnoreTag);
             data.put("category_order", categoryOrder);
 
             Map<String, Object> categoriesMap = new LinkedHashMap<>();

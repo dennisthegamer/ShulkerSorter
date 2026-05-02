@@ -41,14 +41,43 @@ public class ShulkerSortEngine {
             categorizedItems.put(cat, new ArrayList<>());
         }
 
+        // Track which category each box primarily contained before sorting
+        Map<Integer, String> boxPrimaryCategory = new HashMap<>();
         int totalItems = 0;
-        for (ShulkerBoxInfo box : sortableBoxes) {
+        for (int boxIdx = 0; boxIdx < sortableBoxes.size(); boxIdx++) {
+            ShulkerBoxInfo box = sortableBoxes.get(boxIdx);
             List<ItemStack> contents = ShulkerBoxHelper.getContents(box.stack());
+            Map<String, Integer> catCounts = new HashMap<>();
             for (ItemStack item : contents) {
                 if (item.isEmpty()) continue;
                 String category = ItemCategorizer.categorize(item);
                 categorizedItems.computeIfAbsent(category, k -> new ArrayList<>()).add(item.copy());
                 totalItems += item.getCount();
+                catCounts.merge(category, item.getCount(), Integer::sum);
+            }
+            // Determine the dominant category for this box
+            if (!catCounts.isEmpty()) {
+                boxPrimaryCategory.put(boxIdx, catCounts.entrySet().stream()
+                        .max(Map.Entry.comparingByValue()).get().getKey());
+            }
+        }
+
+        // Collect loose (non-shulker) items from inventory if enabled
+        List<Integer> looseItemSlots = new ArrayList<>();
+        if (config.includeLooseItems) {
+            String ignoreTag = config.looseItemIgnoreTag;
+            for (int i = 0; i < 36; i++) {
+                ItemStack stack = inventory.getItem(i);
+                if (stack.isEmpty() || ShulkerBoxHelper.isShulkerBox(stack)) continue;
+                // Skip items with the ignore tag in their custom name
+                if (!ignoreTag.isEmpty() && stack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
+                    String name = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_NAME).getString();
+                    if (name.contains(ignoreTag)) continue;
+                }
+                String category = ItemCategorizer.categorize(stack);
+                categorizedItems.computeIfAbsent(category, k -> new ArrayList<>()).add(stack.copy());
+                totalItems += stack.getCount();
+                looseItemSlots.add(i);
             }
         }
 
@@ -72,45 +101,71 @@ public class ShulkerSortEngine {
             return SortResult.error("shulkersort.message.error.not_enough_space");
         }
 
-        // Phase 5: DISTRIBUTE - Fill boxes sequentially per category
+        // Phase 5: DISTRIBUTE - Fill boxes by category, preserving box-category affinity
         List<List<ItemStack>> newBoxContents = new ArrayList<>();
         for (int i = 0; i < sortableBoxes.size(); i++) {
             newBoxContents.add(new ArrayList<>(Collections.nCopies(27, ItemStack.EMPTY)));
         }
 
-        List<String> boxCategories = new ArrayList<>(); // Track which category each box belongs to
-        int currentBoxIndex = 0;
-        int currentSlotIndex = 0;
+        String[] boxCategories = new String[sortableBoxes.size()];
+
+        // Build ordered list of boxes for each category:
+        // 1. Boxes that previously contained this category (affinity match)
+        // 2. Remaining unassigned boxes in inventory order
+        Set<Integer> assignedBoxes = new HashSet<>();
 
         for (String categoryKey : config.categoryOrder) {
             List<ItemStack> items = categorizedItems.get(categoryKey);
             if (items == null || items.isEmpty()) continue;
 
-            // If we're in the middle of a box, start a new one for new category
-            if (currentSlotIndex > 0) {
-                currentBoxIndex++;
-                currentSlotIndex = 0;
+            // Collect boxes with affinity for this category (not yet assigned)
+            List<Integer> affinityBoxes = new ArrayList<>();
+            for (int i = 0; i < sortableBoxes.size(); i++) {
+                if (!assignedBoxes.contains(i) && categoryKey.equals(boxPrimaryCategory.get(i))) {
+                    affinityBoxes.add(i);
+                }
             }
 
-            for (ItemStack item : items) {
-                if (currentBoxIndex >= sortableBoxes.size()) {
-                    // Should not happen due to validation, but safety check
-                    return SortResult.error("shulkersort.message.error.internal");
-                }
+            // Calculate how many boxes this category needs
+            int boxesNeeded = (items.size() + 26) / 27;
 
-                newBoxContents.get(currentBoxIndex).set(currentSlotIndex, item);
+            // Start filling: first use affinity boxes, then any unassigned box
+            int itemIdx = 0;
+            int boxesUsed = 0;
 
-                // Track category for this box
-                while (boxCategories.size() <= currentBoxIndex) {
-                    boxCategories.add(null);
-                }
-                boxCategories.set(currentBoxIndex, categoryKey);
+            // Fill affinity boxes first
+            for (int boxIdx : affinityBoxes) {
+                if (itemIdx >= items.size()) break;
 
-                currentSlotIndex++;
-                if (currentSlotIndex >= 27) {
-                    currentBoxIndex++;
-                    currentSlotIndex = 0;
+                assignedBoxes.add(boxIdx);
+                boxCategories[boxIdx] = categoryKey;
+                int slotIdx = 0;
+                while (slotIdx < 27 && itemIdx < items.size()) {
+                    newBoxContents.get(boxIdx).set(slotIdx, items.get(itemIdx));
+                    slotIdx++;
+                    itemIdx++;
                 }
+                boxesUsed++;
+            }
+
+            // If we still have items, use next unassigned boxes
+            if (itemIdx < items.size()) {
+                for (int boxIdx = 0; boxIdx < sortableBoxes.size() && itemIdx < items.size(); boxIdx++) {
+                    if (assignedBoxes.contains(boxIdx)) continue;
+
+                    assignedBoxes.add(boxIdx);
+                    boxCategories[boxIdx] = categoryKey;
+                    int slotIdx = 0;
+                    while (slotIdx < 27 && itemIdx < items.size()) {
+                        newBoxContents.get(boxIdx).set(slotIdx, items.get(itemIdx));
+                        slotIdx++;
+                        itemIdx++;
+                    }
+                }
+            }
+
+            if (itemIdx < items.size()) {
+                return SortResult.error("shulkersort.message.error.internal");
             }
         }
 
@@ -119,7 +174,7 @@ public class ShulkerSortEngine {
         List<Component> newNames = new ArrayList<>();
 
         for (int i = 0; i < sortableBoxes.size(); i++) {
-            String category = (i < boxCategories.size()) ? boxCategories.get(i) : null;
+            String category = boxCategories[i];
 
             if (category != null && config.autoLabel) {
                 CategoryDefinition catDef = config.getCategory(category);
@@ -143,6 +198,11 @@ public class ShulkerSortEngine {
                 ShulkerBoxHelper.setCustomName(shulkerStack, newNames.get(i));
                 boxesSorted++;
             }
+        }
+
+        // Clear loose item slots that were absorbed into shulker boxes
+        for (int slot : looseItemSlots) {
+            inventory.setItem(slot, ItemStack.EMPTY);
         }
 
         return SortResult.success(boxesSorted, totalItems);

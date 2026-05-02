@@ -18,10 +18,10 @@ repositories {
 		url = "https://api.modrinth.com/maven"
 	}
 
-	// Shedaniel's Maven for Cloth Config
+	// Xander Maven for YACL
 	maven {
-		name = "Shedaniel"
-		url = "https://maven.shedaniel.me/"
+		name = "Xander Maven"
+		url = "https://maven.isxander.dev/releases"
 	}
 
 	// CurseForge Maven
@@ -54,9 +54,9 @@ dependencies {
 	// Fabric API
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Cloth Config API for configuration screens (users install separately)
-	// Using implementation (not include) so it works in dev but isn't bundled in the JAR
-	// implementation "maven.modrinth:cloth-config:${project.cloth_config_version}"
+	// YACL for configuration screens (users install separately)
+	compileOnly "dev.isxander:yet-another-config-lib:${project.yacl_version}"
+	localRuntime "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 
 	// ModMenu for dev environment only
 	compileOnly "maven.modrinth:modmenu:${project.modmenu_version}"

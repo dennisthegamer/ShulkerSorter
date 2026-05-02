@@ -1,6 +1,7 @@
 {
   "key.shulkersort.sort": "Shulker Boxes sortieren",
   "category.shulkersort": "ShulkerSort",
+  "key.category.shulkersort.shulkersort": "ShulkerSort",
   "shulkersort.hud.sorting": "Sortiere",
   "shulkersort.tooltip.empty": "Leer",
   "shulkersort.tooltip.contents": "Inhalt:",
@@ -11,6 +12,7 @@
   "shulkersort.message.error.all_empty": "Alle Shulker Boxes sind leer!",
   "shulkersort.message.error.not_enough_space": "Nicht genug Shulker Boxes fuer alle Items! Sortierung abgebrochen.",
   "shulkersort.message.error.internal": "Interner Fehler bei der Verteilung!",
+  "shulkersort.message.error.multiplayer_survival": "Sortieren im Multiplayer-Survival erfordert den Mod auf dem Server!",
 
   "shulkersort.category.blocks": "Bloecke",
   "shulkersort.category.tools": "Werkzeuge",
@@ -24,10 +26,18 @@
   "config.shulkersort.category.sorting": "Sortierung",
   "config.shulkersort.category.tooltip": "Tooltip",
   "config.shulkersort.category.feedback": "Benachrichtigungen & Feedback",
-  "config.shulkersort.category.advanced": "Erweiterte Optionen",
+
+  "config.shulkersort.keybind": "Sortier-Taste",
+  "config.shulkersort.keybind.tooltip": "Taste zum Sortieren der Shulker Boxes",
 
   "config.shulkersort.auto_label": "Boxen automatisch beschriften",
   "config.shulkersort.auto_label.tooltip": "Shulker Boxes nach dem Sortieren automatisch umbenennen (z.B. 'Bloecke #1', 'Erze #2')",
+
+  "config.shulkersort.include_loose_items": "Lose Items einsortieren",
+  "config.shulkersort.include_loose_items.tooltip": "Auch lose Items aus dem Inventar in Shulker Boxes einsortieren (standardmaessig deaktiviert)",
+
+  "config.shulkersort.loose_item_ignore_tag": "Lose Items Ignorieren-Tag",
+  "config.shulkersort.loose_item_ignore_tag.tooltip": "Items mit diesem Text im Namen werden nicht in Shulker Boxes einsortiert (z.B. Item umbenennen zu '[KEEP] Diamantschwert')",
 
   "config.shulkersort.locked_tag": "Gesperrt-Tag",
   "config.shulkersort.locked_tag.tooltip": "Shulker Boxes mit diesem Text im Namen werden beim Sortieren uebersprungen",
@@ -45,8 +55,5 @@
   "config.shulkersort.enable_sound_effects.tooltip": "Sound abspielen wenn Sortierung erfolgreich abgeschlossen",
 
   "config.shulkersort.enable_hud_overlay": "HUD-Anzeige",
-  "config.shulkersort.enable_hud_overlay.tooltip": "Animierte 'Sortiere...' Anzeige auf dem HUD waehrend der Sortierung",
-
-  "config.shulkersort.enable_debug_logging": "Debug-Logging",
-  "config.shulkersort.enable_debug_logging.tooltip": "Detailliertes Logging zur Fehlerbehebung aktivieren (sichtbar im Spiellog)"
+  "config.shulkersort.enable_hud_overlay.tooltip": "Animierte 'Sortiere...' Anzeige auf dem HUD waehrend der Sortierung"
 }

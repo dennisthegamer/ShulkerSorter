@@ -101,41 +101,32 @@ public class ShulkerSortEngine {
             return SortResult.error("shulkersort.message.error.not_enough_space");
         }
 
-        // Phase 5: DISTRIBUTE - Fill boxes by category, preserving box-category affinity
+        // Phase 5: DISTRIBUTE - Two-pass to prevent categoryOrder from stealing affinity boxes.
+        // Pass 1: fill each category's affinity boxes (boxes that previously held that category).
+        // Pass 2: place remaining items into whichever unassigned boxes are still free.
+        // Without the split, an early category like "blocks" would greedily claim boxes whose
+        // primary category is "tools", causing tools to land in the wrong boxes next run.
         List<List<ItemStack>> newBoxContents = new ArrayList<>();
         for (int i = 0; i < sortableBoxes.size(); i++) {
             newBoxContents.add(new ArrayList<>(Collections.nCopies(27, ItemStack.EMPTY)));
         }
 
         String[] boxCategories = new String[sortableBoxes.size()];
-
-        // Build ordered list of boxes for each category:
-        // 1. Boxes that previously contained this category (affinity match)
-        // 2. Remaining unassigned boxes in inventory order
         Set<Integer> assignedBoxes = new HashSet<>();
+        Map<String, List<ItemStack>> overflow = new LinkedHashMap<>();
 
+        // Pass 1: affinity boxes only
         for (String categoryKey : config.categoryOrder) {
             List<ItemStack> items = categorizedItems.get(categoryKey);
-            if (items == null || items.isEmpty()) continue;
-
-            // Collect boxes with affinity for this category (not yet assigned)
-            List<Integer> affinityBoxes = new ArrayList<>();
-            for (int i = 0; i < sortableBoxes.size(); i++) {
-                if (!assignedBoxes.contains(i) && categoryKey.equals(boxPrimaryCategory.get(i))) {
-                    affinityBoxes.add(i);
-                }
+            if (items == null || items.isEmpty()) {
+                overflow.put(categoryKey, new ArrayList<>());
+                continue;
             }
 
-            // Calculate how many boxes this category needs
-            int boxesNeeded = (items.size() + 26) / 27;
-
-            // Start filling: first use affinity boxes, then any unassigned box
             int itemIdx = 0;
-            int boxesUsed = 0;
-
-            // Fill affinity boxes first
-            for (int boxIdx : affinityBoxes) {
-                if (itemIdx >= items.size()) break;
+            for (int boxIdx = 0; boxIdx < sortableBoxes.size() && itemIdx < items.size(); boxIdx++) {
+                if (assignedBoxes.contains(boxIdx)) continue;
+                if (!categoryKey.equals(boxPrimaryCategory.get(boxIdx))) continue;
 
                 assignedBoxes.add(boxIdx);
                 boxCategories[boxIdx] = categoryKey;
@@ -145,26 +136,33 @@ public class ShulkerSortEngine {
                     slotIdx++;
                     itemIdx++;
                 }
-                boxesUsed++;
             }
 
-            // If we still have items, use next unassigned boxes
-            if (itemIdx < items.size()) {
-                for (int boxIdx = 0; boxIdx < sortableBoxes.size() && itemIdx < items.size(); boxIdx++) {
-                    if (assignedBoxes.contains(boxIdx)) continue;
+            overflow.put(categoryKey, itemIdx < items.size()
+                    ? items.subList(itemIdx, items.size())
+                    : new ArrayList<>());
+        }
 
-                    assignedBoxes.add(boxIdx);
-                    boxCategories[boxIdx] = categoryKey;
-                    int slotIdx = 0;
-                    while (slotIdx < 27 && itemIdx < items.size()) {
-                        newBoxContents.get(boxIdx).set(slotIdx, items.get(itemIdx));
-                        slotIdx++;
-                        itemIdx++;
-                    }
+        // Pass 2: remaining items into free boxes
+        for (String categoryKey : config.categoryOrder) {
+            List<ItemStack> remaining = overflow.get(categoryKey);
+            if (remaining == null || remaining.isEmpty()) continue;
+
+            int itemIdx = 0;
+            for (int boxIdx = 0; boxIdx < sortableBoxes.size() && itemIdx < remaining.size(); boxIdx++) {
+                if (assignedBoxes.contains(boxIdx)) continue;
+
+                assignedBoxes.add(boxIdx);
+                boxCategories[boxIdx] = categoryKey;
+                int slotIdx = 0;
+                while (slotIdx < 27 && itemIdx < remaining.size()) {
+                    newBoxContents.get(boxIdx).set(slotIdx, remaining.get(itemIdx));
+                    slotIdx++;
+                    itemIdx++;
                 }
             }
 
-            if (itemIdx < items.size()) {
+            if (itemIdx < remaining.size()) {
                 return SortResult.error("shulkersort.message.error.internal");
             }
         }

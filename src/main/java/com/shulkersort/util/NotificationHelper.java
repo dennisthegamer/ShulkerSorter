@@ -9,11 +9,11 @@ import net.minecraft.world.entity.player.Player;
 
 public class NotificationHelper {
 
-    public static void sendSuccess(Player player, int boxCount) {
+    public static void sendSuccess(Player player, int boxCount, int itemCount) {
         ShulkerSortConfig config = ShulkerSortConfig.getInstance();
 
         if (config.enableChatNotifications) {
-            Component message = Component.translatable("shulkersort.message.success", boxCount)
+            Component message = Component.translatable("shulkersort.message.success", boxCount, itemCount)
                     .withStyle(ChatFormatting.GREEN);
             player.sendSystemMessage(message);
         }
@@ -27,6 +27,15 @@ public class NotificationHelper {
                     0.5f,
                     1.0f
             );
+        }
+    }
+
+    public static void sendInfo(Player player, String messageKey) {
+        ShulkerSortConfig config = ShulkerSortConfig.getInstance();
+        if (config.enableChatNotifications) {
+            Component text = Component.translatable(messageKey)
+                    .withStyle(ChatFormatting.YELLOW);
+            player.sendSystemMessage(text);
         }
     }
 

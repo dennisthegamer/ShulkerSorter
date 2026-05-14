@@ -72,7 +72,7 @@ public class SortKeybindHandler {
 
             // Send feedback on server thread (serverPlayer can receive messages)
             if (result.success()) {
-                NotificationHelper.sendSuccess(serverPlayer, result.boxesSorted());
+                NotificationHelper.sendSuccess(serverPlayer, result.boxesSorted(), result.itemsMoved());
             } else {
                 NotificationHelper.sendError(serverPlayer, result.errorMessage());
             }
@@ -97,7 +97,7 @@ public class SortKeybindHandler {
                     gameMode.handleCreativeModeItemAdd(stack.copy(), containerSlot);
                 }
             }
-            NotificationHelper.sendSuccess(client.player, result.boxesSorted());
+            NotificationHelper.sendSuccess(client.player, result.boxesSorted(), result.itemsMoved());
         } else {
             NotificationHelper.sendError(client.player, result.errorMessage());
         }

@@ -38,6 +38,9 @@
   "config.shulkersort.include_loose_items": "Lose Items einsortieren",
   "config.shulkersort.include_loose_items.tooltip": "Auch lose Items aus dem Inventar in Shulker Boxes einsortieren (standardmaessig deaktiviert)",
 
+  "config.shulkersort.skip_empty_boxes": "Leere Boxen überspringen",
+  "config.shulkersort.skip_empty_boxes.tooltip": "Wenn aktiviert, werden leere Shulker Boxes beim Sortieren ignoriert und nicht verändert.",
+
   "config.shulkersort.overflow_mode": "Ueberlauf-Modus",
   "config.shulkersort.overflow_mode.tooltip": "Was passiert wenn mehr Items vorhanden sind als Shulker-Box-Slots verfuegbar.\n\nFuellen: Boxen werden kategorienuebergreifend befuellt — gemischter Inhalt ist bei Platzmangel erlaubt. Uebrige Items bleiben im Inventar.\n\nDominant: Jede Box erhaelt nur eine Kategorie. Nur die haueufigsten Kategorien (nach Itemanzahl) werden einsortiert; Items anderer Kategorien bleiben im Inventar.",
   "config.shulkersort.overflow_mode.fill": "Fuellen (Mischung OK)",

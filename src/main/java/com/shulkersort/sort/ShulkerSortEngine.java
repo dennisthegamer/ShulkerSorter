@@ -26,6 +26,10 @@ public class ShulkerSortEngine {
             if (ShulkerBoxHelper.isLocked(box.stack())) { lockedCount++; continue; }
             sortableBoxes.add(box);
         }
+        // Filter out empty boxes if configured
+        if (config.skipEmptyBoxes) {
+            sortableBoxes.removeIf(box -> ShulkerBoxHelper.isEmpty(box.stack()));
+        }
         if (sortableBoxes.isEmpty()) {
             return lockedCount > 0
                 ? SortResult.error("shulkersort.message.error.all_locked")

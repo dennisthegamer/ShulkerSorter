@@ -27,6 +27,7 @@ public class ShulkerSortConfig {
 
     // Sorting Behavior
     public boolean includeLooseItems = false;
+    public boolean skipEmptyBoxes = false;
     public String looseItemIgnoreTag = "[KEEP]";
     public OverflowMode overflowMode = OverflowMode.FILL;
 
@@ -140,6 +141,7 @@ public class ShulkerSortConfig {
             enableSoundEffects = TomlParser.getBoolean(data, "enable_sound_effects", enableSoundEffects);
             enableHudOverlay = TomlParser.getBoolean(data, "enable_hud_overlay", enableHudOverlay);
             includeLooseItems = TomlParser.getBoolean(data, "include_loose_items", includeLooseItems);
+            skipEmptyBoxes = TomlParser.getBoolean(data, "skip_empty_boxes", skipEmptyBoxes);
             looseItemIgnoreTag = TomlParser.getString(data, "loose_item_ignore_tag", looseItemIgnoreTag);
             categoryOrder = TomlParser.getStringList(data, "category_order", categoryOrder);
             try {
@@ -180,6 +182,7 @@ public class ShulkerSortConfig {
             data.put("enable_sound_effects", enableSoundEffects);
             data.put("enable_hud_overlay", enableHudOverlay);
             data.put("include_loose_items", includeLooseItems);
+            data.put("skip_empty_boxes", skipEmptyBoxes);
             data.put("loose_item_ignore_tag", looseItemIgnoreTag);
             data.put("overflow_mode", overflowMode.name());
             data.put("category_order", categoryOrder);

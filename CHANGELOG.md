@@ -10,5 +10,5 @@
 - Lock protection via `[LOCKED]` tag
 - Shulker box tooltip preview
 - Chat notifications, sound effects, and HUD overlay
-- Fully configurable via TOML config and Cloth Config screen
+- Fully configurable via TOML config and YACL config screen
 - English and German language support

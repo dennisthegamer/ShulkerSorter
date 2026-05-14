@@ -4,6 +4,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SortUndoManager {
@@ -29,7 +30,7 @@ public class SortUndoManager {
     }
 
     public List<ItemStack> getSnapshot() {
-        return snapshot;
+        return snapshot == null ? null : Collections.unmodifiableList(snapshot);
     }
 
     public void clear() {

@@ -67,5 +67,13 @@
   "config.shulkersort.enable_sound_effects.tooltip": "Sound abspielen wenn Sortierung erfolgreich abgeschlossen",
 
   "config.shulkersort.enable_hud_overlay": "HUD-Anzeige",
-  "config.shulkersort.enable_hud_overlay.tooltip": "Animierte 'Sortiere...' Anzeige auf dem HUD waehrend der Sortierung"
+  "config.shulkersort.enable_hud_overlay.tooltip": "Animierte 'Sortiere...' Anzeige auf dem HUD waehrend der Sortierung",
+
+  "config.shulkersort.category.categories": "Kategorien",
+  "config.shulkersort.category_order": "Kategorienreihenfolge",
+  "config.shulkersort.category_order.tooltip": "Reihenfolge der Kategorien beim Sortieren. Items werden von oben nach unten zugeordnet; die erste Übereinstimmung gewinnt.",
+  "config.shulkersort.category.enabled": "Aktiviert",
+  "config.shulkersort.category.enabled.tooltip": "Deaktivierte Kategorien werden beim Sortieren übersprungen. Ihre Items landen in Sonstiges.",
+  "config.shulkersort.category.patterns": "Muster",
+  "config.shulkersort.category.patterns.tooltip": "Item-ID-Muster für diese Kategorie. Präfix: 'raw_' (Items die mit raw_ beginnen). Suffix: '_planks' (Items die auf _planks enden). Exakt oder Teilstring: 'redstone'."
 }

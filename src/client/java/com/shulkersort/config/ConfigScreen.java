@@ -1,8 +1,10 @@
 package com.shulkersort.config;
 
 import dev.isxander.yacl3.api.ConfigCategory;
+import dev.isxander.yacl3.api.ListOption;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
+import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import com.shulkersort.config.OverflowMode;
 import dev.isxander.yacl3.api.controller.CyclingListControllerBuilder;
@@ -12,10 +14,80 @@ import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConfigScreen {
 
     public static Screen create(Screen parent) {
         ShulkerSortConfig config = ShulkerSortConfig.getInstance();
+
+        // Build the categories tab dynamically
+        ConfigCategory.Builder categoriesTab = ConfigCategory.createBuilder()
+                .name(Component.translatable("config.shulkersort.category.categories"));
+
+        // Category order list
+        ListOption<String> categoryOrderList = ListOption.<String>createBuilder()
+                .name(Component.translatable("config.shulkersort.category_order"))
+                .description(OptionDescription.of(Component.translatable("config.shulkersort.category_order.tooltip")))
+                .binding(
+                        new ArrayList<>(List.of(
+                                "redstone", "transport", "nature", "mob_loot", "decoration",
+                                "blocks", "tools", "food", "ores", "brewing", "misc"
+                        )),
+                        () -> new ArrayList<>(config.categoryOrder),
+                        val -> config.categoryOrder = new ArrayList<>(val)
+                )
+                .controller(StringControllerBuilder::create)
+                .initial("")
+                .collapsed(true)
+                .build();
+        categoriesTab.group(categoryOrderList);
+
+        // Per-category groups
+        for (String catKey : config.categoryOrder) {
+            CategoryDefinition catDef = config.categories.get(catKey);
+            if (catDef == null) continue;
+
+            // Group with enabled checkbox
+            OptionGroup enabledGroup = OptionGroup.createBuilder()
+                    .name(Component.translatable(catDef.getLabelPrefix()))
+                    .collapsed(false)
+                    .option(Option.<Boolean>createBuilder()
+                            .name(Component.translatable("config.shulkersort.category.enabled"))
+                            .description(OptionDescription.of(Component.translatable("config.shulkersort.category.enabled.tooltip")))
+                            .binding(
+                                    true,
+                                    () -> !config.disabledCategories.contains(catKey),
+                                    val -> {
+                                        if (val) {
+                                            config.disabledCategories.remove(catKey);
+                                        } else {
+                                            config.disabledCategories.add(catKey);
+                                        }
+                                    }
+                            )
+                            .controller(TickBoxControllerBuilder::create)
+                            .build())
+                    .build();
+            categoriesTab.group(enabledGroup);
+
+            // Patterns list for this category
+            final CategoryDefinition finalCatDef = catDef;
+            ListOption<String> patternsList = ListOption.<String>createBuilder()
+                    .name(Component.translatable("config.shulkersort.category.patterns"))
+                    .description(OptionDescription.of(Component.translatable("config.shulkersort.category.patterns.tooltip")))
+                    .binding(
+                            new ArrayList<>(finalCatDef.getPatterns()),
+                            () -> new ArrayList<>(finalCatDef.getPatterns()),
+                            val -> finalCatDef.setPatterns(val)
+                    )
+                    .controller(StringControllerBuilder::create)
+                    .initial("")
+                    .collapsed(true)
+                    .build();
+            categoriesTab.group(patternsList);
+        }
 
         return YetAnotherConfigLib.createBuilder()
                 .title(Component.translatable("config.shulkersort.title"))
@@ -103,6 +175,9 @@ public class ConfigScreen {
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .build())
+
+                // === Categories ===
+                .category(categoriesTab.build())
 
                 .save(config::save)
                 .build()

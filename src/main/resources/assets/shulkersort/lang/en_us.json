@@ -67,5 +67,13 @@
   "config.shulkersort.enable_sound_effects.tooltip": "Play a sound when sorting completes successfully",
 
   "config.shulkersort.enable_hud_overlay": "HUD Overlay",
-  "config.shulkersort.enable_hud_overlay.tooltip": "Show an animated 'Sorting...' overlay on the HUD during sorting"
+  "config.shulkersort.enable_hud_overlay.tooltip": "Show an animated 'Sorting...' overlay on the HUD during sorting",
+
+  "config.shulkersort.category.categories": "Categories",
+  "config.shulkersort.category_order": "Category Order",
+  "config.shulkersort.category_order.tooltip": "Order in which categories are matched during sorting. Items are matched top-to-bottom; the first match wins.",
+  "config.shulkersort.category.enabled": "Enabled",
+  "config.shulkersort.category.enabled.tooltip": "Disabled categories are skipped during sorting. Their items fall through to Misc.",
+  "config.shulkersort.category.patterns": "Patterns",
+  "config.shulkersort.category.patterns.tooltip": "Item ID patterns for this category. Prefix: 'raw_' (items starting with raw_). Suffix: '_planks' (items ending with _planks). Exact or substring: 'redstone'."
 }

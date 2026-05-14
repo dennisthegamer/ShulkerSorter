@@ -14,6 +14,11 @@
   "shulkersort.message.error.internal": "Interner Fehler bei der Verteilung!",
   "shulkersort.message.error.multiplayer_survival": "Sortieren im Multiplayer-Survival erfordert den Mod auf dem Server!",
 
+  "shulkersort.category.redstone": "Redstone",
+  "shulkersort.category.transport": "Transport",
+  "shulkersort.category.nature": "Natur",
+  "shulkersort.category.mob_loot": "Mob-Drops",
+  "shulkersort.category.decoration": "Dekoration",
   "shulkersort.category.blocks": "Bloecke",
   "shulkersort.category.tools": "Werkzeuge",
   "shulkersort.category.food": "Nahrung",
@@ -35,6 +40,11 @@
 
   "config.shulkersort.include_loose_items": "Lose Items einsortieren",
   "config.shulkersort.include_loose_items.tooltip": "Auch lose Items aus dem Inventar in Shulker Boxes einsortieren (standardmaessig deaktiviert)",
+
+  "config.shulkersort.overflow_mode": "Ueberlauf-Modus",
+  "config.shulkersort.overflow_mode.tooltip": "Was passiert wenn mehr Items vorhanden sind als Shulker-Box-Slots verfuegbar.\n\nFuellen: Boxen werden kategorienuebergreifend befuellt — gemischter Inhalt ist bei Platzmangel erlaubt. Uebrige Items bleiben im Inventar.\n\nDominant: Jede Box erhaelt nur eine Kategorie. Nur die haueufigsten Kategorien (nach Itemanzahl) werden einsortiert; Items anderer Kategorien bleiben im Inventar.",
+  "config.shulkersort.overflow_mode.fill": "Fuellen (Mischung OK)",
+  "config.shulkersort.overflow_mode.dominant": "Dominant (Nur eine Kategorie)",
 
   "config.shulkersort.loose_item_ignore_tag": "Lose Items Ignorieren-Tag",
   "config.shulkersort.loose_item_ignore_tag.tooltip": "Items mit diesem Text im Namen werden nicht in Shulker Boxes einsortiert (z.B. Item umbenennen zu '[KEEP] Diamantschwert')",

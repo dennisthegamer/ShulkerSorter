@@ -16,3 +16,4 @@ logs/
 # system
 .DS_Store
 Thumbs.db
+CLAUDE.md

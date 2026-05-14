@@ -4,6 +4,8 @@ import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
+import com.shulkersort.config.OverflowMode;
+import dev.isxander.yacl3.api.controller.CyclingListControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
@@ -32,6 +34,15 @@ public class ConfigScreen {
                                 .description(OptionDescription.of(Component.translatable("config.shulkersort.include_loose_items.tooltip")))
                                 .binding(false, () -> config.includeLooseItems, val -> config.includeLooseItems = val)
                                 .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.<OverflowMode>createBuilder()
+                                .name(Component.translatable("config.shulkersort.overflow_mode"))
+                                .description(OptionDescription.of(Component.translatable("config.shulkersort.overflow_mode.tooltip")))
+                                .binding(OverflowMode.FILL, () -> config.overflowMode, val -> config.overflowMode = val)
+                                .controller(opt -> CyclingListControllerBuilder.create(opt)
+                                        .values(OverflowMode.values())
+                                        .valueFormatter(mode -> Component.translatable(
+                                                "config.shulkersort.overflow_mode." + mode.name().toLowerCase())))
                                 .build())
                         .option(Option.<String>createBuilder()
                                 .name(Component.translatable("config.shulkersort.loose_item_ignore_tag"))

@@ -14,6 +14,11 @@
   "shulkersort.message.error.internal": "Internal error during distribution!",
   "shulkersort.message.error.multiplayer_survival": "Sorting in multiplayer survival requires the mod on the server!",
 
+  "shulkersort.category.redstone": "Redstone",
+  "shulkersort.category.transport": "Transport",
+  "shulkersort.category.nature": "Nature",
+  "shulkersort.category.mob_loot": "Mob Loot",
+  "shulkersort.category.decoration": "Decoration",
   "shulkersort.category.blocks": "Blocks",
   "shulkersort.category.tools": "Tools",
   "shulkersort.category.food": "Food",
@@ -35,6 +40,11 @@
 
   "config.shulkersort.include_loose_items": "Include Loose Items",
   "config.shulkersort.include_loose_items.tooltip": "Also sort loose items from your inventory into shulker boxes (disabled by default)",
+
+  "config.shulkersort.overflow_mode": "Overflow Mode",
+  "config.shulkersort.overflow_mode.tooltip": "What happens when there are more items than shulker box slots available.\n\nFill: Boxes are filled across categories until full — mixed content is allowed when space is tight. Remaining items stay in inventory.\n\nDominant: Each box is dedicated to one category only. Only the top categories (by item count) are sorted; items from other categories stay in inventory.",
+  "config.shulkersort.overflow_mode.fill": "Fill (Mixed OK)",
+  "config.shulkersort.overflow_mode.dominant": "Dominant (One Category)",
 
   "config.shulkersort.loose_item_ignore_tag": "Loose Item Ignore Tag",
   "config.shulkersort.loose_item_ignore_tag.tooltip": "Items with this text in their name will not be sorted into shulker boxes (e.g. rename an item to '[KEEP] Diamond Sword')",

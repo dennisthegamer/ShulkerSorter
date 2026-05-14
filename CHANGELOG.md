@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0]
+
+### Fixed
+- Tooltip "more items" counter now shows total item count instead of type count
+- Removed unused `keybind` config field (keybind is managed via Minecraft's Controls screen)
+
+### Improved
+- Sort success message now includes item count: "3 boxes sorted, 128 items distributed"
+
+### Added
+- **Skip Empty Boxes** option: empty shulker boxes are ignored during sorting when enabled
+- **Undo** (Shift+J): restores inventory to pre-sort state; works in singleplayer and multiplayer creative
+- **Categories tab** in config screen: reorder categories, enable/disable individual categories, edit item ID patterns per category
+
 ## [1.0.0]
 
 - Initial release

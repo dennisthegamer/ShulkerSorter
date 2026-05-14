@@ -58,8 +58,7 @@ public class ShulkerTooltipRenderer {
             }
 
             if (remaining > 0) {
-                int hiddenTypes = itemNames.size() - maxLines;
-                lines.add(Component.literal("  ").append(Component.translatable("shulkersort.tooltip.more", hiddenTypes))
+                lines.add(Component.literal("  ").append(Component.translatable("shulkersort.tooltip.more", remaining))
                         .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             }
         });

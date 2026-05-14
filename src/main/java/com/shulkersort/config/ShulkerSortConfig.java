@@ -13,7 +13,6 @@ public class ShulkerSortConfig {
     private final Path configPath;
 
     // Sorting Settings
-    public String keybind = "s";
     public boolean autoLabel = true;
     public String lockedTag = "[LOCKED]";
 
@@ -133,7 +132,6 @@ public class ShulkerSortConfig {
         try {
             Map<String, Object> data = TomlParser.parse(configPath);
 
-            keybind = TomlParser.getString(data, "keybind", keybind);
             autoLabel = TomlParser.getBoolean(data, "auto_label", autoLabel);
             lockedTag = TomlParser.getString(data, "locked_tag", lockedTag);
             tooltipEnabled = TomlParser.getBoolean(data, "tooltip_enabled", tooltipEnabled);
@@ -174,7 +172,6 @@ public class ShulkerSortConfig {
     public void save() {
         try {
             Map<String, Object> data = new LinkedHashMap<>();
-            data.put("keybind", keybind);
             data.put("auto_label", autoLabel);
             data.put("locked_tag", lockedTag);
             data.put("tooltip_enabled", tooltipEnabled);

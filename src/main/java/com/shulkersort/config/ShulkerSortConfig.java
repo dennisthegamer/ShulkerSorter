@@ -35,6 +35,7 @@ public class ShulkerSortConfig {
             "redstone", "transport", "nature", "mob_loot", "decoration",
             "blocks", "tools", "food", "ores", "brewing", "misc"
     ));
+    public Set<String> disabledCategories = new LinkedHashSet<>();
     public Map<String, CategoryDefinition> categories = new LinkedHashMap<>();
 
     private ShulkerSortConfig() {
@@ -144,6 +145,8 @@ public class ShulkerSortConfig {
             skipEmptyBoxes = TomlParser.getBoolean(data, "skip_empty_boxes", skipEmptyBoxes);
             looseItemIgnoreTag = TomlParser.getString(data, "loose_item_ignore_tag", looseItemIgnoreTag);
             categoryOrder = TomlParser.getStringList(data, "category_order", categoryOrder);
+            List<String> disabledList = TomlParser.getStringList(data, "disabled_categories", new ArrayList<>());
+            disabledCategories = new LinkedHashSet<>(disabledList);
             try {
                 overflowMode = OverflowMode.valueOf(
                     TomlParser.getString(data, "overflow_mode", overflowMode.name()).toUpperCase());
@@ -186,6 +189,7 @@ public class ShulkerSortConfig {
             data.put("loose_item_ignore_tag", looseItemIgnoreTag);
             data.put("overflow_mode", overflowMode.name());
             data.put("category_order", categoryOrder);
+            data.put("disabled_categories", new ArrayList<>(disabledCategories));
 
             Map<String, Object> categoriesMap = new LinkedHashMap<>();
             for (Map.Entry<String, CategoryDefinition> entry : categories.entrySet()) {

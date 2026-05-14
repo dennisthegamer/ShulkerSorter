@@ -23,6 +23,7 @@ public class ItemCategorizer {
 
         // Pass 1: exact, prefix, and suffix matches (high specificity)
         for (String categoryKey : config.categoryOrder) {
+            if (config.disabledCategories.contains(categoryKey)) continue;
             CategoryDefinition category = config.getCategory(categoryKey);
             if (category == null) continue;
 
@@ -39,6 +40,7 @@ public class ItemCategorizer {
 
         // Pass 2: contains matches (lower specificity, checked after all specific matches)
         for (String categoryKey : config.categoryOrder) {
+            if (config.disabledCategories.contains(categoryKey)) continue;
             CategoryDefinition category = config.getCategory(categoryKey);
             if (category == null) continue;
 

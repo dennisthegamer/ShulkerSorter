@@ -13,6 +13,8 @@
   "shulkersort.message.error.not_enough_space": "Not enough shulker boxes for all items! Sorting cancelled.",
   "shulkersort.message.error.internal": "Internal error during distribution!",
   "shulkersort.message.error.multiplayer_survival": "Sorting in multiplayer survival requires the mod on the server!",
+  "shulkersort.message.undo_success": "Sort undone.",
+  "shulkersort.message.undo_nothing": "Nothing to undo.",
 
   "shulkersort.category.redstone": "Redstone",
   "shulkersort.category.transport": "Transport",

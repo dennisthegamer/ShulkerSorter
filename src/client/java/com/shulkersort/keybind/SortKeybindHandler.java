@@ -3,6 +3,7 @@ package com.shulkersort.keybind;
 import com.shulkersort.hud.SortingHudOverlay;
 import com.shulkersort.sort.ShulkerSortEngine;
 import com.shulkersort.sort.SortResult;
+import com.shulkersort.undo.SortUndoManager;
 import com.shulkersort.util.NotificationHelper;
 import com.shulkersort.util.ShulkerBoxHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -18,8 +19,7 @@ import net.minecraft.world.level.GameType;
 import com.mojang.blaze3d.platform.InputConstants;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 public class SortKeybindHandler {
@@ -42,17 +42,26 @@ public class SortKeybindHandler {
     private static void onClientTick(Minecraft client) {
         while (sortKeybind.consumeClick()) {
             if (client.player == null) continue;
-            if (client.screen != null) continue; // Don't trigger when a screen is open
+            if (client.screen != null) continue;
+
+            // Shift + sort = undo
+            boolean shiftHeld = InputConstants.isKeyDown(client.getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)
+                    || InputConstants.isKeyDown(client.getWindow(), GLFW.GLFW_KEY_RIGHT_SHIFT);
+            if (shiftHeld) {
+                handleUndo(client);
+                continue;
+            }
+
+            // Save snapshot BEFORE sort (client inventory is in sync at keypress time)
+            SortUndoManager.get().saveSnapshot(client.player.getInventory());
 
             MinecraftServer integratedServer = client.getSingleplayerServer();
             if (integratedServer != null) {
-                // Singleplayer (creative + survival): sort on server-side inventory
                 sortOnServer(client, integratedServer);
             } else if (client.gameMode != null && client.gameMode.getPlayerMode() == GameType.CREATIVE) {
-                // Multiplayer creative: sort client-side and sync via creative packets
                 sortClientAndSyncCreative(client);
             } else {
-                // Multiplayer survival: not supported without server-side mod
+                SortUndoManager.get().clear();
                 NotificationHelper.sendError(client.player, "shulkersort.message.error.multiplayer_survival");
             }
         }
@@ -60,7 +69,6 @@ public class SortKeybindHandler {
 
     private static void sortOnServer(Minecraft client, MinecraftServer server) {
         SortingHudOverlay.show();
-
         UUID playerUUID = client.player.getUUID();
 
         server.execute(() -> {
@@ -70,10 +78,10 @@ public class SortKeybindHandler {
             SortResult result = ShulkerSortEngine.sort(serverPlayer.getInventory());
             serverPlayer.inventoryMenu.broadcastChanges();
 
-            // Send feedback on server thread (serverPlayer can receive messages)
             if (result.success()) {
                 NotificationHelper.sendSuccess(serverPlayer, result.boxesSorted(), result.itemsMoved());
             } else {
+                Minecraft.getInstance().execute(() -> SortUndoManager.get().clear());
                 NotificationHelper.sendError(serverPlayer, result.errorMessage());
             }
         });
@@ -85,21 +93,66 @@ public class SortKeybindHandler {
         SortResult result = ShulkerSortEngine.sort(client.player.getInventory());
 
         if (result.success()) {
-            // Sync modified shulker boxes to server via creative mode packets
             MultiPlayerGameMode gameMode = client.gameMode;
             for (int i = 0; i < 36; i++) {
                 ItemStack stack = client.player.getInventory().getItem(i);
                 if (ShulkerBoxHelper.isShulkerBox(stack)) {
-                    // Convert inventory slot to container slot index
-                    // Hotbar (0-8) -> container slots 36-44
-                    // Main inventory (9-35) -> container slots 9-35
                     int containerSlot = i < 9 ? i + 36 : i;
                     gameMode.handleCreativeModeItemAdd(stack.copy(), containerSlot);
                 }
             }
             NotificationHelper.sendSuccess(client.player, result.boxesSorted(), result.itemsMoved());
         } else {
+            SortUndoManager.get().clear();
             NotificationHelper.sendError(client.player, result.errorMessage());
         }
+    }
+
+    private static void handleUndo(Minecraft client) {
+        if (!SortUndoManager.get().hasSnapshot()) {
+            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
+            return;
+        }
+
+        MinecraftServer integratedServer = client.getSingleplayerServer();
+        if (integratedServer != null) {
+            undoOnServer(client, integratedServer);
+        } else if (client.gameMode != null && client.gameMode.getPlayerMode() == GameType.CREATIVE) {
+            undoClientAndSyncCreative(client);
+        } else {
+            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
+        }
+    }
+
+    private static void undoOnServer(Minecraft client, MinecraftServer server) {
+        UUID playerUUID = client.player.getUUID();
+        List<ItemStack> snapshot = SortUndoManager.get().getSnapshot();
+        SortUndoManager.get().clear();
+
+        server.execute(() -> {
+            ServerPlayer serverPlayer = server.getPlayerList().getPlayer(playerUUID);
+            if (serverPlayer == null) return;
+
+            for (int i = 0; i < 36; i++) {
+                serverPlayer.getInventory().setItem(i, snapshot.get(i).copy());
+            }
+            serverPlayer.inventoryMenu.broadcastChanges();
+            NotificationHelper.sendInfo(serverPlayer, "shulkersort.message.undo_success");
+        });
+    }
+
+    private static void undoClientAndSyncCreative(Minecraft client) {
+        List<ItemStack> snapshot = SortUndoManager.get().getSnapshot();
+        SortUndoManager.get().clear();
+
+        for (int i = 0; i < 36; i++) {
+            client.player.getInventory().setItem(i, snapshot.get(i).copy());
+        }
+        MultiPlayerGameMode gameMode = client.gameMode;
+        for (int i = 0; i < 36; i++) {
+            int containerSlot = i < 9 ? i + 36 : i;
+            gameMode.handleCreativeModeItemAdd(snapshot.get(i).copy(), containerSlot);
+        }
+        NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_success");
     }
 }

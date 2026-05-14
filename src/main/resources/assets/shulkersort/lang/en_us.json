@@ -32,9 +32,6 @@
   "config.shulkersort.category.tooltip": "Tooltip",
   "config.shulkersort.category.feedback": "Notifications & Feedback",
 
-  "config.shulkersort.keybind": "Sort Keybind",
-  "config.shulkersort.keybind.tooltip": "Key to press for sorting shulker boxes",
-
   "config.shulkersort.auto_label": "Auto-Label Boxes",
   "config.shulkersort.auto_label.tooltip": "Automatically rename shulker boxes after sorting (e.g. 'Blocks #1', 'Ores #2')",
 

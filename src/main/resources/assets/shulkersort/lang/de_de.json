@@ -32,9 +32,6 @@
   "config.shulkersort.category.tooltip": "Tooltip",
   "config.shulkersort.category.feedback": "Benachrichtigungen & Feedback",
 
-  "config.shulkersort.keybind": "Sortier-Taste",
-  "config.shulkersort.keybind.tooltip": "Taste zum Sortieren der Shulker Boxes",
-
   "config.shulkersort.auto_label": "Boxen automatisch beschriften",
   "config.shulkersort.auto_label.tooltip": "Shulker Boxes nach dem Sortieren automatisch umbenennen (z.B. 'Bloecke #1', 'Erze #2')",
 

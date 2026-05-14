@@ -131,7 +131,11 @@ public class SortKeybindHandler {
 
         server.execute(() -> {
             ServerPlayer serverPlayer = server.getPlayerList().getPlayer(playerUUID);
-            if (serverPlayer == null) return;
+            if (serverPlayer == null) {
+                Minecraft.getInstance().execute(() ->
+                    NotificationHelper.sendError(client.player, "shulkersort.message.undo_nothing"));
+                return;
+            }
 
             for (int i = 0; i < 36; i++) {
                 serverPlayer.getInventory().setItem(i, snapshot.get(i).copy());
@@ -150,8 +154,11 @@ public class SortKeybindHandler {
         }
         MultiPlayerGameMode gameMode = client.gameMode;
         for (int i = 0; i < 36; i++) {
-            int containerSlot = i < 9 ? i + 36 : i;
-            gameMode.handleCreativeModeItemAdd(snapshot.get(i).copy(), containerSlot);
+            ItemStack stack = snapshot.get(i);
+            if (!stack.isEmpty()) {
+                int containerSlot = i < 9 ? i + 36 : i;
+                gameMode.handleCreativeModeItemAdd(stack.copy(), containerSlot);
+            }
         }
         NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_success");
     }

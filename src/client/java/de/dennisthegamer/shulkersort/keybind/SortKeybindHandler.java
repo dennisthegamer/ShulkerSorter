@@ -45,8 +45,8 @@ public class SortKeybindHandler {
             if (client.currentScreen != null) continue; // Don't trigger when a screen is open
 
             // Shift + sort = undo
-            boolean shiftHeld = InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT)
-                    || InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT);
+            boolean shiftHeld = InputUtil.isKeyPressed(client.getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)
+                    || InputUtil.isKeyPressed(client.getWindow(), GLFW.GLFW_KEY_RIGHT_SHIFT);
             if (shiftHeld) {
                 handleUndo(client);
                 continue;

@@ -12,7 +12,6 @@
   "shulkersort.message.error.all_empty": "All shulker boxes are empty!",
   "shulkersort.message.error.not_enough_space": "Not enough shulker boxes for all items! Sorting cancelled.",
   "shulkersort.message.error.internal": "Internal error during distribution!",
-  "shulkersort.message.error.multiplayer_survival": "Sorting in multiplayer survival requires the mod on the server!",
   "shulkersort.message.error.multiplayer_no_mod": "ShulkerSort is not installed on this server.",
   "shulkersort.message.undo_success": "Sort undone.",
   "shulkersort.message.undo_nothing": "Nothing to undo.",

@@ -28,7 +28,6 @@ public class SortingHudOverlay {
         if (now >= showUntil) return;
 
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client == null) return;
 
         TextRenderer textRenderer = client.textRenderer;
 

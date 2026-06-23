@@ -23,5 +23,7 @@
 - **YACL config screen** — All settings configurable via Mod Menu + YACL
 - **TOML config** — Manual editing via `.minecraft/config/shulkersort.toml`
 - **Singleplayer** — Sorting runs on the integrated server thread
-- **Multiplayer creative** — Sort works on servers in creative mode
+- **Multiplayer survival** — Server-side sorting via custom networking packets (mod required on server)
+- **Multiplayer creative** — Sort works on servers in creative mode (no server mod needed)
+- **Graceful fallback** — Shows clear message when server doesn't have the mod installed
 - **English and German** language support

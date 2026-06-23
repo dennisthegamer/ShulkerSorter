@@ -1,6 +1,6 @@
 # ShulkerSort
 
-A client-side Fabric mod that automatically sorts, merges and labels shulker boxes in your inventory by item category.
+A Fabric mod that automatically sorts, merges and labels shulker boxes in your inventory by item category. Works in singleplayer, multiplayer survival (mod on server), and multiplayer creative.
 
 ![Mod Loader](https://img.shields.io/badge/Mod%20Loader-Fabric-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
@@ -28,6 +28,12 @@ A client-side Fabric mod that automatically sorts, merges and labels shulker box
 ### Overflow Modes
 - **Fill** — Pack items across available boxes when a category has no dedicated box
 - **Dominant** — Each box is dedicated to one category only
+
+### Multiplayer Support
+- **Singleplayer** — Sorting runs on the integrated server thread
+- **Multiplayer survival** — Server-side sorting via custom networking packets (mod required on server)
+- **Multiplayer creative** — Client-side sort with creative packet sync (no server mod needed)
+- **Graceful fallback** — Clear message when server doesn't have the mod
 
 ### Undo
 - Press **Shift+J** to instantly undo the last sort and restore your inventory

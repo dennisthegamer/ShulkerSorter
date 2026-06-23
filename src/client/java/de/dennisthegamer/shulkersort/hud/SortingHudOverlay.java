@@ -1,6 +1,6 @@
-package com.shulkersort.hud;
+package de.dennisthegamer.shulkersort.hud;
 
-import com.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

@@ -1,4 +1,4 @@
-package com.shulkersort.config;
+package de.dennisthegamer.shulkersort.config;
 
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;

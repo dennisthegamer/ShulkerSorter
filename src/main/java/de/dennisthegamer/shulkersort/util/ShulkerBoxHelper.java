@@ -1,6 +1,6 @@
-package com.shulkersort.util;
+package de.dennisthegamer.shulkersort.util;
 
-import com.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;

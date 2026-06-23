@@ -1,9 +1,9 @@
-package com.shulkersort.sort;
+package de.dennisthegamer.shulkersort.sort;
 
-import com.shulkersort.config.CategoryDefinition;
-import com.shulkersort.config.ShulkerSortConfig;
-import com.shulkersort.util.ShulkerBoxHelper;
-import com.shulkersort.util.ShulkerBoxHelper.ShulkerBoxInfo;
+import de.dennisthegamer.shulkersort.config.CategoryDefinition;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.util.ShulkerBoxHelper;
+import de.dennisthegamer.shulkersort.util.ShulkerBoxHelper.ShulkerBoxInfo;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;

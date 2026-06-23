@@ -1,4 +1,4 @@
-package com.shulkersort.sort;
+package de.dennisthegamer.shulkersort.sort;
 
 public record SortResult(boolean success, int boxesSorted, int itemsMoved, String errorMessage) {
 

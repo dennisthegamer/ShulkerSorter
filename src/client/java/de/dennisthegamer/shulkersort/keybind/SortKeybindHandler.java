@@ -1,9 +1,9 @@
-package com.shulkersort.keybind;
+package de.dennisthegamer.shulkersort.keybind;
 
-import com.shulkersort.hud.SortingHudOverlay;
-import com.shulkersort.sort.ShulkerSortEngine;
-import com.shulkersort.sort.SortResult;
-import com.shulkersort.util.NotificationHelper;
+import de.dennisthegamer.shulkersort.hud.SortingHudOverlay;
+import de.dennisthegamer.shulkersort.sort.ShulkerSortEngine;
+import de.dennisthegamer.shulkersort.sort.SortResult;
+import de.dennisthegamer.shulkersort.util.NotificationHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;

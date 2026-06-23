@@ -42,7 +42,6 @@ public class SortKeybindHandler {
     private static void onClientTick(Minecraft client) {
         while (sortKeybind.consumeClick()) {
             if (client.player == null) continue;
-            if (client.screen != null) continue;
 
             // Shift + sort = undo
             boolean shiftHeld = InputConstants.isKeyDown(client.getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)

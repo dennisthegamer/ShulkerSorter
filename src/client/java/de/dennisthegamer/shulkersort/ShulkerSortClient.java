@@ -4,6 +4,7 @@ import de.dennisthegamer.shulkersort.hud.SortingHudOverlay;
 import de.dennisthegamer.shulkersort.keybind.SortKeybindHandler;
 import de.dennisthegamer.shulkersort.tooltip.ShulkerTooltipRenderer;
 import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.network.ClientSortHandler;
 import de.dennisthegamer.shulkersort.undo.SortUndoManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -15,6 +16,7 @@ public class ShulkerSortClient implements ClientModInitializer {
         SortKeybindHandler.register();
         ShulkerTooltipRenderer.register();
         SortingHudOverlay.register();
+        ClientSortHandler.register();
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> SortUndoManager.get().clear());
         ShulkerSort.LOGGER.info("ShulkerSort client initialized!");
     }

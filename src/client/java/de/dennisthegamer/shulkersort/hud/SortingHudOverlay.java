@@ -34,8 +34,6 @@ public class SortingHudOverlay implements HudElement {
         if (now >= showUntil) return;
 
         Minecraft client = Minecraft.getInstance();
-        if (client == null) return;
-
         Font font = client.font;
 
         // Animated dots

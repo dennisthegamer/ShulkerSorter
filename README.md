@@ -2,19 +2,39 @@
 
 A client-side Fabric mod that automatically sorts, merges and labels shulker boxes in your inventory by item category.
 
-![Minecraft](https://img.shields.io/badge/Minecraft-1.21–1.21.8-green)
 ![Mod Loader](https://img.shields.io/badge/Mod%20Loader-Fabric-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Version](https://img.shields.io/badge/Version-1.0.0-orange)
+
+## Supported Minecraft Versions
+
+| Branch | Minecraft | Java |
+|--------|-----------|------|
+| mc1.21-1.21.8 | 1.21 – 1.21.8 | 21+ |
+| mc1.21.9-1.21.11 | 1.21.9 – 1.21.11 | 21+ |
+| mc26.1 | 26.1+ | 25+ |
+| mc26.2 | 26.2+ | 25+ |
 
 ## Features
 
 ### Sorting Engine
 - Press **J** to sort all shulker boxes in your inventory
-- Items are categorized into groups: Blocks, Tools, Food, Ores, Brewing, Misc
+- **11 categories** — Redstone, Transport, Nature, Mob Loot, Decoration, Blocks, Tools, Food, Ores, Brewing, Misc
 - Partial stacks of the same item are merged automatically
-- Each category starts in a new shulker box
+- Affinity-based distribution — boxes keep their dominant category when re-sorting
+- Two-pass pattern matching — specific patterns (prefix/suffix) checked before substring matches
 - Validates capacity before sorting — no items are ever lost
+
+### Overflow Modes
+- **Fill** — Pack items across available boxes when a category has no dedicated box
+- **Dominant** — Each box is dedicated to one category only
+
+### Undo
+- Press **Shift+J** to instantly undo the last sort and restore your inventory
+
+### Loose Items
+- Optionally sort loose items from your inventory into shulker boxes
+- Mark items with `[KEEP]` in their name to exclude them from sorting
 
 ### Auto-Labeling
 - Boxes are renamed by category (e.g. "Ores #1", "Blocks #2")
@@ -26,20 +46,17 @@ A client-side Fabric mod that automatically sorts, merges and labels shulker box
 - Configurable max lines
 
 ### Feedback
-- Chat notifications on sort completion or errors
+- Chat notifications with box and item count
 - Sound effect on successful sort
 - Animated HUD overlay during sorting
 
 ## Installation
 
 ### Requirements
-- Minecraft 1.21 - 1.21.8
-- [Fabric Loader](https://fabricmc.net/) >= 0.18.3
-- [Fabric API](https://modrinth.com/mod/fabric-api)
-- Java 21+
+- [Fabric Loader](https://fabricmc.net/) and [Fabric API](https://modrinth.com/mod/fabric-api)
 
 ### Optional
-- [Cloth Config](https://modrinth.com/mod/cloth-config) >= 15.0.0 (for in-game configuration screen)
+- [YACL](https://modrinth.com/mod/yacl) (for in-game configuration screen)
 - [Mod Menu](https://modrinth.com/mod/modmenu) (for accessing config via mod list)
 
 ### Steps
@@ -50,38 +67,42 @@ A client-side Fabric mod that automatically sorts, merges and labels shulker box
 
 ## Configuration
 
-Configuration is stored in `.minecraft/config/shulkersort.toml` and can be edited in-game via Mod Menu + Cloth Config.
+Configuration is stored in `.minecraft/config/shulkersort.toml` and can be edited in-game via Mod Menu + YACL.
 
 | Setting | Default | Description |
 |---------|---------|-------------|
 | Auto-Label | On | Rename boxes by category after sorting |
+| Overflow Mode | Fill | How overflow items are distributed (Fill / Dominant) |
+| Include Loose Items | Off | Also sort loose inventory items into boxes |
+| Skip Empty Boxes | Off | Exclude empty shulker boxes from sorting |
 | Locked Tag | `[LOCKED]` | Boxes with this text in their name are skipped |
+| Loose Item Ignore Tag | `[KEEP]` | Loose items with this text in their name are skipped |
 | Tooltip | On | Show box contents on hover |
 | Tooltip Max Lines | 5 | Maximum item lines in tooltip (1-27) |
 | Chat Notifications | On | Chat messages on sort completion/failure |
 | Sound Effects | On | Sound on successful sort |
 | HUD Overlay | On | Animated overlay during sorting |
-| Debug Logging | Off | Detailed logging for troubleshooting |
-| Category Order | blocks, tools, food, ores, brewing, misc | Order in which categories are sorted |
 
-### Custom Categories
+### Categories
 
-Categories can be customized in the TOML config. Each category has a label and a list of item ID patterns:
+The mod includes 11 default categories. Each can be reordered, enabled/disabled, and customized with item ID patterns via the in-game config screen or TOML config.
 
+Pattern types:
 - **Suffix patterns:** `_planks` matches `oak_planks`, `birch_planks`
 - **Prefix patterns:** `raw_` matches `raw_iron`, `raw_gold`
-- **Exact/contains:** `diamond` matches `diamond` and `diamond_block`
+- **Exact/substring:** `diamond` matches `diamond` and `diamond_block`
 
 ## Keybinds
 
 | Key | Action |
 |-----|--------|
 | **J** | Sort all shulker boxes in inventory |
+| **Shift+J** | Undo last sort |
 
 ## Building from Source
 
 ```bash
-git clone https://github.com/DennisTheGamer/ShulkerSort.git
+git clone https://github.com/dennisthegamer/ShulkerSort.git
 cd ShulkerSort
 ./gradlew build
 ```

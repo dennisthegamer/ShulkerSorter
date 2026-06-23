@@ -1,17 +1,26 @@
 {
   "key.shulkersort.sort": "Sort Shulker Boxes",
   "category.shulkersort": "ShulkerSort",
+  "key.category.shulkersort.shulkersort": "ShulkerSort",
   "shulkersort.hud.sorting": "Sorting",
   "shulkersort.tooltip.empty": "Empty",
   "shulkersort.tooltip.contents": "Contents:",
   "shulkersort.tooltip.more": "... and %1$s more items",
-  "shulkersort.message.success": "ShulkerSort: %1$s boxes sorted.",
+  "shulkersort.message.success": "ShulkerSort: %1$s boxes sorted, %2$s items distributed.",
   "shulkersort.message.error.no_boxes": "No shulker boxes found in inventory!",
   "shulkersort.message.error.all_locked": "All shulker boxes are locked!",
   "shulkersort.message.error.all_empty": "All shulker boxes are empty!",
   "shulkersort.message.error.not_enough_space": "Not enough shulker boxes for all items! Sorting cancelled.",
   "shulkersort.message.error.internal": "Internal error during distribution!",
+  "shulkersort.message.error.multiplayer_survival": "Sorting in multiplayer survival requires the mod on the server!",
+  "shulkersort.message.undo_success": "Sort undone.",
+  "shulkersort.message.undo_nothing": "Nothing to undo.",
 
+  "shulkersort.category.redstone": "Redstone",
+  "shulkersort.category.transport": "Transport",
+  "shulkersort.category.nature": "Nature",
+  "shulkersort.category.mob_loot": "Mob Loot",
+  "shulkersort.category.decoration": "Decoration",
   "shulkersort.category.blocks": "Blocks",
   "shulkersort.category.tools": "Tools",
   "shulkersort.category.food": "Food",
@@ -24,10 +33,23 @@
   "config.shulkersort.category.sorting": "Sorting",
   "config.shulkersort.category.tooltip": "Tooltip",
   "config.shulkersort.category.feedback": "Notifications & Feedback",
-  "config.shulkersort.category.advanced": "Advanced Options",
 
   "config.shulkersort.auto_label": "Auto-Label Boxes",
   "config.shulkersort.auto_label.tooltip": "Automatically rename shulker boxes after sorting (e.g. 'Blocks #1', 'Ores #2')",
+
+  "config.shulkersort.include_loose_items": "Include Loose Items",
+  "config.shulkersort.include_loose_items.tooltip": "Also sort loose items from your inventory into shulker boxes (disabled by default)",
+
+  "config.shulkersort.skip_empty_boxes": "Skip Empty Boxes",
+  "config.shulkersort.skip_empty_boxes.tooltip": "When enabled, empty shulker boxes are ignored during sorting and left untouched in your inventory.",
+
+  "config.shulkersort.overflow_mode": "Overflow Mode",
+  "config.shulkersort.overflow_mode.tooltip": "What happens when there are more items than shulker box slots available.\n\nFill: Boxes are filled across categories until full — mixed content is allowed when space is tight. Remaining items stay in inventory.\n\nDominant: Each box is dedicated to one category only. Only the top categories (by item count) are sorted; items from other categories stay in inventory.",
+  "config.shulkersort.overflow_mode.fill": "Fill (Mixed OK)",
+  "config.shulkersort.overflow_mode.dominant": "Dominant (One Category)",
+
+  "config.shulkersort.loose_item_ignore_tag": "Loose Item Ignore Tag",
+  "config.shulkersort.loose_item_ignore_tag.tooltip": "Items with this text in their name will not be sorted into shulker boxes (e.g. rename an item to '[KEEP] Diamond Sword')",
 
   "config.shulkersort.locked_tag": "Locked Tag",
   "config.shulkersort.locked_tag.tooltip": "Shulker boxes with this text in their name will be skipped during sorting",
@@ -47,6 +69,11 @@
   "config.shulkersort.enable_hud_overlay": "HUD Overlay",
   "config.shulkersort.enable_hud_overlay.tooltip": "Show an animated 'Sorting...' overlay on the HUD during sorting",
 
-  "config.shulkersort.enable_debug_logging": "Debug Logging",
-  "config.shulkersort.enable_debug_logging.tooltip": "Enable detailed logging for troubleshooting (visible in game log)"
+  "config.shulkersort.category.categories": "Categories",
+  "config.shulkersort.category_order": "Category Order",
+  "config.shulkersort.category_order.tooltip": "Order in which categories are matched during sorting. Items are matched top-to-bottom; the first match wins.",
+  "config.shulkersort.category.enabled": "Enabled",
+  "config.shulkersort.category.enabled.tooltip": "Disabled categories are skipped during sorting. Their items fall through to Misc.",
+  "config.shulkersort.category.patterns": "Patterns",
+  "config.shulkersort.category.patterns.tooltip": "Item ID patterns for this category. Prefix: 'raw_' (items starting with raw_). Suffix: '_planks' (items ending with _planks). Exact or substring: 'redstone'."
 }

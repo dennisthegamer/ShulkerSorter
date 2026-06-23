@@ -1,40 +1,27 @@
 # Changelog
 
-## [1.1.0]
-
-### Added
-- **Overflow Modes** — Choose between FILL (pack items across boxes) and DOMINANT (one category per box)
-- **Undo** — Press Shift+J to undo the last sort
-- **Loose Items** — Optionally sort loose inventory items into shulker boxes
-- **Skip Empty Boxes** — Option to exclude empty shulker boxes from sorting
-- **Disable Categories** — Enable/disable individual categories in the config
-- **Categories Tab** — Full in-game editor for category order, enable/disable, and patterns
-- **Affinity-based Distribution** — Boxes keep their dominant category when re-sorting
-- **Loose Item Ignore Tag** — Mark items with `[KEEP]` to exclude them from sorting
-- **5 New Categories** — Redstone, Transport, Nature, Mob Loot, Decoration
-- **Two-pass Pattern Matching** — Specific patterns (prefix/suffix) are checked before substring matches
-- **Multiplayer Creative Support** — Sort works on servers in creative mode
-- **Singleplayer Server-side Sorting** — Sorting runs on the integrated server thread for reliability
-- **New Translation Keys** — All new features fully translated (English, German)
-
-### Changed
-- Config screen now uses **YACL** instead of Cloth Config
-- Package renamed from `com.shulkersort` to `de.dennisthegamer.shulkersort`
-- Success message now shows item count alongside box count
-
-### Fixed
-- **Backfill bug** — Items from unrelated categories no longer get placed into affinity boxes (e.g. Chicken in Redstone box). Overflow items now go to MISC boxes instead.
-
 ## [1.0.0]
 
-### Added
-- Initial release
-- One-key sorting of all shulker boxes in inventory (press J)
-- Smart item categorization: Blocks, Tools, Food, Ores, Brewing, Misc
-- Automatic stack merging before distribution
-- Auto-labeling with translatable category names
-- Lock protection via `[LOCKED]` tag
-- Shulker box tooltip preview
-- Chat notifications, sound effects, and HUD overlay
-- Fully configurable via TOML config and config screen
-- English and German language support
+### Features
+- **One-key sorting** — Press J to sort all shulker boxes in your inventory
+- **11 item categories** — Redstone, Transport, Nature, Mob Loot, Decoration, Blocks, Tools, Food, Ores, Brewing, Misc
+- **Overflow modes** — FILL (pack items across boxes) or DOMINANT (one category per box)
+- **Undo** — Press Shift+J to undo the last sort
+- **Loose items** — Optionally sort loose inventory items into shulker boxes
+- **Skip empty boxes** — Option to exclude empty shulker boxes from sorting
+- **Disable categories** — Enable/disable individual categories
+- **Affinity-based distribution** — Boxes keep their dominant category when re-sorting
+- **Two-pass pattern matching** — Specific patterns (prefix/suffix) checked before substring matches
+- **Auto-labeling** — Sorted boxes get named by category (e.g. "Ores #1", "Blocks #2")
+- **Lock protection** — Add `[LOCKED]` to a box name to exclude it from sorting
+- **Loose item ignore tag** — Mark items with `[KEEP]` to exclude them from sorting
+- **Shulker box tooltip preview** — Hover to see contents, configurable max lines
+- **Chat notifications** — Box and item count on sort completion
+- **Sound effects** — Audio feedback on successful sort
+- **HUD overlay** — Animated "Sorting..." indicator during sorting
+- **Categories tab** — Full in-game editor for category order, enable/disable, and patterns
+- **YACL config screen** — All settings configurable via Mod Menu + YACL
+- **TOML config** — Manual editing via `.minecraft/config/shulkersort.toml`
+- **Singleplayer** — Sorting runs on the integrated server thread
+- **Multiplayer creative** — Sort works on servers in creative mode
+- **English and German** language support

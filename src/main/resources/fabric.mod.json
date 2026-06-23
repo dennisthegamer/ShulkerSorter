@@ -22,8 +22,7 @@
 		]
 	},
 	"mixins": [
-		"shulkersort.mixins.json",
-		"shulkersort.client.mixins.json"
+		"shulkersort.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.2",

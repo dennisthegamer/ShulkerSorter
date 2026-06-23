@@ -2,7 +2,9 @@
 
 **Sort, merge and label your shulker boxes with a single keypress.**
 
-ShulkerSort is a lightweight, client-side Fabric mod that automatically organizes all items across your shulker boxes by category. Press one key — your ores go into one box, your redstone into another, your tools into a third. Every box gets a clean label. No more shulker box chaos.
+ShulkerSort is a lightweight Fabric mod that automatically organizes all items across your shulker boxes by category. Press one key — your ores go into one box, your redstone into another, your tools into a third. Every box gets a clean label. No more shulker box chaos.
+
+Works in **singleplayer**, **multiplayer survival** (with mod on server), and **multiplayer creative** (no server mod needed).
 
 ---
 
@@ -107,7 +109,7 @@ Boxes with `[LOCKED]` in their name are skipped. Loose items with `[KEEP]` in th
 ## FAQ
 
 **Does this mod work on servers?**
-It works in singleplayer and in creative mode on servers. Multiplayer survival requires server-side installation.
+Yes! In singleplayer and multiplayer creative it works client-only. For multiplayer survival, install the mod on both client and server — sorting runs server-side via custom packets.
 
 **Does it affect performance?**
 No. ShulkerSort only runs when you press the sort key.

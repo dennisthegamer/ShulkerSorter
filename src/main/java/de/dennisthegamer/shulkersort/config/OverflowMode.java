@@ -1,4 +1,4 @@
-package com.shulkersort.config;
+package de.dennisthegamer.shulkersort.config;
 
 public enum OverflowMode {
     FILL,

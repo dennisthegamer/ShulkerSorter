@@ -1,4 +1,4 @@
-package com.shulkersort.undo;
+package de.dennisthegamer.shulkersort.undo;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;

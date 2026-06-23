@@ -1,10 +1,10 @@
-package com.shulkersort.sort;
+package de.dennisthegamer.shulkersort.sort;
 
-import com.shulkersort.config.CategoryDefinition;
-import com.shulkersort.config.OverflowMode;
-import com.shulkersort.config.ShulkerSortConfig;
-import com.shulkersort.util.ShulkerBoxHelper;
-import com.shulkersort.util.ShulkerBoxHelper.ShulkerBoxInfo;
+import de.dennisthegamer.shulkersort.config.CategoryDefinition;
+import de.dennisthegamer.shulkersort.config.OverflowMode;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.util.ShulkerBoxHelper;
+import de.dennisthegamer.shulkersort.util.ShulkerBoxHelper.ShulkerBoxInfo;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;

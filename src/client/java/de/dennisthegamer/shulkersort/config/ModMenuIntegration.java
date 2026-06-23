@@ -1,4 +1,4 @@
-package com.shulkersort.config;
+package de.dennisthegamer.shulkersort.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

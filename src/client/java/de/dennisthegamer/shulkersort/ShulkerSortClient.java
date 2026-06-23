@@ -1,10 +1,10 @@
-package com.shulkersort;
+package de.dennisthegamer.shulkersort;
 
-import com.shulkersort.hud.SortingHudOverlay;
-import com.shulkersort.keybind.SortKeybindHandler;
-import com.shulkersort.tooltip.ShulkerTooltipRenderer;
-import com.shulkersort.config.ShulkerSortConfig;
-import com.shulkersort.undo.SortUndoManager;
+import de.dennisthegamer.shulkersort.hud.SortingHudOverlay;
+import de.dennisthegamer.shulkersort.keybind.SortKeybindHandler;
+import de.dennisthegamer.shulkersort.tooltip.ShulkerTooltipRenderer;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.undo.SortUndoManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 

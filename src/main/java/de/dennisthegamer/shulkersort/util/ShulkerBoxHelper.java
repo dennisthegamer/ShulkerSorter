@@ -1,6 +1,6 @@
-package com.shulkersort.util;
+package de.dennisthegamer.shulkersort.util;
 
-import com.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;

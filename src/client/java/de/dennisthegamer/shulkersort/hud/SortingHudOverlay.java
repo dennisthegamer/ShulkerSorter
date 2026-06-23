@@ -1,6 +1,6 @@
-package com.shulkersort.hud;
+package de.dennisthegamer.shulkersort.hud;
 
-import com.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.ChatFormatting;

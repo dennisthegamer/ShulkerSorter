@@ -1,6 +1,6 @@
-package com.shulkersort.config;
+package de.dennisthegamer.shulkersort.config;
 
-import com.shulkersort.ShulkerSort;
+import de.dennisthegamer.shulkersort.ShulkerSort;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;

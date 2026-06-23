@@ -1,7 +1,7 @@
-package com.shulkersort.tooltip;
+package de.dennisthegamer.shulkersort.tooltip;
 
-import com.shulkersort.config.ShulkerSortConfig;
-import com.shulkersort.util.ShulkerBoxHelper;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.util.ShulkerBoxHelper;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

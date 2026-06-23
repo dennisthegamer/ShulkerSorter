@@ -21,18 +21,31 @@ public class ItemCategorizer {
         // Check food component first (special handling)
         boolean isFood = stack.contains(DataComponentTypes.FOOD);
 
+        // Pass 1: exact, prefix, and suffix matches (high specificity)
         for (String categoryKey : config.categoryOrder) {
+            if (config.disabledCategories.contains(categoryKey)) continue;
             CategoryDefinition category = config.getCategory(categoryKey);
             if (category == null) continue;
 
-            // Special: food category matches food component
             if (categoryKey.equals("food") && isFood) {
                 return "food";
             }
 
-            // Pattern matching against registry ID
             for (String pattern : category.getPatterns()) {
-                if (matchesPattern(itemId, pattern)) {
+                if (matchesSpecific(itemId, pattern)) {
+                    return categoryKey;
+                }
+            }
+        }
+
+        // Pass 2: contains matches (lower specificity, checked after all specific matches)
+        for (String categoryKey : config.categoryOrder) {
+            if (config.disabledCategories.contains(categoryKey)) continue;
+            CategoryDefinition category = config.getCategory(categoryKey);
+            if (category == null) continue;
+
+            for (String pattern : category.getPatterns()) {
+                if (!isSpecificPattern(pattern) && itemId.contains(pattern)) {
                     return categoryKey;
                 }
             }
@@ -41,7 +54,11 @@ public class ItemCategorizer {
         return "misc";
     }
 
-    private static boolean matchesPattern(String itemId, String pattern) {
+    private static boolean isSpecificPattern(String pattern) {
+        return pattern.startsWith("_") || pattern.endsWith("_");
+    }
+
+    private static boolean matchesSpecific(String itemId, String pattern) {
         // Prefix pattern: "raw_" matches "raw_iron", "raw_gold"
         if (pattern.endsWith("_")) {
             return itemId.startsWith(pattern);
@@ -50,7 +67,7 @@ public class ItemCategorizer {
         if (pattern.startsWith("_")) {
             return itemId.endsWith(pattern) || itemId.contains(pattern + "_");
         }
-        // Exact or contains match
-        return itemId.equals(pattern) || itemId.contains(pattern);
+        // Exact match only (contains is handled in pass 2)
+        return itemId.equals(pattern);
     }
 }

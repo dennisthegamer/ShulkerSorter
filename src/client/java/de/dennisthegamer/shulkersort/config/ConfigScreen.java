@@ -6,6 +6,9 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConfigScreen {
 
     public static Screen create(Screen parent) {
@@ -18,7 +21,7 @@ public class ConfigScreen {
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-        // === SORTING FEATURES ===
+        // === SORTING SETTINGS ===
         ConfigCategory sorting = builder.getOrCreateCategory(
             Text.translatable("config.shulkersort.category.sorting")
         );
@@ -30,6 +33,43 @@ public class ConfigScreen {
             .setDefaultValue(true)
             .setTooltip(Text.translatable("config.shulkersort.auto_label.tooltip"))
             .setSaveConsumer(value -> config.autoLabel = value)
+            .build());
+
+        sorting.addEntry(entryBuilder.startBooleanToggle(
+            Text.translatable("config.shulkersort.include_loose_items"),
+            config.includeLooseItems
+        )
+            .setDefaultValue(false)
+            .setTooltip(Text.translatable("config.shulkersort.include_loose_items.tooltip"))
+            .setSaveConsumer(value -> config.includeLooseItems = value)
+            .build());
+
+        sorting.addEntry(entryBuilder.startBooleanToggle(
+            Text.translatable("config.shulkersort.skip_empty_boxes"),
+            config.skipEmptyBoxes
+        )
+            .setDefaultValue(false)
+            .setTooltip(Text.translatable("config.shulkersort.skip_empty_boxes.tooltip"))
+            .setSaveConsumer(value -> config.skipEmptyBoxes = value)
+            .build());
+
+        sorting.addEntry(entryBuilder.startEnumSelector(
+            Text.translatable("config.shulkersort.overflow_mode"),
+            OverflowMode.class,
+            config.overflowMode
+        )
+            .setDefaultValue(OverflowMode.FILL)
+            .setTooltip(Text.translatable("config.shulkersort.overflow_mode.tooltip"))
+            .setSaveConsumer(value -> config.overflowMode = value)
+            .build());
+
+        sorting.addEntry(entryBuilder.startStrField(
+            Text.translatable("config.shulkersort.loose_item_ignore_tag"),
+            config.looseItemIgnoreTag
+        )
+            .setDefaultValue("[KEEP]")
+            .setTooltip(Text.translatable("config.shulkersort.loose_item_ignore_tag.tooltip"))
+            .setSaveConsumer(value -> config.looseItemIgnoreTag = value)
             .build());
 
         sorting.addEntry(entryBuilder.startStrField(
@@ -98,19 +138,61 @@ public class ConfigScreen {
             .setSaveConsumer(value -> config.enableHudOverlay = value)
             .build());
 
-        // === ADVANCED OPTIONS ===
-        ConfigCategory advanced = builder.getOrCreateCategory(
-            Text.translatable("config.shulkersort.category.advanced")
+        // === CATEGORIES ===
+        ConfigCategory categoriesTab = builder.getOrCreateCategory(
+            Text.translatable("config.shulkersort.category.categories")
         );
 
-        advanced.addEntry(entryBuilder.startBooleanToggle(
-            Text.translatable("config.shulkersort.enable_debug_logging"),
-            config.enableDebugLogging
+        // Category order list
+        List<String> defaultCategoryOrder = List.of(
+                "redstone", "transport", "nature", "mob_loot", "decoration",
+                "blocks", "tools", "food", "ores", "brewing", "misc"
+        );
+        categoriesTab.addEntry(entryBuilder.startStrList(
+            Text.translatable("config.shulkersort.category_order"),
+            new ArrayList<>(config.categoryOrder)
         )
-            .setDefaultValue(false)
-            .setTooltip(Text.translatable("config.shulkersort.enable_debug_logging.tooltip"))
-            .setSaveConsumer(value -> config.enableDebugLogging = value)
+            .setDefaultValue(new ArrayList<>(defaultCategoryOrder))
+            .setTooltip(Text.translatable("config.shulkersort.category_order.tooltip"))
+            .setSaveConsumer(value -> config.categoryOrder = new ArrayList<>(value))
             .build());
+
+        // Per-category: enabled toggle + patterns list
+        for (String catKey : config.categoryOrder) {
+            CategoryDefinition catDef = config.categories.get(catKey);
+            if (catDef == null) continue;
+
+            // Enabled/disabled toggle
+            categoriesTab.addEntry(entryBuilder.startBooleanToggle(
+                Text.translatable(catDef.getLabelPrefix())
+                    .append(Text.literal(" - "))
+                    .append(Text.translatable("config.shulkersort.category.enabled")),
+                !config.disabledCategories.contains(catKey)
+            )
+                .setDefaultValue(true)
+                .setTooltip(Text.translatable("config.shulkersort.category.enabled.tooltip"))
+                .setSaveConsumer(value -> {
+                    if (value) {
+                        config.disabledCategories.remove(catKey);
+                    } else {
+                        config.disabledCategories.add(catKey);
+                    }
+                })
+                .build());
+
+            // Patterns list
+            final CategoryDefinition finalCatDef = catDef;
+            categoriesTab.addEntry(entryBuilder.startStrList(
+                Text.translatable(catDef.getLabelPrefix())
+                    .append(Text.literal(" - "))
+                    .append(Text.translatable("config.shulkersort.category.patterns")),
+                new ArrayList<>(catDef.getPatterns())
+            )
+                .setDefaultValue(new ArrayList<>(catDef.getPatterns()))
+                .setTooltip(Text.translatable("config.shulkersort.category.patterns.tooltip"))
+                .setSaveConsumer(value -> finalCatDef.setPatterns(value))
+                .build());
+        }
 
         return builder.build();
     }

@@ -1,0 +1,341 @@
+<h2>Design: Visueller Category Editor</h2>
+<p class="subtitle">Vollständiges Mockup — so würde der Screen aussehen und funktionieren</p>
+
+<style>
+  body { font-family: 'Courier New', monospace; }
+  .mc-screen {
+    background: #1a1a1a;
+    border: 3px solid #777;
+    border-right-color: #222;
+    border-bottom-color: #222;
+    max-width: 700px;
+    margin: 12px auto;
+    padding: 10px;
+    color: #ccc;
+    font-size: 11px;
+  }
+  .screen-title {
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px #000;
+  }
+  /* Tab bar */
+  .tabs { display: flex; gap: 1px; margin-bottom: 0; overflow: hidden; }
+  .tab {
+    background: #252525;
+    border: 1px solid #555;
+    border-bottom: none;
+    color: #888;
+    font-size: 10px;
+    padding: 4px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .tab.active {
+    background: #333;
+    color: #fff;
+    border-color: #888;
+  }
+  .tab .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4a8a4a;
+    display: inline-block;
+  }
+  .tab .dot.off { background: #666; }
+  /* Main panel */
+  .main-panel {
+    background: #2e2e2e;
+    border: 1px solid #888;
+    border-top: 2px solid #888;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+  }
+  /* Left pane */
+  .left-pane {
+    flex: 1;
+    min-width: 0;
+    background: #222;
+    border: 1px solid #555;
+    padding: 7px;
+  }
+  .pane-title {
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    border-bottom: 1px solid #444;
+    padding-bottom: 3px;
+    margin-bottom: 6px;
+  }
+  /* Right pane */
+  .right-pane {
+    flex: 1;
+    min-width: 0;
+    background: #222;
+    border: 1px solid #555;
+    padding: 7px;
+  }
+  /* Item slot */
+  .slot {
+    width: 28px; height: 28px;
+    background: #3a3a3a;
+    border: 2px solid #777;
+    border-right-color: #111;
+    border-bottom-color: #111;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+  }
+  .slot.in-cat {
+    background: #1e3318;
+    border-color: #4a8a4a;
+  }
+  .slot.in-cat:hover { background: #2a4a22; }
+  .slot:hover { background: #4a4a4a; }
+  .slot .tooltip {
+    display: none;
+    position: absolute;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    background: #111;
+    border: 1px solid #888;
+    color: #fff;
+    font-size: 9px;
+    padding: 2px 5px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .slot:hover .tooltip { display: block; }
+  .item-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    min-height: 60px;
+  }
+  /* Search */
+  .search-bar {
+    width: 100%;
+    box-sizing: border-box;
+    background: #111;
+    border: 1px solid #555;
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 6px;
+    font-family: monospace;
+    margin-bottom: 5px;
+  }
+  .search-bar:focus { border-color: #8a8; outline: none; }
+  /* Wildcard chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+  .chip {
+    background: #1c2e1c;
+    border: 1px solid #3a6a3a;
+    color: #8f8;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 3px;
+  }
+  .chip:hover { background: #2a3e2a; }
+  .chip .x { color: #f88; font-size: 10px; }
+  .chip-add {
+    background: #1a2a1a;
+    border: 1px dashed #446644;
+    color: #668866;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-style: italic;
+  }
+  /* Sections */
+  .section-label {
+    color: #888;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 6px 0 3px 0;
+  }
+  /* Bottom bar */
+  .bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid #444;
+  }
+  .btn {
+    font-family: monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    cursor: pointer;
+    border: 2px solid;
+  }
+  .btn-save { background: #1e3d1e; border-color: #4a8a4a; color: #afa; }
+  .btn-save:hover { background: #2a4a2a; }
+  .btn-cancel { background: #2a1a1a; border-color: #6a3a3a; color: #faa; }
+  .hint { color: #666; font-size: 10px; font-style: italic; }
+  /* YACL button */
+  .yacl-preview {
+    max-width: 700px;
+    margin: 0 auto 8px auto;
+    background: #232323;
+    border: 1px solid #555;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+  }
+  .yacl-btn {
+    background: #1e2e3e;
+    border: 1px solid #3a5a7a;
+    color: #adf;
+    font-size: 10px;
+    padding: 3px 10px;
+    font-family: monospace;
+    cursor: pointer;
+  }
+  .scroll-hint { color: #555; font-size: 9px; text-align: center; margin-top: 3px; }
+</style>
+
+<!-- Entry point in YACL -->
+<div class="section">
+  <h3 style="margin-bottom:4px;">1 — Einstiegspunkt: YACL Categories Tab</h3>
+  <p class="subtitle" style="margin-bottom:8px;">Im bestehenden YACL-Tab kommt oben ein Button dazu. Der Tab selbst bleibt erhalten.</p>
+  <div class="yacl-preview">
+    <span style="color:#fff;">▶ Categories</span>
+    <button class="yacl-btn">🎨 Visual Editor öffnen →</button>
+  </div>
+</div>
+
+<!-- Full screen mockup -->
+<div class="section">
+  <h3 style="margin-bottom:4px;">2 — Der Visual Editor Screen</h3>
+  <div class="mc-screen">
+    <div class="screen-title">✦ CATEGORY VISUAL EDITOR ✦</div>
+
+    <!-- Tab bar -->
+    <div class="tabs">
+      <div class="tab active">
+        <span class="dot"></span> Redstone
+      </div>
+      <div class="tab">
+        <span class="dot"></span> Nature
+      </div>
+      <div class="tab">
+        <span class="dot"></span> Tools
+      </div>
+      <div class="tab">
+        <span class="dot off"></span> Transport
+        <span style="color:#555;font-size:9px;">(off)</span>
+      </div>
+      <div class="tab">
+        <span class="dot"></span> Food
+      </div>
+      <div class="tab" style="color:#555;">… +6</div>
+    </div>
+
+    <!-- Split panes -->
+    <div class="main-panel">
+
+      <!-- Left: items in category -->
+      <div class="left-pane">
+        <div class="pane-title">⚡ Redstone — 18 Items</div>
+
+        <div class="section-label">Items in dieser Kategorie</div>
+        <div class="item-grid">
+          <div class="slot in-cat">🔁<div class="tooltip">repeater</div></div>
+          <div class="slot in-cat">⚖️<div class="tooltip">comparator</div></div>
+          <div class="slot in-cat">👁<div class="tooltip">observer</div></div>
+          <div class="slot in-cat">📦<div class="tooltip">hopper</div></div>
+          <div class="slot in-cat">⬇️<div class="tooltip">dropper</div></div>
+          <div class="slot in-cat">🎯<div class="tooltip">dispenser</div></div>
+          <div class="slot in-cat">🔴<div class="tooltip">redstone</div></div>
+          <div class="slot in-cat">💡<div class="tooltip">redstone_lamp</div></div>
+          <div class="slot in-cat">🧱<div class="tooltip">redstone_block</div></div>
+          <div class="slot in-cat">🌅<div class="tooltip">daylight_detector</div></div>
+          <div class="slot in-cat">🎵<div class="tooltip">note_block</div></div>
+          <div class="slot in-cat">📏<div class="tooltip">target</div></div>
+        </div>
+        <div style="color:#555;font-size:9px;margin-top:2px;font-style:italic;">← Klick auf Item entfernt es</div>
+
+        <div class="section-label" style="margin-top:8px;">Wildcard-Patterns</div>
+        <div class="chips">
+          <div class="chip">repeater <span class="x">✕</span></div>
+          <div class="chip">comparator <span class="x">✕</span></div>
+          <div class="chip">_detector <span class="x">✕</span></div>
+          <div class="chip">redstone <span class="x">✕</span></div>
+          <div class="chip">observer <span class="x">✕</span></div>
+          <div class="chip-add">+ Wildcard hinzufügen</div>
+        </div>
+        <div style="color:#555;font-size:9px;margin-top:3px;font-style:italic;">← Wildcards treffen alle Items die den Text enthalten</div>
+      </div>
+
+      <!-- Right: all items picker -->
+      <div class="right-pane">
+        <div class="pane-title">Alle Items</div>
+        <input class="search-bar" placeholder="🔍  Suche: repeater, redstone, _block ..." readonly />
+
+        <div class="section-label">Items — klicken zum Hinzufügen:</div>
+        <div class="item-grid">
+          <div class="slot">🪨<div class="tooltip">cobblestone</div></div>
+          <div class="slot">🌊<div class="tooltip">water_bucket</div></div>
+          <div class="slot">⚔️<div class="tooltip">iron_sword</div></div>
+          <div class="slot">🏹<div class="tooltip">bow</div></div>
+          <div class="slot">🎸<div class="tooltip">jukebox</div></div>
+          <div class="slot">🧱<div class="tooltip">stone_bricks</div></div>
+          <div class="slot">🍄<div class="tooltip">red_mushroom</div></div>
+          <div class="slot">🌺<div class="tooltip">poppy</div></div>
+          <div class="slot">🎋<div class="tooltip">bamboo</div></div>
+          <div class="slot">🪓<div class="tooltip">iron_axe</div></div>
+          <div class="slot">🛡️<div class="tooltip">shield</div></div>
+          <div class="slot">💎<div class="tooltip">diamond</div></div>
+          <div class="slot">🥕<div class="tooltip">carrot</div></div>
+          <div class="slot">🍞<div class="tooltip">bread</div></div>
+          <div class="slot">🪺<div class="tooltip">turtle_egg</div></div>
+          <div class="slot">🌟<div class="tooltip">nether_star</div></div>
+        </div>
+        <div class="scroll-hint">↕ scrollbar — alle ~1200 Items</div>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="bottom-bar">
+      <span class="hint">Änderungen werden beim Speichern in die TOML-Config geschrieben</span>
+      <div style="display:flex;gap:6px;">
+        <button class="btn btn-cancel">✕ Abbrechen</button>
+        <button class="btn btn-save">✔ Speichern & Schließen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notes -->
+<div class="section">
+  <h3>3 — Technische Eckpunkte</h3>
+  <ul style="color:#ccc;font-size:12px;line-height:1.8;">
+    <li><strong>Neuer Screen:</strong> <code>CategoryEditorScreen extends Screen</code> — eigenständig, kein YACL</li>
+    <li><strong>Item-Liste:</strong> <code>BuiltInRegistries.ITEM</code> → alle ~1200 Vanilla-Items, live gerendert mit echter Textur</li>
+    <li><strong>Pattern-Matching:</strong> bestehende <code>ItemCategorizer</code>-Logik wiederverwendet um anzuzeigen was matcht</li>
+    <li><strong>Item hinzufügen:</strong> Klick → fügt exakte Item-ID als Pattern ein (z.B. <code>minecraft:repeater</code>)</li>
+    <li><strong>Item entfernen:</strong> Klick auf grünes Item links → entfernt das exakte-ID-Pattern (Wildcards bleiben)</li>
+    <li><strong>Wildcard-Chips:</strong> Klick auf ✕ entfernt das Pattern — Items die nur durch diesen Wildcard drin waren, verschwinden aus der Anzeige</li>
+    <li><strong>Config bleibt kompatibel:</strong> patterns-Liste in TOML-Format unverändert</li>
+    <li><strong>Kein ScrollWidget-Framework:</strong> eigene Scroll-Logik per Mouse-Drag / Scrollrad</li>
+  </ul>
+</div>

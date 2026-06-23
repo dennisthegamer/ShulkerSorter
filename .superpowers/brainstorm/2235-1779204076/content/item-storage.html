@@ -1,0 +1,128 @@
+<h2>Wie sollen Items einer Kategorie zugewiesen werden?</h2>
+<p class="subtitle">Das entscheidet, wie flexibel vs. einfach der Editor wird</p>
+
+<style>
+  .mc { font-family: 'Courier New', monospace; background: #1a1a1a; border: 2px solid #555; border-radius: 4px; padding: 10px; margin: 8px 0; font-size: 11px; }
+  .mc-title { color: #fff; font-size: 12px; font-weight: bold; margin-bottom: 6px; border-bottom: 1px solid #444; padding-bottom: 4px; }
+  .slot { width: 28px; height: 28px; background: #3a3a3a; border: 2px solid #888; border-right-color: #222; border-bottom-color: #222; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; cursor: pointer; }
+  .slot.in { background: #2a4a2a; border-color: #4a8a4a; }
+  .slot.highlight { background: #4a4a2a; border-color: #8a8a4a; }
+  .row { display: flex; align-items: center; gap: 5px; margin: 4px 0; flex-wrap: wrap; }
+  .lbl { color: #aaa; font-size: 10px; }
+  .green { color: #8f8; }
+  .yellow { color: #ff8; }
+  .gray { color: #888; }
+  .toml { background: #111; border-left: 3px solid #555; padding: 6px 8px; margin: 4px 0; color: #aaa; font-size: 10px; font-family: monospace; }
+  .badge { display: inline-block; background: #333; border: 1px solid #666; color: #ccc; font-size: 9px; padding: 1px 5px; border-radius: 2px; margin: 1px; }
+  .badge.wild { border-color: #8a8; color: #afa; }
+  .badge.exact { border-color: #88a; color: #aaf; }
+</style>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Direkte Item-Zuweisung</h3>
+      <p>Kein Pattern-System mehr. Du klickst einzelne Items an — sie landen direkt in der Kategorie. Einfach und visuell, aber du musst jeden Variant einzeln hinzufügen.</p>
+      <div class="mc">
+        <div class="mc-title">Redstone — 6 Items zugewiesen</div>
+        <div class="row">
+          <div class="slot in">🔁</div>
+          <div class="slot in">⚖️</div>
+          <div class="slot in">👁</div>
+          <div class="slot in">📦</div>
+          <div class="slot in">🔴</div>
+          <div class="slot in">💡</div>
+        </div>
+        <div class="lbl" style="margin-top:4px;">Alle Items → klicken zum Hinzufügen:</div>
+        <div class="row">
+          <div class="slot">🪨</div>
+          <div class="slot">⚔️</div>
+          <div class="slot">🏹</div>
+          <div class="slot">🎸</div>
+          <div class="slot">🪓</div>
+          <div class="slot">🧱</div>
+        </div>
+        <div class="toml">
+# shulkersort.toml<br>
+[categories.redstone]<br>
+items = ["repeater", "comparator", "observer", "hopper", "redstone", "redstone_lamp"]
+        </div>
+      </div>
+      <div class="pros-cons" style="font-size:11px">
+        <div class="pros"><h4>Vorteile</h4><ul><li>Einfachste Bedienung</li><li>100% visuell</li><li>Keine Syntax-Kenntnisse nötig</li></ul></div>
+        <div class="cons"><h4>Nachteile</h4><ul><li>Viele Klicks bei großen Gruppen</li><li>Neue Minecraft-Items → muss man manuell nachpflegen</li><li>Bricht Kompatibilität mit bestehenden TOML-Configs</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Wildcards bleiben + visuelles Preview</h3>
+      <p>Pattern-System bleibt intern erhalten (z.B. <code>_planks</code>, <code>raw_</code>). Der Editor zeigt dir alle Items die aktuell matchen. Du kannst im Editor auch einzelne Items direkt hinzufügen (werden als exaktes Pattern gespeichert).</p>
+      <div class="mc">
+        <div class="mc-title">Redstone — Pattern-Matches (18 Items)</div>
+        <div class="lbl">Wildcards aktiv: <span class="badge wild">repeater</span> <span class="badge wild">_detector</span> <span class="badge wild">redstone</span></div>
+        <div class="row" style="margin-top:4px;">
+          <div class="slot in" title="repeater">🔁</div>
+          <div class="slot in" title="comparator">⚖️</div>
+          <div class="slot in" title="observer">👁</div>
+          <div class="slot in" title="hopper">📦</div>
+          <div class="slot in" title="dispenser">🎯</div>
+          <div class="slot in" title="dropper">⬇️</div>
+          <div class="slot highlight" title="daylight_detector — via _detector">🌅</div>
+          <div class="slot highlight" title="redstone_block">🔴</div>
+          <div class="slot highlight" title="redstone_lamp">💡</div>
+        </div>
+        <div class="lbl" style="font-size:9px;margin-top:2px;"><span style="background:#2a4a2a;padding:1px 3px;">Grün</span> = direkt | <span style="background:#4a4a2a;padding:1px 3px;">Gelb</span> = via Wildcard</div>
+        <div class="toml">
+[categories.redstone]<br>
+patterns = ["repeater", "_detector", "redstone"]
+        </div>
+      </div>
+      <div class="pros-cons" style="font-size:11px">
+        <div class="pros"><h4>Vorteile</h4><ul><li>Wildcard deckt automatisch neue Items ab</li><li>Bestehende Configs bleiben kompatibel</li><li>Trotzdem visuelles Feedback was matcht</li></ul></div>
+        <div class="cons"><h4>Nachteile</h4><ul><li>Etwas komplexer zu verstehen</li><li>Pattern-Eingabe noch nötig für Wildcards</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Hybrid — Items klicken, Wildcards optional</h3>
+      <p>Standard ist Klick-Zuweisung wie in A. Aber es gibt einen "Advanced"-Modus wo du trotzdem Wildcards/Patterns eintippen kannst. Für Power-User; Standard-Nutzer sehen nur das Item-Grid.</p>
+      <div class="mc">
+        <div class="mc-title">Redstone — Hybrid Editor</div>
+        <div class="row">
+          <div class="slot in">🔁</div>
+          <div class="slot in">⚖️</div>
+          <div class="slot in">👁</div>
+          <div class="slot in">📦</div>
+          <div class="slot in">🔴</div>
+          <div class="slot in">💡</div>
+        </div>
+        <div style="margin-top:6px;border-top:1px solid #333;padding-top:5px;">
+          <span class="yellow">▶ Advanced: Pattern-Wildcards</span>
+          <div class="row" style="margin-top:3px;">
+            <span class="badge wild">repeater</span>
+            <span class="badge wild">_detector</span>
+            <span style="background:#111;border:1px solid #444;color:#888;font-size:9px;padding:1px 5px;cursor:pointer;">+ Wildcard hinzufügen</span>
+          </div>
+        </div>
+        <div class="toml">
+[categories.redstone]<br>
+items = ["comparator", "observer", "hopper", "redstone_lamp"]<br>
+patterns = ["repeater", "_detector"]
+        </div>
+      </div>
+      <div class="pros-cons" style="font-size:11px">
+        <div class="pros"><h4>Vorteile</h4><ul><li>Beste Bedienung für Normalnutzer</li><li>Power-User behalten Wildcard-Kontrolle</li><li>Kompatibel mit alten Configs</li></ul></div>
+        <div class="cons"><h4>Nachteile</h4><ul><li>Zwei Zustands-Quellen (items + patterns)</li><li>Komplexester zu implementieren</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+</div>

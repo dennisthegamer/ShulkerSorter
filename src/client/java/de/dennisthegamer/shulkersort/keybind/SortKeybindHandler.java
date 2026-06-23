@@ -3,11 +3,13 @@ package de.dennisthegamer.shulkersort.keybind;
 import de.dennisthegamer.shulkersort.hud.SortingHudOverlay;
 import de.dennisthegamer.shulkersort.sort.ShulkerSortEngine;
 import de.dennisthegamer.shulkersort.sort.SortResult;
+import de.dennisthegamer.shulkersort.network.SortRequestPayload;
 import de.dennisthegamer.shulkersort.undo.SortUndoManager;
 import de.dennisthegamer.shulkersort.util.NotificationHelper;
 import de.dennisthegamer.shulkersort.util.ShulkerBoxHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -32,7 +34,7 @@ public class SortKeybindHandler {
         sortKeybind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.shulkersort.sort",
                 InputConstants.Type.KEYSYM,
-                GLFW.GLFW_KEY_J, // Using J to avoid conflicting with S (sneak)
+                GLFW.GLFW_KEY_J,
                 CATEGORY
         ));
 
@@ -43,7 +45,6 @@ public class SortKeybindHandler {
         while (sortKeybind.consumeClick()) {
             if (client.player == null) continue;
 
-            // Shift + sort = undo
             boolean shiftHeld = InputConstants.isKeyDown(client.getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT)
                     || InputConstants.isKeyDown(client.getWindow(), GLFW.GLFW_KEY_RIGHT_SHIFT);
             if (shiftHeld) {
@@ -51,18 +52,32 @@ public class SortKeybindHandler {
                 continue;
             }
 
-            // Save snapshot BEFORE sort (client inventory is in sync at keypress time)
-            SortUndoManager.get().saveSnapshot(client.player.getInventory());
-
             MinecraftServer integratedServer = client.getSingleplayerServer();
             if (integratedServer != null) {
+                SortUndoManager.get().saveSnapshot(client.player.getInventory());
                 sortOnServer(client, integratedServer);
+            } else if (ClientPlayNetworking.canSend(SortRequestPayload.TYPE)) {
+                SortingHudOverlay.show();
+                ClientPlayNetworking.send(new SortRequestPayload(SortRequestPayload.Action.SORT));
             } else if (client.gameMode != null && client.gameMode.getPlayerMode() == GameType.CREATIVE) {
+                SortUndoManager.get().saveSnapshot(client.player.getInventory());
                 sortClientAndSyncCreative(client);
             } else {
-                SortUndoManager.get().clear();
-                NotificationHelper.sendError(client.player, "shulkersort.message.error.multiplayer_survival");
+                NotificationHelper.sendError(client.player, "shulkersort.message.error.multiplayer_no_mod");
             }
+        }
+    }
+
+    private static void handleUndo(Minecraft client) {
+        MinecraftServer integratedServer = client.getSingleplayerServer();
+        if (integratedServer != null) {
+            undoOnServer(client, integratedServer);
+        } else if (ClientPlayNetworking.canSend(SortRequestPayload.TYPE)) {
+            ClientPlayNetworking.send(new SortRequestPayload(SortRequestPayload.Action.UNDO));
+        } else if (client.gameMode != null && client.gameMode.getPlayerMode() == GameType.CREATIVE) {
+            undoClientAndSyncCreative(client);
+        } else {
+            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
         }
     }
 
@@ -107,34 +122,19 @@ public class SortKeybindHandler {
         }
     }
 
-    private static void handleUndo(Minecraft client) {
-        if (!SortUndoManager.get().hasSnapshot()) {
-            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
-            return;
-        }
-
-        MinecraftServer integratedServer = client.getSingleplayerServer();
-        if (integratedServer != null) {
-            undoOnServer(client, integratedServer);
-        } else if (client.gameMode != null && client.gameMode.getPlayerMode() == GameType.CREATIVE) {
-            undoClientAndSyncCreative(client);
-        } else {
-            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
-        }
-    }
-
     private static void undoOnServer(Minecraft client, MinecraftServer server) {
         UUID playerUUID = client.player.getUUID();
         List<ItemStack> snapshot = SortUndoManager.get().getSnapshot();
         SortUndoManager.get().clear();
 
+        if (snapshot == null) {
+            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
+            return;
+        }
+
         server.execute(() -> {
             ServerPlayer serverPlayer = server.getPlayerList().getPlayer(playerUUID);
-            if (serverPlayer == null) {
-                Minecraft.getInstance().execute(() ->
-                    NotificationHelper.sendError(client.player, "shulkersort.message.undo_nothing"));
-                return;
-            }
+            if (serverPlayer == null) return;
 
             for (int i = 0; i < 36; i++) {
                 serverPlayer.getInventory().setItem(i, snapshot.get(i).copy());
@@ -147,6 +147,11 @@ public class SortKeybindHandler {
     private static void undoClientAndSyncCreative(Minecraft client) {
         List<ItemStack> snapshot = SortUndoManager.get().getSnapshot();
         SortUndoManager.get().clear();
+
+        if (snapshot == null) {
+            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
+            return;
+        }
 
         for (int i = 0; i < 36; i++) {
             client.player.getInventory().setItem(i, snapshot.get(i).copy());

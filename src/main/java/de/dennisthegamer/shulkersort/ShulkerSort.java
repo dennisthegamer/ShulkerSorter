@@ -1,6 +1,9 @@
 package de.dennisthegamer.shulkersort;
 
+import de.dennisthegamer.shulkersort.network.ServerSortHandler;
+import de.dennisthegamer.shulkersort.network.ServerUndoManager;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +13,9 @@ public class ShulkerSort implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ServerSortHandler.register();
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) ->
+                ServerUndoManager.get().clear(handler.getPlayer().getUUID()));
         LOGGER.info("ShulkerSort initialized!");
     }
 }

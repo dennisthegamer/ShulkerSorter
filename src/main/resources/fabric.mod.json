@@ -9,7 +9,7 @@
 	],
 	"license": "MIT",
 	"icon": "assets/shulkersort/icon.png",
-	"environment": "client",
+	"environment": "*",
 	"entrypoints": {
 		"main": [
 			"de.dennisthegamer.shulkersort.ShulkerSort"

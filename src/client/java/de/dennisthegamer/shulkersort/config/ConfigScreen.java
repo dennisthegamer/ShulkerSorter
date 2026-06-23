@@ -1,8 +1,15 @@
 package de.dennisthegamer.shulkersort.config;
 
-import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.api.ConfigCategory;
-import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import dev.isxander.yacl3.api.ConfigCategory;
+import dev.isxander.yacl3.api.ListOption;
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.OptionDescription;
+import dev.isxander.yacl3.api.OptionGroup;
+import dev.isxander.yacl3.api.YetAnotherConfigLib;
+import dev.isxander.yacl3.api.controller.CyclingListControllerBuilder;
+import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
+import dev.isxander.yacl3.api.controller.StringControllerBuilder;
+import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
@@ -14,186 +21,165 @@ public class ConfigScreen {
     public static Screen create(Screen parent) {
         ShulkerSortConfig config = ShulkerSortConfig.getInstance();
 
-        ConfigBuilder builder = ConfigBuilder.create()
-            .setParentScreen(parent)
-            .setTitle(Text.translatable("config.shulkersort.title"))
-            .setSavingRunnable(config::save);
-
-        ConfigEntryBuilder entryBuilder = builder.entryBuilder();
-
-        // === SORTING SETTINGS ===
-        ConfigCategory sorting = builder.getOrCreateCategory(
-            Text.translatable("config.shulkersort.category.sorting")
-        );
-
-        sorting.addEntry(entryBuilder.startBooleanToggle(
-            Text.translatable("config.shulkersort.auto_label"),
-            config.autoLabel
-        )
-            .setDefaultValue(true)
-            .setTooltip(Text.translatable("config.shulkersort.auto_label.tooltip"))
-            .setSaveConsumer(value -> config.autoLabel = value)
-            .build());
-
-        sorting.addEntry(entryBuilder.startBooleanToggle(
-            Text.translatable("config.shulkersort.include_loose_items"),
-            config.includeLooseItems
-        )
-            .setDefaultValue(false)
-            .setTooltip(Text.translatable("config.shulkersort.include_loose_items.tooltip"))
-            .setSaveConsumer(value -> config.includeLooseItems = value)
-            .build());
-
-        sorting.addEntry(entryBuilder.startBooleanToggle(
-            Text.translatable("config.shulkersort.skip_empty_boxes"),
-            config.skipEmptyBoxes
-        )
-            .setDefaultValue(false)
-            .setTooltip(Text.translatable("config.shulkersort.skip_empty_boxes.tooltip"))
-            .setSaveConsumer(value -> config.skipEmptyBoxes = value)
-            .build());
-
-        sorting.addEntry(entryBuilder.startEnumSelector(
-            Text.translatable("config.shulkersort.overflow_mode"),
-            OverflowMode.class,
-            config.overflowMode
-        )
-            .setDefaultValue(OverflowMode.FILL)
-            .setTooltip(Text.translatable("config.shulkersort.overflow_mode.tooltip"))
-            .setSaveConsumer(value -> config.overflowMode = value)
-            .build());
-
-        sorting.addEntry(entryBuilder.startStrField(
-            Text.translatable("config.shulkersort.loose_item_ignore_tag"),
-            config.looseItemIgnoreTag
-        )
-            .setDefaultValue("[KEEP]")
-            .setTooltip(Text.translatable("config.shulkersort.loose_item_ignore_tag.tooltip"))
-            .setSaveConsumer(value -> config.looseItemIgnoreTag = value)
-            .build());
-
-        sorting.addEntry(entryBuilder.startStrField(
-            Text.translatable("config.shulkersort.locked_tag"),
-            config.lockedTag
-        )
-            .setDefaultValue("[LOCKED]")
-            .setTooltip(Text.translatable("config.shulkersort.locked_tag.tooltip"))
-            .setSaveConsumer(value -> config.lockedTag = value)
-            .build());
-
-        // === TOOLTIP SETTINGS ===
-        ConfigCategory tooltip = builder.getOrCreateCategory(
-            Text.translatable("config.shulkersort.category.tooltip")
-        );
-
-        tooltip.addEntry(entryBuilder.startBooleanToggle(
-            Text.translatable("config.shulkersort.tooltip_enabled"),
-            config.tooltipEnabled
-        )
-            .setDefaultValue(true)
-            .setTooltip(Text.translatable("config.shulkersort.tooltip_enabled.tooltip"))
-            .setSaveConsumer(value -> config.tooltipEnabled = value)
-            .build());
-
-        tooltip.addEntry(entryBuilder.startIntField(
-            Text.translatable("config.shulkersort.tooltip_max_lines"),
-            config.tooltipMaxLines
-        )
-            .setDefaultValue(5)
-            .setMin(1)
-            .setMax(27)
-            .setTooltip(Text.translatable("config.shulkersort.tooltip_max_lines.tooltip"))
-            .setSaveConsumer(value -> config.tooltipMaxLines = value)
-            .build());
-
-        // === FEEDBACK SETTINGS ===
-        ConfigCategory feedback = builder.getOrCreateCategory(
-            Text.translatable("config.shulkersort.category.feedback")
-        );
-
-        feedback.addEntry(entryBuilder.startBooleanToggle(
-            Text.translatable("config.shulkersort.enable_chat_notifications"),
-            config.enableChatNotifications
-        )
-            .setDefaultValue(true)
-            .setTooltip(Text.translatable("config.shulkersort.enable_chat_notifications.tooltip"))
-            .setSaveConsumer(value -> config.enableChatNotifications = value)
-            .build());
-
-        feedback.addEntry(entryBuilder.startBooleanToggle(
-            Text.translatable("config.shulkersort.enable_sound_effects"),
-            config.enableSoundEffects
-        )
-            .setDefaultValue(true)
-            .setTooltip(Text.translatable("config.shulkersort.enable_sound_effects.tooltip"))
-            .setSaveConsumer(value -> config.enableSoundEffects = value)
-            .build());
-
-        feedback.addEntry(entryBuilder.startBooleanToggle(
-            Text.translatable("config.shulkersort.enable_hud_overlay"),
-            config.enableHudOverlay
-        )
-            .setDefaultValue(true)
-            .setTooltip(Text.translatable("config.shulkersort.enable_hud_overlay.tooltip"))
-            .setSaveConsumer(value -> config.enableHudOverlay = value)
-            .build());
-
-        // === CATEGORIES ===
-        ConfigCategory categoriesTab = builder.getOrCreateCategory(
-            Text.translatable("config.shulkersort.category.categories")
-        );
+        // Build the categories tab dynamically
+        ConfigCategory.Builder categoriesTab = ConfigCategory.createBuilder()
+                .name(Text.translatable("config.shulkersort.category.categories"));
 
         // Category order list
-        List<String> defaultCategoryOrder = List.of(
-                "redstone", "transport", "nature", "mob_loot", "decoration",
-                "blocks", "tools", "food", "ores", "brewing", "misc"
-        );
-        categoriesTab.addEntry(entryBuilder.startStrList(
-            Text.translatable("config.shulkersort.category_order"),
-            new ArrayList<>(config.categoryOrder)
-        )
-            .setDefaultValue(new ArrayList<>(defaultCategoryOrder))
-            .setTooltip(Text.translatable("config.shulkersort.category_order.tooltip"))
-            .setSaveConsumer(value -> config.categoryOrder = new ArrayList<>(value))
-            .build());
+        ListOption<String> categoryOrderList = ListOption.<String>createBuilder()
+                .name(Text.translatable("config.shulkersort.category_order"))
+                .description(OptionDescription.of(Text.translatable("config.shulkersort.category_order.tooltip")))
+                .binding(
+                        new ArrayList<>(List.of(
+                                "redstone", "transport", "nature", "mob_loot", "decoration",
+                                "blocks", "tools", "food", "ores", "brewing", "misc"
+                        )),
+                        () -> new ArrayList<>(config.categoryOrder),
+                        val -> config.categoryOrder = new ArrayList<>(val)
+                )
+                .controller(StringControllerBuilder::create)
+                .initial("")
+                .collapsed(true)
+                .build();
+        categoriesTab.group(categoryOrderList);
 
-        // Per-category: enabled toggle + patterns list
+        // Per-category groups
         for (String catKey : config.categoryOrder) {
             CategoryDefinition catDef = config.categories.get(catKey);
             if (catDef == null) continue;
 
-            // Enabled/disabled toggle
-            categoriesTab.addEntry(entryBuilder.startBooleanToggle(
-                Text.translatable(catDef.getLabelPrefix())
-                    .append(Text.literal(" - "))
-                    .append(Text.translatable("config.shulkersort.category.enabled")),
-                !config.disabledCategories.contains(catKey)
-            )
-                .setDefaultValue(true)
-                .setTooltip(Text.translatable("config.shulkersort.category.enabled.tooltip"))
-                .setSaveConsumer(value -> {
-                    if (value) {
-                        config.disabledCategories.remove(catKey);
-                    } else {
-                        config.disabledCategories.add(catKey);
-                    }
-                })
-                .build());
+            // Group with enabled checkbox
+            OptionGroup enabledGroup = OptionGroup.createBuilder()
+                    .name(Text.translatable(catDef.getLabelPrefix()))
+                    .collapsed(false)
+                    .option(Option.<Boolean>createBuilder()
+                            .name(Text.translatable("config.shulkersort.category.enabled"))
+                            .description(OptionDescription.of(Text.translatable("config.shulkersort.category.enabled.tooltip")))
+                            .binding(
+                                    true,
+                                    () -> !config.disabledCategories.contains(catKey),
+                                    val -> {
+                                        if (val) {
+                                            config.disabledCategories.remove(catKey);
+                                        } else {
+                                            config.disabledCategories.add(catKey);
+                                        }
+                                    }
+                            )
+                            .controller(TickBoxControllerBuilder::create)
+                            .build())
+                    .build();
+            categoriesTab.group(enabledGroup);
 
-            // Patterns list
+            // Patterns list for this category
             final CategoryDefinition finalCatDef = catDef;
-            categoriesTab.addEntry(entryBuilder.startStrList(
-                Text.translatable(catDef.getLabelPrefix())
-                    .append(Text.literal(" - "))
-                    .append(Text.translatable("config.shulkersort.category.patterns")),
-                new ArrayList<>(catDef.getPatterns())
-            )
-                .setDefaultValue(new ArrayList<>(catDef.getPatterns()))
-                .setTooltip(Text.translatable("config.shulkersort.category.patterns.tooltip"))
-                .setSaveConsumer(value -> finalCatDef.setPatterns(value))
-                .build());
+            ListOption<String> patternsList = ListOption.<String>createBuilder()
+                    .name(Text.translatable("config.shulkersort.category.patterns"))
+                    .description(OptionDescription.of(Text.translatable("config.shulkersort.category.patterns.tooltip")))
+                    .binding(
+                            new ArrayList<>(finalCatDef.getPatterns()),
+                            () -> new ArrayList<>(finalCatDef.getPatterns()),
+                            val -> finalCatDef.setPatterns(val)
+                    )
+                    .controller(StringControllerBuilder::create)
+                    .initial("")
+                    .collapsed(true)
+                    .build();
+            categoriesTab.group(patternsList);
         }
 
-        return builder.build();
+        return YetAnotherConfigLib.createBuilder()
+                .title(Text.translatable("config.shulkersort.title"))
+
+                // === Sorting Settings ===
+                .category(ConfigCategory.createBuilder()
+                        .name(Text.translatable("config.shulkersort.category.sorting"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Text.translatable("config.shulkersort.auto_label"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.auto_label.tooltip")))
+                                .binding(true, () -> config.autoLabel, val -> config.autoLabel = val)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Text.translatable("config.shulkersort.include_loose_items"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.include_loose_items.tooltip")))
+                                .binding(false, () -> config.includeLooseItems, val -> config.includeLooseItems = val)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Text.translatable("config.shulkersort.skip_empty_boxes"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.skip_empty_boxes.tooltip")))
+                                .binding(false, () -> config.skipEmptyBoxes, val -> config.skipEmptyBoxes = val)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.<OverflowMode>createBuilder()
+                                .name(Text.translatable("config.shulkersort.overflow_mode"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.overflow_mode.tooltip")))
+                                .binding(OverflowMode.FILL, () -> config.overflowMode, val -> config.overflowMode = val)
+                                .controller(opt -> CyclingListControllerBuilder.create(opt)
+                                        .values(OverflowMode.values())
+                                        .valueFormatter(mode -> Text.translatable(
+                                                "config.shulkersort.overflow_mode." + mode.name().toLowerCase())))
+                                .build())
+                        .option(Option.<String>createBuilder()
+                                .name(Text.translatable("config.shulkersort.loose_item_ignore_tag"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.loose_item_ignore_tag.tooltip")))
+                                .binding("[KEEP]", () -> config.looseItemIgnoreTag, val -> config.looseItemIgnoreTag = val)
+                                .controller(StringControllerBuilder::create)
+                                .build())
+                        .option(Option.<String>createBuilder()
+                                .name(Text.translatable("config.shulkersort.locked_tag"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.locked_tag.tooltip")))
+                                .binding("[LOCKED]", () -> config.lockedTag, val -> config.lockedTag = val)
+                                .controller(StringControllerBuilder::create)
+                                .build())
+                        .build())
+
+                // === Tooltip Settings ===
+                .category(ConfigCategory.createBuilder()
+                        .name(Text.translatable("config.shulkersort.category.tooltip"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Text.translatable("config.shulkersort.tooltip_enabled"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.tooltip_enabled.tooltip")))
+                                .binding(true, () -> config.tooltipEnabled, val -> config.tooltipEnabled = val)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.<Integer>createBuilder()
+                                .name(Text.translatable("config.shulkersort.tooltip_max_lines"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.tooltip_max_lines.tooltip")))
+                                .binding(5, () -> config.tooltipMaxLines, val -> config.tooltipMaxLines = val)
+                                .controller(opt -> IntegerSliderControllerBuilder.create(opt).range(1, 27).step(1))
+                                .build())
+                        .build())
+
+                // === Feedback Settings ===
+                .category(ConfigCategory.createBuilder()
+                        .name(Text.translatable("config.shulkersort.category.feedback"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Text.translatable("config.shulkersort.enable_chat_notifications"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.enable_chat_notifications.tooltip")))
+                                .binding(true, () -> config.enableChatNotifications, val -> config.enableChatNotifications = val)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Text.translatable("config.shulkersort.enable_sound_effects"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.enable_sound_effects.tooltip")))
+                                .binding(true, () -> config.enableSoundEffects, val -> config.enableSoundEffects = val)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Text.translatable("config.shulkersort.enable_hud_overlay"))
+                                .description(OptionDescription.of(Text.translatable("config.shulkersort.enable_hud_overlay.tooltip")))
+                                .binding(true, () -> config.enableHudOverlay, val -> config.enableHudOverlay = val)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .build())
+
+                // === Categories ===
+                .category(categoriesTab.build())
+
+                .save(config::save)
+                .build()
+                .generateScreen(parent);
     }
 }

@@ -112,9 +112,10 @@ public class ShulkerSortEngine {
         }
 
         // Pass 2: mode-dependent free-box distribution
+        Set<Integer> affinityBoxes = new HashSet<>(assignedBoxes);
         boolean ok = config.overflowMode == OverflowMode.DOMINANT
             ? distributePassDominant(sortableBoxes, newBoxContents, boxCategories, assignedBoxes, overflow)
-            : distributePassFill(sortableBoxes, newBoxContents, boxCategories, assignedBoxes, overflow, config);
+            : distributePassFill(sortableBoxes, newBoxContents, boxCategories, assignedBoxes, affinityBoxes, overflow, config);
 
         if (!ok) return SortResult.error("shulkersort.message.error.internal");
 
@@ -232,12 +233,14 @@ public class ShulkerSortEngine {
     }
 
     // FILL: shared box+slot pointer persists across categories so scarce boxes don't cause a crash.
-    // When all unassigned boxes are claimed, backfill into remaining empty slots of assigned boxes.
+    // When all unassigned boxes are claimed, backfill into overflow/misc boxes only — never
+    // into affinity boxes that already hold a dedicated category.
     private static boolean distributePassFill(
             List<ShulkerBoxInfo> sortableBoxes,
             List<List<ItemStack>> newBoxContents,
             String[] boxCategories,
             Set<Integer> assignedBoxes,
+            Set<Integer> affinityBoxes,
             Map<String, List<ItemStack>> overflow,
             ShulkerSortConfig config) {
 
@@ -265,9 +268,12 @@ public class ShulkerSortEngine {
                         }
                     }
                     if (pass2Box == -1) {
-                        // No unassigned boxes left — collect all remaining empty slots across assigned boxes
+                        // No unassigned boxes left — only backfill into:
+                        // 1) overflow boxes (assigned in Pass 2, not affinity)
+                        // 2) misc boxes (catch-all, even if affinity-assigned)
                         backfillSlots = new ArrayList<>();
                         for (int b = 0; b < sortableBoxes.size(); b++) {
+                            if (affinityBoxes.contains(b) && !"misc".equals(boxCategories[b])) continue;
                             List<ItemStack> content = newBoxContents.get(b);
                             for (int s = 0; s < 27; s++) {
                                 if (content.get(s).isEmpty()) backfillSlots.add(new int[]{b, s});

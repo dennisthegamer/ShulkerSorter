@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "com.shulkersort.client.mixin",
+	"package": "de.dennisthegamer.shulkersort.client.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [],
 	"injectors": {

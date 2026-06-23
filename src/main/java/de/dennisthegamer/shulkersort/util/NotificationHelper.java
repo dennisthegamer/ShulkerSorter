@@ -1,6 +1,6 @@
-package com.shulkersort.util;
+package de.dennisthegamer.shulkersort.util;
 
-import com.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;

@@ -1,7 +1,7 @@
-package com.shulkersort.sort;
+package de.dennisthegamer.shulkersort.sort;
 
-import com.shulkersort.config.CategoryDefinition;
-import com.shulkersort.config.ShulkerSortConfig;
+import de.dennisthegamer.shulkersort.config.CategoryDefinition;
+import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;

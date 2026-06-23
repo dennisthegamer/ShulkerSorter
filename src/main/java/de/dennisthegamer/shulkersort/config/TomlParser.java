@@ -1,4 +1,4 @@
-package com.shulkersort.config;
+package de.dennisthegamer.shulkersort.config;
 
 import java.io.*;
 import java.nio.file.Files;

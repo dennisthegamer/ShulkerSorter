@@ -1,4 +1,4 @@
-package com.shulkersort;
+package de.dennisthegamer.shulkersort;
 
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;

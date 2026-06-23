@@ -12,13 +12,13 @@
 	"environment": "client",
 	"entrypoints": {
 		"main": [
-			"com.shulkersort.ShulkerSort"
+			"de.dennisthegamer.shulkersort.ShulkerSort"
 		],
 		"client": [
-			"com.shulkersort.ShulkerSortClient"
+			"de.dennisthegamer.shulkersort.ShulkerSortClient"
 		],
 		"modmenu": [
-			"com.shulkersort.config.ModMenuIntegration"
+			"de.dennisthegamer.shulkersort.config.ModMenuIntegration"
 		]
 	},
 	"mixins": [

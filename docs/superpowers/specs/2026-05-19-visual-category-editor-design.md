@@ -36,7 +36,7 @@ Clicking it calls `Minecraft.getInstance().setScreen(new CategoryEditorScreen(pa
 
 ## Screen: `CategoryEditorScreen`
 
-**File:** `src/client/java/com/shulkersort/config/CategoryEditorScreen.java`  
+**File:** `src/client/java/com/shulkersorter/config/CategoryEditorScreen.java`  
 **Extends:** `net.minecraft.client.gui.screens.Screen`
 
 ### Layout
@@ -103,7 +103,7 @@ Clicking it calls `Minecraft.getInstance().setScreen(new CategoryEditorScreen(pa
 
 ```
 CategoryEditorScreen opens
-  └─ reads ShulkerSortConfig.getInstance()
+  └─ reads ShulkerSorterConfig.getInstance()
   └─ holds a local working copy of each CategoryDefinition's patterns list
 
 User edits (add/remove items, add/remove wildcards)
@@ -126,7 +126,7 @@ User edits (add/remove items, add/remove wildcards)
 |---|---|
 | `ConfigScreen.java` | Add "Visual Editor öffnen" button at top of Categories tab |
 | `CategoryDefinition.java` | No changes |
-| `ShulkerSortConfig.java` | No changes |
+| `ShulkerSorterConfig.java` | No changes |
 | `ItemCategorizer.java` | Extract static helper `matchesPatterns(String itemId, List<String> patterns): boolean` for reuse in the editor |
 
 ---

@@ -1,28 +1,28 @@
 {
 	"schemaVersion": 1,
-	"id": "shulkersort",
+	"id": "shulkersorter",
 	"version": "${version}",
-	"name": "ShulkerSort",
+	"name": "ShulkerSorter",
 	"description": "Automatically sorts, merges and labels shulker boxes in your inventory by item category.",
 	"authors": [
 		"DennisTheGamer"
 	],
 	"license": "MIT",
-	"icon": "assets/shulkersort/icon.png",
+	"icon": "assets/shulkersorter/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"de.dennisthegamer.shulkersort.ShulkerSort"
+			"de.dennisthegamer.shulkersorter.ShulkerSorter"
 		],
 		"client": [
-			"de.dennisthegamer.shulkersort.ShulkerSortClient"
+			"de.dennisthegamer.shulkersorter.ShulkerSorterClient"
 		],
 		"modmenu": [
-			"de.dennisthegamer.shulkersort.config.ModMenuIntegration"
+			"de.dennisthegamer.shulkersorter.config.ModMenuIntegration"
 		]
 	},
 	"mixins": [
-		"shulkersort.mixins.json"
+		"shulkersorter.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.18.4",

@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Enable ShulkerSort to work on dedicated multiplayer survival servers by adding custom networking packets so the client sends a sort/undo request and the server executes it.
+**Goal:** Enable ShulkerSorter to work on dedicated multiplayer survival servers by adding custom networking packets so the client sends a sort/undo request and the server executes it.
 
-**Architecture:** The client sends a lightweight `SortRequestPayload` (containing action type: SORT or UNDO) to the server via Fabric Networking API. The server receives it, runs `ShulkerSortEngine.sort()` on the server-side player inventory (or restores the undo snapshot), then sends a `SortResultPayload` back to the client with the outcome (success/error, counts). The client uses this response to show HUD, play sounds, and display chat messages. The server holds the undo snapshot per-player. Config is loaded on both sides independently.
+**Architecture:** The client sends a lightweight `SortRequestPayload` (containing action type: SORT or UNDO) to the server via Fabric Networking API. The server receives it, runs `ShulkerSorterEngine.sort()` on the server-side player inventory (or restores the undo snapshot), then sends a `SortResultPayload` back to the client with the outcome (success/error, counts). The client uses this response to show HUD, play sounds, and display chat messages. The server holds the undo snapshot per-player. Config is loaded on both sides independently.
 
 **Tech Stack:** Fabric Networking API v1 (`CustomPacketPayload`, `PayloadTypeRegistry`, `ServerPlayNetworking`, `ClientPlayNetworking`), `StreamCodec` for serialization.
 
@@ -24,8 +24,8 @@
 ### Task 1: Define Networking Payloads
 
 **Files:**
-- Create: `src/main/java/de/dennisthegamer/shulkersort/network/SortRequestPayload.java`
-- Create: `src/main/java/de/dennisthegamer/shulkersort/network/SortResultPayload.java`
+- Create: `src/main/java/de/dennisthegamer/shulkersorter/network/SortRequestPayload.java`
+- Create: `src/main/java/de/dennisthegamer/shulkersorter/network/SortResultPayload.java`
 
 **Interfaces:**
 - Consumes: Nothing (foundational)
@@ -36,10 +36,10 @@
 - [ ] **Step 1: Create SortRequestPayload**
 
 ```java
-// src/main/java/de/dennisthegamer/shulkersort/network/SortRequestPayload.java
-package de.dennisthegamer.shulkersort.network;
+// src/main/java/de/dennisthegamer/shulkersorter/network/SortRequestPayload.java
+package de.dennisthegamer.shulkersorter.network;
 
-import de.dennisthegamer.shulkersort.ShulkerSort;
+import de.dennisthegamer.shulkersorter.ShulkerSorter;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -50,7 +50,7 @@ public record SortRequestPayload(Action action) implements CustomPacketPayload {
     public enum Action { SORT, UNDO }
 
     public static final Type<SortRequestPayload> TYPE = new Type<>(
-            Identifier.fromNamespaceAndPath(ShulkerSort.MOD_ID, "sort_request"));
+            Identifier.fromNamespaceAndPath(ShulkerSorter.MOD_ID, "sort_request"));
 
     public static final StreamCodec<FriendlyByteBuf, SortRequestPayload> CODEC =
             CustomPacketPayload.codec(SortRequestPayload::write, SortRequestPayload::read);
@@ -73,10 +73,10 @@ public record SortRequestPayload(Action action) implements CustomPacketPayload {
 - [ ] **Step 2: Create SortResultPayload**
 
 ```java
-// src/main/java/de/dennisthegamer/shulkersort/network/SortResultPayload.java
-package de.dennisthegamer.shulkersort.network;
+// src/main/java/de/dennisthegamer/shulkersorter/network/SortResultPayload.java
+package de.dennisthegamer.shulkersorter.network;
 
-import de.dennisthegamer.shulkersort.ShulkerSort;
+import de.dennisthegamer.shulkersorter.ShulkerSorter;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -85,7 +85,7 @@ import net.minecraft.resources.Identifier;
 public record SortResultPayload(boolean success, int boxesSorted, int itemsMoved, String errorKey) implements CustomPacketPayload {
 
     public static final Type<SortResultPayload> TYPE = new Type<>(
-            Identifier.fromNamespaceAndPath(ShulkerSort.MOD_ID, "sort_result"));
+            Identifier.fromNamespaceAndPath(ShulkerSorter.MOD_ID, "sort_result"));
 
     public static final StreamCodec<FriendlyByteBuf, SortResultPayload> CODEC =
             CustomPacketPayload.codec(SortResultPayload::write, SortResultPayload::read);
@@ -115,7 +115,7 @@ public record SortResultPayload(boolean success, int boxesSorted, int itemsMoved
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/de/dennisthegamer/shulkersort/network/
+git add src/main/java/de/dennisthegamer/shulkersorter/network/
 git commit -m "feat: add networking payload records for sort request/result"
 ```
 
@@ -124,20 +124,20 @@ git commit -m "feat: add networking payload records for sort request/result"
 ### Task 2: Server-Side Undo Manager and Packet Handler
 
 **Files:**
-- Create: `src/main/java/de/dennisthegamer/shulkersort/network/ServerSortHandler.java`
-- Create: `src/main/java/de/dennisthegamer/shulkersort/network/ServerUndoManager.java`
+- Create: `src/main/java/de/dennisthegamer/shulkersorter/network/ServerSortHandler.java`
+- Create: `src/main/java/de/dennisthegamer/shulkersorter/network/ServerUndoManager.java`
 
 **Interfaces:**
-- Consumes: `SortRequestPayload`, `SortResultPayload`, `ShulkerSortEngine.sort()`, `ShulkerSortConfig`
+- Consumes: `SortRequestPayload`, `SortResultPayload`, `ShulkerSorterEngine.sort()`, `ShulkerSorterConfig`
 - Produces:
-  - `ServerSortHandler.register()` — called from `ShulkerSort.onInitialize()`, registers `PayloadTypeRegistry` entries and `ServerPlayNetworking.registerGlobalReceiver`
+  - `ServerSortHandler.register()` — called from `ShulkerSorter.onInitialize()`, registers `PayloadTypeRegistry` entries and `ServerPlayNetworking.registerGlobalReceiver`
   - `ServerUndoManager` — per-player snapshot storage on the server, `saveSnapshot(ServerPlayer)`, `restore(ServerPlayer)`, `clear(UUID)`, `hasSnapshot(UUID)`
 
 - [ ] **Step 1: Create ServerUndoManager**
 
 ```java
-// src/main/java/de/dennisthegamer/shulkersort/network/ServerUndoManager.java
-package de.dennisthegamer.shulkersort.network;
+// src/main/java/de/dennisthegamer/shulkersorter/network/ServerUndoManager.java
+package de.dennisthegamer.shulkersorter.network;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -183,11 +183,11 @@ public class ServerUndoManager {
 - [ ] **Step 2: Create ServerSortHandler**
 
 ```java
-// src/main/java/de/dennisthegamer/shulkersort/network/ServerSortHandler.java
-package de.dennisthegamer.shulkersort.network;
+// src/main/java/de/dennisthegamer/shulkersorter/network/ServerSortHandler.java
+package de.dennisthegamer.shulkersorter.network;
 
-import de.dennisthegamer.shulkersort.sort.ShulkerSortEngine;
-import de.dennisthegamer.shulkersort.sort.SortResult;
+import de.dennisthegamer.shulkersorter.sort.ShulkerSorterEngine;
+import de.dennisthegamer.shulkersorter.sort.SortResult;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
@@ -214,7 +214,7 @@ public class ServerSortHandler {
     private static void handleSort(ServerPlayer player) {
         ServerUndoManager.get().saveSnapshot(player);
 
-        SortResult result = ShulkerSortEngine.sort(player.getInventory());
+        SortResult result = ShulkerSorterEngine.sort(player.getInventory());
         player.inventoryMenu.broadcastChanges();
 
         if (!result.success()) {
@@ -228,9 +228,9 @@ public class ServerSortHandler {
     private static void handleUndo(ServerPlayer player) {
         boolean restored = ServerUndoManager.get().restore(player);
         if (restored) {
-            ServerPlayNetworking.send(player, new SortResultPayload(true, 0, 0, "shulkersort.message.undo_success"));
+            ServerPlayNetworking.send(player, new SortResultPayload(true, 0, 0, "shulkersorter.message.undo_success"));
         } else {
-            ServerPlayNetworking.send(player, new SortResultPayload(false, 0, 0, "shulkersort.message.undo_nothing"));
+            ServerPlayNetworking.send(player, new SortResultPayload(false, 0, 0, "shulkersorter.message.undo_nothing"));
         }
     }
 }
@@ -239,7 +239,7 @@ public class ServerSortHandler {
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/de/dennisthegamer/shulkersort/network/
+git add src/main/java/de/dennisthegamer/shulkersorter/network/
 git commit -m "feat: add server-side sort handler and undo manager"
 ```
 
@@ -248,19 +248,19 @@ git commit -m "feat: add server-side sort handler and undo manager"
 ### Task 3: Client-Side Response Handler
 
 **Files:**
-- Create: `src/client/java/de/dennisthegamer/shulkersort/network/ClientSortHandler.java`
+- Create: `src/client/java/de/dennisthegamer/shulkersorter/network/ClientSortHandler.java`
 
 **Interfaces:**
 - Consumes: `SortResultPayload`, `SortingHudOverlay`, `NotificationHelper`
-- Produces: `ClientSortHandler.register()` — called from `ShulkerSortClient.onInitializeClient()`, registers `ClientPlayNetworking.registerGlobalReceiver` for `SortResultPayload`
+- Produces: `ClientSortHandler.register()` — called from `ShulkerSorterClient.onInitializeClient()`, registers `ClientPlayNetworking.registerGlobalReceiver` for `SortResultPayload`
 
 - [ ] **Step 1: Create ClientSortHandler**
 
 ```java
-// src/client/java/de/dennisthegamer/shulkersort/network/ClientSortHandler.java
-package de.dennisthegamer.shulkersort.network;
+// src/client/java/de/dennisthegamer/shulkersorter/network/ClientSortHandler.java
+package de.dennisthegamer.shulkersorter.network;
 
-import de.dennisthegamer.shulkersort.util.NotificationHelper;
+import de.dennisthegamer.shulkersorter.util.NotificationHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 
@@ -276,7 +276,7 @@ public class ClientSortHandler {
         Minecraft client = Minecraft.getInstance();
         if (client.player == null) return;
 
-        if (payload.errorKey() != null && payload.errorKey().startsWith("shulkersort.message.undo")) {
+        if (payload.errorKey() != null && payload.errorKey().startsWith("shulkersorter.message.undo")) {
             // Undo response
             if (payload.success()) {
                 NotificationHelper.sendInfo(client.player, payload.errorKey());
@@ -295,7 +295,7 @@ public class ClientSortHandler {
 - [ ] **Step 2: Commit**
 
 ```bash
-git add src/client/java/de/dennisthegamer/shulkersort/network/
+git add src/client/java/de/dennisthegamer/shulkersorter/network/
 git commit -m "feat: add client-side sort result handler"
 ```
 
@@ -304,66 +304,66 @@ git commit -m "feat: add client-side sort result handler"
 ### Task 4: Wire Up Entry Points and Update Keybind Handler
 
 **Files:**
-- Modify: `src/main/java/de/dennisthegamer/shulkersort/ShulkerSort.java`
-- Modify: `src/client/java/de/dennisthegamer/shulkersort/ShulkerSortClient.java`
-- Modify: `src/client/java/de/dennisthegamer/shulkersort/keybind/SortKeybindHandler.java`
+- Modify: `src/main/java/de/dennisthegamer/shulkersorter/ShulkerSorter.java`
+- Modify: `src/client/java/de/dennisthegamer/shulkersorter/ShulkerSorterClient.java`
+- Modify: `src/client/java/de/dennisthegamer/shulkersorter/keybind/SortKeybindHandler.java`
 - Modify: `src/main/resources/fabric.mod.json`
 
 **Interfaces:**
 - Consumes: `ServerSortHandler.register()`, `ClientSortHandler.register()`, `SortRequestPayload`, `ClientPlayNetworking.send()`
 - Produces: Working multiplayer survival sorting via networking
 
-- [ ] **Step 1: Update ShulkerSort main entry point to register server handler**
+- [ ] **Step 1: Update ShulkerSorter main entry point to register server handler**
 
-In `ShulkerSort.java`, add the server handler registration:
+In `ShulkerSorter.java`, add the server handler registration:
 
 ```java
-package de.dennisthegamer.shulkersort;
+package de.dennisthegamer.shulkersorter;
 
-import de.dennisthegamer.shulkersort.network.ServerSortHandler;
+import de.dennisthegamer.shulkersorter.network.ServerSortHandler;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ShulkerSort implements ModInitializer {
-    public static final String MOD_ID = "shulkersort";
+public class ShulkerSorter implements ModInitializer {
+    public static final String MOD_ID = "shulkersorter";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     @Override
     public void onInitialize() {
         ServerSortHandler.register();
-        LOGGER.info("ShulkerSort initialized!");
+        LOGGER.info("ShulkerSorter initialized!");
     }
 }
 ```
 
-- [ ] **Step 2: Update ShulkerSortClient to register client handler**
+- [ ] **Step 2: Update ShulkerSorterClient to register client handler**
 
-In `ShulkerSortClient.java`, add `ClientSortHandler.register()`:
+In `ShulkerSorterClient.java`, add `ClientSortHandler.register()`:
 
 ```java
-package de.dennisthegamer.shulkersort;
+package de.dennisthegamer.shulkersorter;
 
-import de.dennisthegamer.shulkersort.hud.SortingHudOverlay;
-import de.dennisthegamer.shulkersort.keybind.SortKeybindHandler;
-import de.dennisthegamer.shulkersort.tooltip.ShulkerTooltipRenderer;
-import de.dennisthegamer.shulkersort.config.ShulkerSortConfig;
-import de.dennisthegamer.shulkersort.network.ClientSortHandler;
-import de.dennisthegamer.shulkersort.undo.SortUndoManager;
+import de.dennisthegamer.shulkersorter.hud.SortingHudOverlay;
+import de.dennisthegamer.shulkersorter.keybind.SortKeybindHandler;
+import de.dennisthegamer.shulkersorter.tooltip.ShulkerTooltipRenderer;
+import de.dennisthegamer.shulkersorter.config.ShulkerSorterConfig;
+import de.dennisthegamer.shulkersorter.network.ClientSortHandler;
+import de.dennisthegamer.shulkersorter.undo.SortUndoManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
-public class ShulkerSortClient implements ClientModInitializer {
+public class ShulkerSorterClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ShulkerSortConfig.getInstance();
+        ShulkerSorterConfig.getInstance();
         SortKeybindHandler.register();
         ShulkerTooltipRenderer.register();
         SortingHudOverlay.register();
         ClientSortHandler.register();
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> SortUndoManager.get().clear());
 
-        ShulkerSort.LOGGER.info("ShulkerSort client initialized!");
+        ShulkerSorter.LOGGER.info("ShulkerSorter client initialized!");
     }
 }
 ```
@@ -378,15 +378,15 @@ The logic becomes:
 3. **Multiplayer without mod on server**: Show error message
 
 ```java
-package de.dennisthegamer.shulkersort.keybind;
+package de.dennisthegamer.shulkersorter.keybind;
 
-import de.dennisthegamer.shulkersort.hud.SortingHudOverlay;
-import de.dennisthegamer.shulkersort.sort.ShulkerSortEngine;
-import de.dennisthegamer.shulkersort.sort.SortResult;
-import de.dennisthegamer.shulkersort.network.SortRequestPayload;
-import de.dennisthegamer.shulkersort.undo.SortUndoManager;
-import de.dennisthegamer.shulkersort.util.NotificationHelper;
-import de.dennisthegamer.shulkersort.util.ShulkerBoxHelper;
+import de.dennisthegamer.shulkersorter.hud.SortingHudOverlay;
+import de.dennisthegamer.shulkersorter.sort.ShulkerSorterEngine;
+import de.dennisthegamer.shulkersorter.sort.SortResult;
+import de.dennisthegamer.shulkersorter.network.SortRequestPayload;
+import de.dennisthegamer.shulkersorter.undo.SortUndoManager;
+import de.dennisthegamer.shulkersorter.util.NotificationHelper;
+import de.dennisthegamer.shulkersorter.util.ShulkerBoxHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -406,13 +406,13 @@ import java.util.UUID;
 
 public class SortKeybindHandler {
     private static final KeyMapping.Category CATEGORY =
-            KeyMapping.Category.register(Identifier.fromNamespaceAndPath("shulkersort", "shulkersort"));
+            KeyMapping.Category.register(Identifier.fromNamespaceAndPath("shulkersorter", "shulkersorter"));
 
     private static KeyMapping sortKeybind;
 
     public static void register() {
         sortKeybind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
-                "key.shulkersort.sort",
+                "key.shulkersorter.sort",
                 InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_J,
                 CATEGORY
@@ -446,7 +446,7 @@ public class SortKeybindHandler {
                 SortUndoManager.get().saveSnapshot(client.player.getInventory());
                 sortClientAndSyncCreative(client);
             } else {
-                NotificationHelper.sendError(client.player, "shulkersort.message.error.multiplayer_no_mod");
+                NotificationHelper.sendError(client.player, "shulkersorter.message.error.multiplayer_no_mod");
             }
         }
     }
@@ -460,7 +460,7 @@ public class SortKeybindHandler {
         } else if (client.gameMode != null && client.gameMode.getPlayerMode() == GameType.CREATIVE) {
             undoClientAndSyncCreative(client);
         } else {
-            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
+            NotificationHelper.sendInfo(client.player, "shulkersorter.message.undo_nothing");
         }
     }
 
@@ -474,7 +474,7 @@ public class SortKeybindHandler {
             ServerPlayer serverPlayer = server.getPlayerList().getPlayer(playerUUID);
             if (serverPlayer == null) return;
 
-            SortResult result = ShulkerSortEngine.sort(serverPlayer.getInventory());
+            SortResult result = ShulkerSorterEngine.sort(serverPlayer.getInventory());
             serverPlayer.inventoryMenu.broadcastChanges();
 
             if (result.success()) {
@@ -489,7 +489,7 @@ public class SortKeybindHandler {
     private static void sortClientAndSyncCreative(Minecraft client) {
         SortingHudOverlay.show();
 
-        SortResult result = ShulkerSortEngine.sort(client.player.getInventory());
+        SortResult result = ShulkerSorterEngine.sort(client.player.getInventory());
 
         if (result.success()) {
             MultiPlayerGameMode gameMode = client.gameMode;
@@ -513,7 +513,7 @@ public class SortKeybindHandler {
         SortUndoManager.get().clear();
 
         if (snapshot == null) {
-            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
+            NotificationHelper.sendInfo(client.player, "shulkersorter.message.undo_nothing");
             return;
         }
 
@@ -525,7 +525,7 @@ public class SortKeybindHandler {
                 serverPlayer.getInventory().setItem(i, snapshot.get(i).copy());
             }
             serverPlayer.inventoryMenu.broadcastChanges();
-            NotificationHelper.sendInfo(serverPlayer, "shulkersort.message.undo_success");
+            NotificationHelper.sendInfo(serverPlayer, "shulkersorter.message.undo_success");
         });
     }
 
@@ -534,7 +534,7 @@ public class SortKeybindHandler {
         SortUndoManager.get().clear();
 
         if (snapshot == null) {
-            NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_nothing");
+            NotificationHelper.sendInfo(client.player, "shulkersorter.message.undo_nothing");
             return;
         }
 
@@ -549,7 +549,7 @@ public class SortKeybindHandler {
                 gameMode.handleCreativeModeItemAdd(stack.copy(), containerSlot);
             }
         }
-        NotificationHelper.sendInfo(client.player, "shulkersort.message.undo_success");
+        NotificationHelper.sendInfo(client.player, "shulkersorter.message.undo_success");
     }
 }
 ```
@@ -562,8 +562,8 @@ Change `"environment": "client"` to `"environment": "*"` so the mod loads on bot
 
 In both `en_us.json` and `de_de.json`, add:
 
-EN: `"shulkersort.message.error.multiplayer_no_mod": "ShulkerSort is not installed on this server."`
-DE: `"shulkersort.message.error.multiplayer_no_mod": "ShulkerSort ist auf diesem Server nicht installiert."`
+EN: `"shulkersorter.message.error.multiplayer_no_mod": "ShulkerSorter is not installed on this server."`
+DE: `"shulkersorter.message.error.multiplayer_no_mod": "ShulkerSorter ist auf diesem Server nicht installiert."`
 
 The old `multiplayer_survival` key can be kept for backwards compat or removed.
 
@@ -587,26 +587,26 @@ git commit -m "feat: add multiplayer survival support via server-side networking
 ### Task 5: Clean Up Server-Side Undo on Disconnect
 
 **Files:**
-- Modify: `src/main/java/de/dennisthegamer/shulkersort/ShulkerSort.java`
+- Modify: `src/main/java/de/dennisthegamer/shulkersorter/ShulkerSorter.java`
 
 **Interfaces:**
 - Consumes: `ServerUndoManager`, `ServerPlayConnectionEvents`
 - Produces: Automatic cleanup of server-side undo snapshots when players disconnect
 
-- [ ] **Step 1: Register disconnect listener in ShulkerSort.onInitialize()**
+- [ ] **Step 1: Register disconnect listener in ShulkerSorter.onInitialize()**
 
 ```java
-package de.dennisthegamer.shulkersort;
+package de.dennisthegamer.shulkersorter;
 
-import de.dennisthegamer.shulkersort.network.ServerSortHandler;
-import de.dennisthegamer.shulkersort.network.ServerUndoManager;
+import de.dennisthegamer.shulkersorter.network.ServerSortHandler;
+import de.dennisthegamer.shulkersorter.network.ServerUndoManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ShulkerSort implements ModInitializer {
-    public static final String MOD_ID = "shulkersort";
+public class ShulkerSorter implements ModInitializer {
+    public static final String MOD_ID = "shulkersorter";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     @Override
@@ -614,7 +614,7 @@ public class ShulkerSort implements ModInitializer {
         ServerSortHandler.register();
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) ->
                 ServerUndoManager.get().clear(handler.getPlayer().getUUID()));
-        LOGGER.info("ShulkerSort initialized!");
+        LOGGER.info("ShulkerSorter initialized!");
     }
 }
 ```
@@ -628,6 +628,6 @@ public class ShulkerSort implements ModInitializer {
 - [ ] **Step 3: Commit**
 
 ```bash
-git add src/main/java/de/dennisthegamer/shulkersort/ShulkerSort.java
+git add src/main/java/de/dennisthegamer/shulkersorter/ShulkerSorter.java
 git commit -m "feat: clean up server undo snapshots on player disconnect"
 ```

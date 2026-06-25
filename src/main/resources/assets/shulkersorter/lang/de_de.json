@@ -1,0 +1,79 @@
+{
+  "key.shulkersorter.sort": "Shulker Boxes sortieren",
+  "category.shulkersorter": "ShulkerSorter",
+  "key.category.shulkersorter.shulkersorter": "ShulkerSorter",
+  "shulkersorter.hud.sorting": "Sortiere",
+  "shulkersorter.tooltip.empty": "Leer",
+  "shulkersorter.tooltip.contents": "Inhalt:",
+  "shulkersorter.tooltip.more": "... und %1$s weitere Items",
+  "shulkersorter.message.success": "ShulkerSorter: %1$s Boxen sortiert, %2$s Items verteilt.",
+  "shulkersorter.message.error.no_boxes": "Keine Shulker Boxes im Inventar gefunden!",
+  "shulkersorter.message.error.all_locked": "Alle Shulker Boxes sind gesperrt!",
+  "shulkersorter.message.error.all_empty": "Alle Shulker Boxes sind leer!",
+  "shulkersorter.message.error.not_enough_space": "Nicht genug Shulker Boxes fuer alle Items! Sortierung abgebrochen.",
+  "shulkersorter.message.error.internal": "Interner Fehler bei der Verteilung!",
+  "shulkersorter.message.error.multiplayer_no_mod": "ShulkerSorter ist auf diesem Server nicht installiert.",
+  "shulkersorter.message.undo_success": "Sortierung rückgängig gemacht.",
+  "shulkersorter.message.undo_nothing": "Nichts rückgängig zu machen.",
+
+  "shulkersorter.category.redstone": "Redstone",
+  "shulkersorter.category.transport": "Transport",
+  "shulkersorter.category.nature": "Natur",
+  "shulkersorter.category.mob_loot": "Mob-Drops",
+  "shulkersorter.category.decoration": "Dekoration",
+  "shulkersorter.category.blocks": "Bloecke",
+  "shulkersorter.category.tools": "Werkzeuge",
+  "shulkersorter.category.food": "Nahrung",
+  "shulkersorter.category.ores": "Erze",
+  "shulkersorter.category.brewing": "Brauen",
+  "shulkersorter.category.misc": "Sonstiges",
+
+  "config.shulkersorter.title": "ShulkerSorter Einstellungen",
+
+  "config.shulkersorter.category.sorting": "Sortierung",
+  "config.shulkersorter.category.tooltip": "Tooltip",
+  "config.shulkersorter.category.feedback": "Benachrichtigungen & Feedback",
+
+  "config.shulkersorter.auto_label": "Boxen automatisch beschriften",
+  "config.shulkersorter.auto_label.tooltip": "Shulker Boxes nach dem Sortieren automatisch umbenennen (z.B. 'Bloecke #1', 'Erze #2')",
+
+  "config.shulkersorter.include_loose_items": "Lose Items einsortieren",
+  "config.shulkersorter.include_loose_items.tooltip": "Auch lose Items aus dem Inventar in Shulker Boxes einsortieren (standardmaessig deaktiviert)",
+
+  "config.shulkersorter.skip_empty_boxes": "Leere Boxen überspringen",
+  "config.shulkersorter.skip_empty_boxes.tooltip": "Wenn aktiviert, werden leere Shulker Boxes beim Sortieren ignoriert und nicht verändert.",
+
+  "config.shulkersorter.overflow_mode": "Ueberlauf-Modus",
+  "config.shulkersorter.overflow_mode.tooltip": "Was passiert wenn mehr Items vorhanden sind als Shulker-Box-Slots verfuegbar.\n\nFuellen: Boxen werden kategorienuebergreifend befuellt — gemischter Inhalt ist bei Platzmangel erlaubt. Uebrige Items bleiben im Inventar.\n\nDominant: Jede Box erhaelt nur eine Kategorie. Nur die haueufigsten Kategorien (nach Itemanzahl) werden einsortiert; Items anderer Kategorien bleiben im Inventar.",
+  "config.shulkersorter.overflow_mode.fill": "Fuellen (Mischung OK)",
+  "config.shulkersorter.overflow_mode.dominant": "Dominant (Nur eine Kategorie)",
+
+  "config.shulkersorter.loose_item_ignore_tag": "Lose Items Ignorieren-Tag",
+  "config.shulkersorter.loose_item_ignore_tag.tooltip": "Items mit diesem Text im Namen werden nicht in Shulker Boxes einsortiert (z.B. Item umbenennen zu '[KEEP] Diamantschwert')",
+
+  "config.shulkersorter.locked_tag": "Gesperrt-Tag",
+  "config.shulkersorter.locked_tag.tooltip": "Shulker Boxes mit diesem Text im Namen werden beim Sortieren uebersprungen",
+
+  "config.shulkersorter.tooltip_enabled": "Tooltip anzeigen",
+  "config.shulkersorter.tooltip_enabled.tooltip": "Inhalt der Shulker Box beim Hovern anzeigen",
+
+  "config.shulkersorter.tooltip_max_lines": "Tooltip Max. Zeilen",
+  "config.shulkersorter.tooltip_max_lines.tooltip": "Maximale Anzahl der Item-Zeilen im Tooltip (1-27)",
+
+  "config.shulkersorter.enable_chat_notifications": "Chat-Benachrichtigungen",
+  "config.shulkersorter.enable_chat_notifications.tooltip": "Chat-Nachrichten anzeigen wenn Sortierung abgeschlossen oder fehlgeschlagen",
+
+  "config.shulkersorter.enable_sound_effects": "Soundeffekte",
+  "config.shulkersorter.enable_sound_effects.tooltip": "Sound abspielen wenn Sortierung erfolgreich abgeschlossen",
+
+  "config.shulkersorter.enable_hud_overlay": "HUD-Anzeige",
+  "config.shulkersorter.enable_hud_overlay.tooltip": "Animierte 'Sortiere...' Anzeige auf dem HUD waehrend der Sortierung",
+
+  "config.shulkersorter.category.categories": "Kategorien",
+  "config.shulkersorter.category_order": "Kategorienreihenfolge",
+  "config.shulkersorter.category_order.tooltip": "Reihenfolge der Kategorien beim Sortieren. Items werden von oben nach unten zugeordnet; die erste Übereinstimmung gewinnt.",
+  "config.shulkersorter.category.enabled": "Aktiviert",
+  "config.shulkersorter.category.enabled.tooltip": "Deaktivierte Kategorien werden beim Sortieren übersprungen. Ihre Items landen in Sonstiges.",
+  "config.shulkersorter.category.patterns": "Muster",
+  "config.shulkersorter.category.patterns.tooltip": "Item-ID-Muster für diese Kategorie. Präfix: 'raw_' (Items die mit raw_ beginnen). Suffix: '_planks' (Items die auf _planks enden). Exakt oder Teilstring: 'redstone'."
+}

@@ -19,7 +19,7 @@ No test suite exists; verification is done by running the client.
 
 ## Project Overview
 
-ShulkerSort is a **client-side Fabric mod** for Minecraft 26.1+ that automatically sorts, merges, and labels shulker boxes in the player's inventory when **J** is pressed.
+ShulkerSorter is a **client-side Fabric mod** for Minecraft 26.1+ that automatically sorts, merges, and labels shulker boxes in the player's inventory when **J** is pressed.
 
 Key dependencies (versions in `gradle.properties`):
 - Minecraft 26.1 — **unobfuscated**, so no mappings are used in `build.gradle`
@@ -34,10 +34,10 @@ The mod uses `loom.splitEnvironmentSourceSets()`, so source sets are split:
 ## Architecture
 
 ### Entry Points
-- `ShulkerSort` (main) — `ModInitializer`, only logs initialization
-- `ShulkerSortClient` (client) — `ClientModInitializer`, registers config, keybind, tooltip renderer, HUD overlay
+- `ShulkerSorter` (main) — `ModInitializer`, only logs initialization
+- `ShulkerSorterClient` (client) — `ClientModInitializer`, registers config, keybind, tooltip renderer, HUD overlay
 
-### Sorting Pipeline (`ShulkerSortEngine.sort`)
+### Sorting Pipeline (`ShulkerSorterEngine.sort`)
 The sort runs in 7 sequential phases:
 1. **SCAN** — find shulker boxes in inventory, skip locked ones
 2. **CATEGORIZE** — classify each item via `ItemCategorizer`, collect loose items based on `overflowMode`
@@ -48,13 +48,13 @@ The sort runs in 7 sequential phases:
 7. **APPLY** — write new contents/names back to `ItemStack`s, clear sorted loose item slots
 
 ### Item Categorization (`ItemCategorizer`)
-Two-pass matching against patterns in `ShulkerSortConfig.categoryOrder`:
+Two-pass matching against patterns in `ShulkerSorterConfig.categoryOrder`:
 - **Pass 1 (specific):** prefix patterns (`raw_`), suffix patterns (`_planks`), exact matches; food items short-circuit to the `food` category via the `DataComponents.FOOD` component
 - **Pass 2 (contains):** substring matches for non-specific patterns
 - Falls through to `misc` if nothing matches
 
-### Configuration (`ShulkerSortConfig`)
-- Singleton loaded from `.minecraft/config/shulkersort.toml` via a hand-written `TomlParser`
+### Configuration (`ShulkerSorterConfig`)
+- Singleton loaded from `.minecraft/config/shulkersorter.toml` via a hand-written `TomlParser`
 - `categories` map holds `CategoryDefinition` (label key + pattern list); built-in categories are always initialized in code, TOML can override patterns but not translation keys
 - `overflowMode` (`FILL` / `DOMINANT`) controls how items beyond affinity-matched boxes are distributed:
   - `FILL` — packs items across free boxes in `categoryOrder` priority
@@ -66,7 +66,7 @@ Built with YACL3. Guarded at compile-time with `compileOnly`; `ModMenuIntegratio
 ### Client-side Components
 | Class | Purpose |
 |---|---|
-| `SortKeybindHandler` | Registers the **J** keybind; triggers `ShulkerSortEngine.sort` and dispatches result notifications |
+| `SortKeybindHandler` | Registers the **J** keybind; triggers `ShulkerSorterEngine.sort` and dispatches result notifications |
 | `ShulkerTooltipRenderer` | Injects shulker box content preview into item tooltips |
 | `SortingHudOverlay` | Animated overlay displayed during sorting |
 | `NotificationHelper` | Sends chat messages and plays sound effects based on `SortResult` |

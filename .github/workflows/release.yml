@@ -124,8 +124,8 @@ jobs:
 
           ## Build Artifacts
 
-          - `shulkersort-${{ needs.build.outputs.mod_version }}.jar` - Main mod file (download this)
-          - `shulkersort-${{ needs.build.outputs.mod_version }}-sources.jar` - Source code
+          - `shulkersorter-${{ needs.build.outputs.mod_version }}.jar` - Main mod file (download this)
+          - `shulkersorter-${{ needs.build.outputs.mod_version }}-sources.jar` - Source code
 
           ## Recent Commits
 
@@ -142,9 +142,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ needs.build.outputs.mod_version }}-${{ needs.build.outputs.branch_name }}
-          name: ShulkerSort v${{ needs.build.outputs.mod_version }} (MC ${{ needs.build.outputs.minecraft_version }})
+          name: ShulkerSorter v${{ needs.build.outputs.mod_version }} (MC ${{ needs.build.outputs.minecraft_version }})
           prerelease: false
           body_path: release_body.md
           files: |
-            build/libs/shulkersort-*.jar
-            build/libs/shulkersort-*-sources.jar
+            build/libs/shulkersorter-*.jar
+            build/libs/shulkersorter-*-sources.jar

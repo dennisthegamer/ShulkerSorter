@@ -37,7 +37,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"shulkersort" {
+		"shulkersorter" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}

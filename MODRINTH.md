@@ -1,8 +1,8 @@
-# ShulkerSort
+# ShulkerSorter
 
 **Sort, merge and label your shulker boxes with a single keypress.**
 
-ShulkerSort is a lightweight Fabric mod that automatically organizes all items across your shulker boxes by category. Press one key — your ores go into one box, your redstone into another, your tools into a third. Every box gets a clean label. No more shulker box chaos.
+ShulkerSorter is a lightweight Fabric mod that automatically organizes all items across your shulker boxes by category. Press one key — your ores go into one box, your redstone into another, your tools into a third. Every box gets a clean label. No more shulker box chaos.
 
 Works in **singleplayer**, **multiplayer survival** (with mod on server), and **multiplayer creative** (no server mod needed).
 
@@ -54,7 +54,7 @@ Works in **singleplayer**, **multiplayer survival** (with mod on server), and **
 
 ## Customization
 
-Configure the mod via [Mod Menu](https://modrinth.com/mod/modmenu) + [YACL](https://modrinth.com/mod/yacl), or by editing `.minecraft/config/shulkersort.toml`:
+Configure the mod via [Mod Menu](https://modrinth.com/mod/modmenu) + [YACL](https://modrinth.com/mod/yacl), or by editing `.minecraft/config/shulkersorter.toml`:
 
 - Auto-labeling on/off
 - Overflow mode (Fill / Dominant)
@@ -112,10 +112,10 @@ Boxes with `[LOCKED]` in their name are skipped. Loose items with `[KEEP]` in th
 Yes! In singleplayer and multiplayer creative it works client-only. For multiplayer survival, install the mod on both client and server — sorting runs server-side via custom packets.
 
 **Does it affect performance?**
-No. ShulkerSort only runs when you press the sort key.
+No. ShulkerSorter only runs when you press the sort key.
 
 **Can I customize categories?**
-Yes! Use the in-game config screen or edit `shulkersort.toml` to add, remove, reorder, or disable categories with custom item patterns.
+Yes! Use the in-game config screen or edit `shulkersorter.toml` to add, remove, reorder, or disable categories with custom item patterns.
 
 **What if I don't have enough shulker boxes?**
 Sorting is cancelled safely — no items are lost.
@@ -131,8 +131,8 @@ Available in **English** and **German**.
 
 ## Links
 
-- **Issues & Bugs:** [GitHub Issues](https://github.com/dennisthegamer/ShulkerSort/issues)
-- **Source Code:** [GitHub Repository](https://github.com/dennisthegamer/ShulkerSort)
+- **Issues & Bugs:** [GitHub Issues](https://github.com/dennisthegamer/ShulkerSorter/issues)
+- **Source Code:** [GitHub Repository](https://github.com/dennisthegamer/ShulkerSorter)
 
 ## License
 

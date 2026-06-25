@@ -21,7 +21,7 @@
 - **HUD overlay** — Animated "Sorting..." indicator during sorting
 - **Categories tab** — Full in-game editor for category order, enable/disable, and patterns
 - **YACL config screen** — All settings configurable via Mod Menu + YACL
-- **TOML config** — Manual editing via `.minecraft/config/shulkersort.toml`
+- **TOML config** — Manual editing via `.minecraft/config/shulkersorter.toml`
 - **Singleplayer** — Sorting runs on the integrated server thread
 - **Multiplayer survival** — Server-side sorting via custom networking packets (mod required on server)
 - **Multiplayer creative** — Sort works on servers in creative mode (no server mod needed)

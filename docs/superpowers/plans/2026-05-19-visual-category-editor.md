@@ -14,18 +14,18 @@
 
 | Status | File | Change |
 |---|---|---|
-| Modify | `src/main/java/com/shulkersort/sort/ItemCategorizer.java` | Add public `matchesAnyPattern` helper |
-| Modify | `src/main/resources/assets/shulkersort/lang/en_us.json` | Add 7 translation keys |
-| Modify | `src/main/resources/assets/shulkersort/lang/de_de.json` | Add 7 translation keys (German) |
-| Modify | `src/client/java/com/shulkersort/config/ConfigScreen.java` | Add ButtonOption in categories tab |
-| Create | `src/client/java/com/shulkersort/config/CategoryEditorScreen.java` | Full custom editor screen |
+| Modify | `src/main/java/com/shulkersorter/sort/ItemCategorizer.java` | Add public `matchesAnyPattern` helper |
+| Modify | `src/main/resources/assets/shulkersorter/lang/en_us.json` | Add 7 translation keys |
+| Modify | `src/main/resources/assets/shulkersorter/lang/de_de.json` | Add 7 translation keys (German) |
+| Modify | `src/client/java/com/shulkersorter/config/ConfigScreen.java` | Add ButtonOption in categories tab |
+| Create | `src/client/java/com/shulkersorter/config/CategoryEditorScreen.java` | Full custom editor screen |
 
 ---
 
 ## Task 1: Extract `matchesAnyPattern` in `ItemCategorizer`
 
 **Files:**
-- Modify: `src/main/java/com/shulkersort/sort/ItemCategorizer.java`
+- Modify: `src/main/java/com/shulkersorter/sort/ItemCategorizer.java`
 
 - [ ] **Step 1: Add the public helper method**
 
@@ -59,7 +59,7 @@
 - [ ] **Step 3: Commit**
 
   ```bash
-  git add src/main/java/com/shulkersort/sort/ItemCategorizer.java
+  git add src/main/java/com/shulkersorter/sort/ItemCategorizer.java
   git commit -m "refactor: expose matchesAnyPattern helper in ItemCategorizer"
   ```
 
@@ -68,8 +68,8 @@
 ## Task 2: Add translation keys
 
 **Files:**
-- Modify: `src/main/resources/assets/shulkersort/lang/en_us.json`
-- Modify: `src/main/resources/assets/shulkersort/lang/de_de.json`
+- Modify: `src/main/resources/assets/shulkersorter/lang/en_us.json`
+- Modify: `src/main/resources/assets/shulkersorter/lang/de_de.json`
 
 - [ ] **Step 1: Add keys to `en_us.json`**
 
@@ -77,13 +77,13 @@
 
   ```json
   ,
-  "config.shulkersort.visual_editor.open": "Visual Editor",
-  "config.shulkersort.visual_editor.title": "Category Visual Editor",
-  "config.shulkersort.visual_editor.save": "Save & Close",
-  "config.shulkersort.visual_editor.cancel": "Cancel",
-  "config.shulkersort.visual_editor.add_wildcard": "+ Add Wildcard",
-  "config.shulkersort.visual_editor.wildcard_hint": "pattern (e.g. _planks, raw_)",
-  "config.shulkersort.visual_editor.search_hint": "Search items..."
+  "config.shulkersorter.visual_editor.open": "Visual Editor",
+  "config.shulkersorter.visual_editor.title": "Category Visual Editor",
+  "config.shulkersorter.visual_editor.save": "Save & Close",
+  "config.shulkersorter.visual_editor.cancel": "Cancel",
+  "config.shulkersorter.visual_editor.add_wildcard": "+ Add Wildcard",
+  "config.shulkersorter.visual_editor.wildcard_hint": "pattern (e.g. _planks, raw_)",
+  "config.shulkersorter.visual_editor.search_hint": "Search items..."
   ```
 
 - [ ] **Step 2: Add keys to `de_de.json`**
@@ -92,13 +92,13 @@
 
   ```json
   ,
-  "config.shulkersort.visual_editor.open": "Visueller Editor",
-  "config.shulkersort.visual_editor.title": "Kategorie-Editor",
-  "config.shulkersort.visual_editor.save": "Speichern & Schliessen",
-  "config.shulkersort.visual_editor.cancel": "Abbrechen",
-  "config.shulkersort.visual_editor.add_wildcard": "+ Wildcard hinzufuegen",
-  "config.shulkersort.visual_editor.wildcard_hint": "Muster (z.B. _planks, raw_)",
-  "config.shulkersort.visual_editor.search_hint": "Items suchen..."
+  "config.shulkersorter.visual_editor.open": "Visueller Editor",
+  "config.shulkersorter.visual_editor.title": "Kategorie-Editor",
+  "config.shulkersorter.visual_editor.save": "Speichern & Schliessen",
+  "config.shulkersorter.visual_editor.cancel": "Abbrechen",
+  "config.shulkersorter.visual_editor.add_wildcard": "+ Wildcard hinzufuegen",
+  "config.shulkersorter.visual_editor.wildcard_hint": "Muster (z.B. _planks, raw_)",
+  "config.shulkersorter.visual_editor.search_hint": "Items suchen..."
   ```
 
 - [ ] **Step 3: Build**
@@ -111,7 +111,7 @@
 - [ ] **Step 4: Commit**
 
   ```bash
-  git add src/main/resources/assets/shulkersort/lang/
+  git add src/main/resources/assets/shulkersorter/lang/
   git commit -m "i18n: add visual editor translation keys"
   ```
 
@@ -120,7 +120,7 @@
 ## Task 3: Add "Visual Editor" button in ConfigScreen
 
 **Files:**
-- Modify: `src/client/java/com/shulkersort/config/ConfigScreen.java`
+- Modify: `src/client/java/com/shulkersorter/config/ConfigScreen.java`
 
 - [ ] **Step 1: Add import**
 
@@ -137,16 +137,16 @@
 
   ```java
   ConfigCategory.Builder categoriesTab = ConfigCategory.createBuilder()
-          .name(Component.translatable("config.shulkersort.category.categories"));
+          .name(Component.translatable("config.shulkersorter.category.categories"));
   ```
 
   Replace with:
 
   ```java
   ConfigCategory.Builder categoriesTab = ConfigCategory.createBuilder()
-          .name(Component.translatable("config.shulkersort.category.categories"))
+          .name(Component.translatable("config.shulkersorter.category.categories"))
           .option(ButtonOption.createBuilder()
-                  .name(Component.translatable("config.shulkersort.visual_editor.open"))
+                  .name(Component.translatable("config.shulkersorter.visual_editor.open"))
                   .description(OptionDescription.EMPTY)
                   .action((lib, opt) -> Minecraft.getInstance().setScreen(
                           new CategoryEditorScreen(Minecraft.getInstance().screen, parent)))
@@ -166,7 +166,7 @@
   ```java
   // Alternative if ButtonOption unavailable:
   .option(Option.<Boolean>createBuilder()
-          .name(Component.translatable("config.shulkersort.visual_editor.open"))
+          .name(Component.translatable("config.shulkersorter.visual_editor.open"))
           .binding(false, () -> false,
                   val -> Minecraft.getInstance().setScreen(
                           new CategoryEditorScreen(Minecraft.getInstance().screen, parent)))
@@ -177,7 +177,7 @@
 - [ ] **Step 4: Commit**
 
   ```bash
-  git add src/client/java/com/shulkersort/config/ConfigScreen.java
+  git add src/client/java/com/shulkersorter/config/ConfigScreen.java
   git commit -m "feat: add Visual Editor button to YACL categories tab"
   ```
 
@@ -186,16 +186,16 @@
 ## Task 4: Create `CategoryEditorScreen` skeleton
 
 **Files:**
-- Create: `src/client/java/com/shulkersort/config/CategoryEditorScreen.java`
+- Create: `src/client/java/com/shulkersorter/config/CategoryEditorScreen.java`
 
 This task creates the full class with all fields, `init()`, `render()` stub, `save`/`cancel`, and the three item-list helpers. Later tasks fill in the rendering methods.
 
 - [ ] **Step 1: Create the file**
 
   ```java
-  package com.shulkersort.config;
+  package com.shulkersorter.config;
 
-  import com.shulkersort.sort.ItemCategorizer;
+  import com.shulkersorter.sort.ItemCategorizer;
   import net.minecraft.client.gui.GuiGraphics;
   import net.minecraft.client.gui.components.Button;
   import net.minecraft.client.gui.components.EditBox;
@@ -236,7 +236,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
       // --- State ---
       private final Screen yaclScreen;   // returned to on Cancel
       private final Screen yaclParent;   // used to re-open ConfigScreen.create() on Save
-      private final ShulkerSortConfig config;
+      private final ShulkerSorterConfig config;
 
       /** Local working copies of patterns, keyed by category key in categoryOrder order. */
       private final Map<String, List<String>> workingPatterns = new LinkedHashMap<>();
@@ -272,10 +272,10 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
       // -------------------------------------------------------------------------
 
       public CategoryEditorScreen(Screen yaclScreen, Screen yaclParent) {
-          super(Component.translatable("config.shulkersort.visual_editor.title"));
+          super(Component.translatable("config.shulkersorter.visual_editor.title"));
           this.yaclScreen = yaclScreen;
           this.yaclParent = yaclParent;
-          this.config = ShulkerSortConfig.getInstance();
+          this.config = ShulkerSorterConfig.getInstance();
           for (String key : config.categoryOrder) {
               CategoryDefinition def = config.categories.get(key);
               if (def != null) workingPatterns.put(key, new ArrayList<>(def.getPatterns()));
@@ -306,9 +306,9 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
           searchBox = new EditBox(font,
                   rightX + PADDING, rightY + 12 + 2,
                   rightW - PADDING * 2, 14,
-                  Component.translatable("config.shulkersort.visual_editor.search_hint"));
+                  Component.translatable("config.shulkersorter.visual_editor.search_hint"));
           searchBox.setMaxLength(64);
-          searchBox.setHint(Component.translatable("config.shulkersort.visual_editor.search_hint"));
+          searchBox.setHint(Component.translatable("config.shulkersorter.visual_editor.search_hint"));
           searchBox.setResponder(q -> { filterItems(q); rightScroll = 0; });
           addWidget(searchBox);
 
@@ -318,18 +318,18 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
                   leftW - PADDING * 2, 14,
                   Component.literal(""));
           wildcardInput.setMaxLength(64);
-          wildcardInput.setHint(Component.translatable("config.shulkersort.visual_editor.wildcard_hint"));
+          wildcardInput.setHint(Component.translatable("config.shulkersorter.visual_editor.wildcard_hint"));
           wildcardInput.visible = false;
           addWidget(wildcardInput);
 
           // Save / Cancel buttons
           int btnY = height - BOTTOM_BAR_H + (BOTTOM_BAR_H - 20) / 2;
           addRenderableWidget(Button.builder(
-                  Component.translatable("config.shulkersort.visual_editor.save"),
+                  Component.translatable("config.shulkersorter.visual_editor.save"),
                   btn -> onSave()
           ).bounds(width - 130, btnY, 120, 20).build());
           addRenderableWidget(Button.builder(
-                  Component.translatable("config.shulkersort.visual_editor.cancel"),
+                  Component.translatable("config.shulkersorter.visual_editor.cancel"),
                   btn -> onCancel()
           ).bounds(width - 260, btnY, 120, 20).build());
 
@@ -420,7 +420,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
           g.fill(0, 0, width, height, C_BG);
           // Title
           g.drawCenteredString(font,
-                  Component.translatable("config.shulkersort.visual_editor.title"),
+                  Component.translatable("config.shulkersorter.visual_editor.title"),
                   width / 2, 6, 0xFFFFFFFF);
           // (tab bar, panes, chips rendered in later tasks)
           super.render(g, mouseX, mouseY, partialTick);
@@ -438,7 +438,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 - [ ] **Step 3: Commit**
 
   ```bash
-  git add src/client/java/com/shulkersort/config/CategoryEditorScreen.java
+  git add src/client/java/com/shulkersorter/config/CategoryEditorScreen.java
   git commit -m "feat: add CategoryEditorScreen skeleton with data model and save/cancel"
   ```
 
@@ -447,7 +447,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 ## Task 5: Render tab bar and handle tab switching
 
 **Files:**
-- Modify: `src/client/java/com/shulkersort/config/CategoryEditorScreen.java`
+- Modify: `src/client/java/com/shulkersorter/config/CategoryEditorScreen.java`
 
 - [ ] **Step 1: Add `renderTabBar` method**
 
@@ -547,7 +547,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 - [ ] **Step 5: Commit**
 
   ```bash
-  git add src/client/java/com/shulkersort/config/CategoryEditorScreen.java
+  git add src/client/java/com/shulkersorter/config/CategoryEditorScreen.java
   git commit -m "feat: render tab bar with category tabs and switching"
   ```
 
@@ -556,7 +556,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 ## Task 6: Render item grids in both panes
 
 **Files:**
-- Modify: `src/client/java/com/shulkersort/config/CategoryEditorScreen.java`
+- Modify: `src/client/java/com/shulkersorter/config/CategoryEditorScreen.java`
 
 - [ ] **Step 1: Add `renderItemGrid` helper**
 
@@ -650,7 +650,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 
       // Title
       g.drawCenteredString(font,
-              Component.translatable("config.shulkersort.visual_editor.title"),
+              Component.translatable("config.shulkersorter.visual_editor.title"),
               width / 2, 6, 0xFFFFFFFF);
 
       // Tab bar
@@ -704,7 +704,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 - [ ] **Step 6: Commit**
 
   ```bash
-  git add src/client/java/com/shulkersort/config/CategoryEditorScreen.java
+  git add src/client/java/com/shulkersorter/config/CategoryEditorScreen.java
   git commit -m "feat: render item grids in both panes with hover tooltip and search"
   ```
 
@@ -713,7 +713,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 ## Task 7: Mouse scroll and click interactions
 
 **Files:**
-- Modify: `src/client/java/com/shulkersort/config/CategoryEditorScreen.java`
+- Modify: `src/client/java/com/shulkersorter/config/CategoryEditorScreen.java`
 
 - [ ] **Step 1: Add `mouseScrolled`**
 
@@ -816,7 +816,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 - [ ] **Step 5: Commit**
 
   ```bash
-  git add src/client/java/com/shulkersort/config/CategoryEditorScreen.java
+  git add src/client/java/com/shulkersorter/config/CategoryEditorScreen.java
   git commit -m "feat: wire item grid scroll and click interactions"
   ```
 
@@ -825,7 +825,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 ## Task 8: Wildcard chips + add-wildcard EditBox
 
 **Files:**
-- Modify: `src/client/java/com/shulkersort/config/CategoryEditorScreen.java`
+- Modify: `src/client/java/com/shulkersorter/config/CategoryEditorScreen.java`
 
 - [ ] **Step 1: Replace the stub `renderChips` with a real implementation**
 
@@ -863,7 +863,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
       }
 
       // "+ Add Wildcard" button chip
-      String addLabel = Component.translatable("config.shulkersort.visual_editor.add_wildcard").getString();
+      String addLabel = Component.translatable("config.shulkersorter.visual_editor.add_wildcard").getString();
       int addW = font.width(addLabel) + 8;
       if (x + addW > startX + maxW && x > startX) { x = startX; y += lineH + 2; }
       g.fill(x, y, x + addW, y + lineH, 0xFF1a2a1a);
@@ -947,7 +947,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 - [ ] **Step 5: Commit**
 
   ```bash
-  git add src/client/java/com/shulkersort/config/CategoryEditorScreen.java
+  git add src/client/java/com/shulkersorter/config/CategoryEditorScreen.java
   git commit -m "feat: render wildcard chips with remove and add-wildcard flow"
   ```
 
@@ -956,7 +956,7 @@ This task creates the full class with all fields, `init()`, `render()` stub, `sa
 ## Task 9: Save, verify, and wrap up
 
 **Files:**
-- Modify: `src/client/java/com/shulkersort/config/CategoryEditorScreen.java`
+- Modify: `src/client/java/com/shulkersorter/config/CategoryEditorScreen.java`
 
 - [ ] **Step 1: Build a clean release JAR**
 

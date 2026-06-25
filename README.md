@@ -1,4 +1,4 @@
-# ShulkerSort
+# ShulkerSorter
 
 A Fabric mod that automatically sorts, merges and labels shulker boxes in your inventory by item category. Works in singleplayer, multiplayer survival (mod on server), and multiplayer creative.
 
@@ -67,13 +67,13 @@ A Fabric mod that automatically sorts, merges and labels shulker boxes in your i
 
 ### Steps
 1. Install Fabric Loader and Fabric API
-2. Download the latest `shulkersort-x.x.x.jar` from [Releases](../../releases)
+2. Download the latest `shulkersorter-x.x.x.jar` from [Releases](../../releases)
 3. Place the JAR in your `.minecraft/mods/` folder
 4. Launch Minecraft
 
 ## Configuration
 
-Configuration is stored in `.minecraft/config/shulkersort.toml` and can be edited in-game via Mod Menu + YACL.
+Configuration is stored in `.minecraft/config/shulkersorter.toml` and can be edited in-game via Mod Menu + YACL.
 
 | Setting | Default | Description |
 |---------|---------|-------------|
@@ -108,8 +108,8 @@ Pattern types:
 ## Building from Source
 
 ```bash
-git clone https://github.com/dennisthegamer/ShulkerSort.git
-cd ShulkerSort
+git clone https://github.com/dennisthegamer/ShulkerSorter.git
+cd ShulkerSorter
 ./gradlew build
 ```
 

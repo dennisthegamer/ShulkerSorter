@@ -1,0 +1,99 @@
+plugins {
+	// Use fabric-loom (not fabric-loom-remap) for unobfuscated Minecraft 26.1+
+	id 'net.fabricmc.fabric-loom'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = "${project.archives_base_name}-fabric"
+}
+
+repositories {
+	mavenCentral()
+
+	// Modrinth Maven for ModMenu
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+	}
+
+	// Architectury Maven for Architectury API
+	maven {
+		name = "Architectury"
+		url = "https://maven.architectury.dev/"
+	}
+
+	// Xander Maven for YACL
+	maven {
+		name = "Xander Maven"
+		url = "https://maven.isxander.dev/releases"
+	}
+}
+
+sourceSets.main {
+	java.srcDir rootProject.file('common/src/main/java')
+	resources.srcDir rootProject.file('common/src/main/resources')
+}
+
+loom {
+	mods {
+		"shulkersorter" {
+			sourceSet sourceSets.main
+		}
+	}
+
+	runs.named('client') {
+		ideConfigGenerated true
+		runDir 'run'
+	}
+}
+
+dependencies {
+	// To change the versions see the gradle.properties file
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	// No mappings needed for unobfuscated Minecraft 26.1+
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// Architectury API (required at runtime for events and networking)
+	implementation "dev.architectury:architectury-fabric:${project.architectury_version}"
+
+	// YACL for configuration screens (users install separately)
+	compileOnly "dev.isxander:yet-another-config-lib:${project.yacl_version}-fabric"
+	localRuntime "dev.isxander:yet-another-config-lib:${project.yacl_version}-fabric"
+
+	// ModMenu for dev environment only
+	compileOnly "maven.modrinth:modmenu:${project.modmenu_version}"
+	localRuntime "maven.modrinth:modmenu:${project.modmenu_version}"
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": inputs.properties.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 25
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+	inputs.property "archivesName", project.base.archivesName
+
+	from(rootProject.file("LICENSE")) {
+		rename { "${it}_${inputs.properties.archivesName}" }
+	}
+}

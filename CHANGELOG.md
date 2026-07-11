@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.0]
+
+### Added
+- **NeoForge support** — the mod now ships as two jars built from one codebase: `shulkersorter-fabric-<version>.jar` (Fabric) and `shulkersorter-neoforge-<version>.jar` (NeoForge)
+- **Architectury API** is now a required dependency on both loaders (used for events and networking)
+- On NeoForge the config screen is reachable via the mod list's config button (requires YACL); on Fabric it stays available via Mod Menu
+
+### Changed
+- Restructured the project into `common/` (shared code), `fabric/` and `neoforge/` subprojects
+- Updated YACL to 3.9.5+26.2 (3.9.4 is no longer available on the maven)
+
 ## [1.0.0]
 
 ### Features

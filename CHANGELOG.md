@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0]
+
+### Added
+- **NeoForge support** — the mod now ships as two jars built from one codebase: `shulkersorter-fabric-<version>.jar` (Fabric) and `shulkersorter-neoforge-<version>.jar` (NeoForge)
+- **Architectury API** is now a required dependency on both loaders (used for events and networking)
+- On NeoForge the config screen is reachable via the mod list's config button (requires YACL); on Fabric it stays available via Mod Menu
+
+### Changed
+- Restructured the project into `common/` (shared code), `fabric/` and `neoforge/` subprojects (Architectury template with `dev.architectury.loom`; sources migrated from Yarn to Mojang mappings)
+- Build toolchain pinned: Architectury Loom 1.10.455, Architectury Plugin 3.4.164, Architectury API 17.0.8, NeoForge 21.8.53 (Loom was `1.14-SNAPSHOT` before)
+- YACL pinned at 3.7.1+1.21.6 (3.8.x ships a class-tweaker file the 1.21.8-era build toolchain cannot read)
+
 ## [1.0.0]
 
 ### Features

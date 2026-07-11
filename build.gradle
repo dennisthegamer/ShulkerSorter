@@ -1,105 +1,37 @@
 plugins {
-	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
-	id 'maven-publish'
+	id 'architectury-plugin' version "${arch_plugin_version}"
+	id 'dev.architectury.loom' version "${arch_loom_version}" apply false
+	id 'com.gradleup.shadow' version "${shadow_version}" apply false
 }
 
-version = project.mod_version
-group = project.maven_group
+architectury { minecraft = project.minecraft_version }
 
-base {
-	archivesName = project.archives_base_name
-}
-
-repositories {
-	// Modrinth Maven for ModMenu
-	maven {
-		name = "Modrinth"
-		url = "https://api.modrinth.com/maven"
-	}
-
-	// Xander Maven for YACL
-	maven {
-		name = "YACL"
-		url = "https://maven.isxander.dev/releases"
-	}
-
-	// CurseForge Maven
-	maven {
-		name = "CurseForge"
-		url = "https://www.cursemaven.com"
-		content {
-			includeGroup "curse.maven"
-		}
+subprojects {
+	apply plugin: 'dev.architectury.loom'
+	loom { silentMojangMappingsLicense() }
+	dependencies {
+		minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+		mappings loom.officialMojangMappings()
 	}
 }
 
-loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"shulkersorter" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-}
-
-dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-	// Fabric API
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-	// YACL for configuration screens (users install separately)
-	modCompileOnly "dev.isxander:yet-another-config-lib:${project.yacl_version}"
-	modLocalRuntime "dev.isxander:yet-another-config-lib:${project.yacl_version}"
-
-	// ModMenu for dev environment only
-	// modCompileOnly: Available at compile time for API usage
-	// modLocalRuntime: Available at runtime in dev environment
-	// NOT included in the final JAR
-	modCompileOnly "maven.modrinth:modmenu:${project.modmenu_version}"
-	modLocalRuntime "maven.modrinth:modmenu:${project.modmenu_version}"
-}
-
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": inputs.properties.version
-	}
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
-}
-
-java {
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
-}
-
-jar {
-	inputs.property "archivesName", project.base.archivesName
-
-	from("LICENSE") {
-		rename { "${it}_${inputs.properties.archivesName}" }
-	}
-}
-
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
-			from components.java
-		}
-	}
-
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'architectury-plugin'
+	version = rootProject.mod_version
+	group = rootProject.maven_group
+	base { archivesName = "${rootProject.archives_base_name}-${project.name}" }
 	repositories {
+		maven { name = 'Architectury'; url = 'https://maven.architectury.dev/' }
+		maven { name = 'NeoForged'; url = 'https://maven.neoforged.net/releases/' }
+		maven { name = 'Xander'; url = 'https://maven.isxander.dev/releases' }
+		maven { name = 'KotlinForForge'; url = 'https://thedarkcolour.github.io/KotlinForForge/' }
+		maven {
+			name = 'Modrinth'
+			url = 'https://api.modrinth.com/maven'
+			content { includeGroup 'maven.modrinth' }
+		}
 	}
+	tasks.withType(JavaCompile).configureEach { it.options.release = 21 }
+	java { withSourcesJar() }
 }

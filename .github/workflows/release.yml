@@ -34,8 +34,8 @@ jobs:
           echo "minecraft_version=$MC_VERSION" >> $GITHUB_OUTPUT
           echo "branch_name=$BRANCH" >> $GITHUB_OUTPUT
 
-          # Detect Java version from build.gradle
-          JAVA_VER=$(grep 'options.release' build.gradle | grep -oP '\d+')
+          # Detect Java version from the fabric subproject build file
+          JAVA_VER=$(grep 'options.release' fabric/build.gradle | grep -oP '\d+')
           echo "java_version=$JAVA_VER" >> $GITHUB_OUTPUT
 
       - name: Validate Gradle wrapper
@@ -57,7 +57,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts-${{ steps.version.outputs.mod_version }}-${{ steps.version.outputs.branch_name }}
-          path: build/libs/
+          path: |
+            fabric/build/libs/
+            neoforge/build/libs/
           retention-days: 7
 
   release:
@@ -76,7 +78,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts-${{ needs.build.outputs.mod_version }}-${{ needs.build.outputs.branch_name }}
-          path: build/libs/
+          path: artifacts/
 
       - name: Extract changelog for version
         id: changelog
@@ -124,8 +126,9 @@ jobs:
 
           ## Build Artifacts
 
-          - `shulkersorter-${{ needs.build.outputs.mod_version }}.jar` - Main mod file (download this)
-          - `shulkersorter-${{ needs.build.outputs.mod_version }}-sources.jar` - Source code
+          - `shulkersorter-fabric-${{ needs.build.outputs.mod_version }}.jar` - Fabric mod file (download this for Fabric)
+          - `shulkersorter-neoforge-${{ needs.build.outputs.mod_version }}.jar` - NeoForge mod file (download this for NeoForge)
+          - `*-sources.jar` - Source code
 
           ## Recent Commits
 
@@ -133,7 +136,7 @@ jobs:
 
           ---
 
-          **Installation:** Download the main JAR file and place it in your mods folder along with Fabric API.
+          **Installation:** Download the JAR for your mod loader and place it in your mods folder. On Fabric you also need Fabric API and Architectury API; on NeoForge you also need Architectury API.
           RELEASE_BODY
 
       - name: Create Release
@@ -146,5 +149,5 @@ jobs:
           prerelease: false
           body_path: release_body.md
           files: |
-            build/libs/shulkersorter-*.jar
-            build/libs/shulkersorter-*-sources.jar
+            artifacts/fabric/build/libs/shulkersorter-*.jar
+            artifacts/neoforge/build/libs/shulkersorter-*.jar

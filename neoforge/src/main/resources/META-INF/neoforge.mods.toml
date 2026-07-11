@@ -1,0 +1,44 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+
+[[mods]]
+modId = "shulkersorter"
+version = "${version}"
+displayName = "ShulkerSorter"
+authors = "DennisTheGamer"
+description = '''
+Automatically sorts, merges and labels shulker boxes in your inventory by item category.
+'''
+logoFile = "assets/shulkersorter/icon.png"
+
+[[dependencies.shulkersorter]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.1,26.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.shulkersorter]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.shulkersorter]]
+modId = "architectury"
+type = "required"
+versionRange = "[20.0.7,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.shulkersorter]]
+modId = "yet_another_config_lib_v3"
+type = "optional"
+versionRange = "[3.9.1,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[mixins]]
+config = "shulkersorter.mixins.json"

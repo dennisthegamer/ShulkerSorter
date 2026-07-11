@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "shulkersorter",
+	"version": "${version}",
+	"name": "ShulkerSorter",
+	"description": "Automatically sorts, merges and labels shulker boxes in your inventory by item category.",
+	"authors": [
+		"DennisTheGamer"
+	],
+	"license": "MIT",
+	"icon": "assets/shulkersorter/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"de.dennisthegamer.shulkersorter.fabric.ShulkerSorterFabric"
+		],
+		"client": [
+			"de.dennisthegamer.shulkersorter.fabric.ShulkerSorterFabricClient"
+		],
+		"modmenu": [
+			"de.dennisthegamer.shulkersorter.fabric.ModMenuIntegration"
+		]
+	},
+	"mixins": [
+		"shulkersorter.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~26.1-",
+		"java": ">=25",
+		"fabric-api": "*",
+		"architectury": ">=20.0.7"
+	},
+	"suggests": {
+		"modmenu": ">=18.0.0",
+		"yet_another_config_lib": ">=3.9.1"
+	}
+}

@@ -29,7 +29,7 @@ side = "BOTH"
 [[dependencies.shulkersorter]]
 modId = "architectury"
 type = "required"
-versionRange = "[19.0,)"
+versionRange = "[18.0.3,)"
 ordering = "AFTER"
 side = "BOTH"
 

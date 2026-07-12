@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.1]
+
+### Fixed
+- **Lowered the required Architectury API to 18.0.3** on both loaders — 19.x only runs on Minecraft 1.21.11, so requiring it made the mod uninstallable on 1.21.9/1.21.10 (use Architectury 18.x there; 19.x on 1.21.11)
+
 ## [1.1.0]
 
 ### Added

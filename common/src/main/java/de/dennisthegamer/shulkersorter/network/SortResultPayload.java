@@ -1,15 +1,15 @@
 package de.dennisthegamer.shulkersorter.network;
 
 import de.dennisthegamer.shulkersorter.ShulkerSorter;
+import de.dennisthegamer.shulkersorter.platform.Platforms;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
 
 public record SortResultPayload(boolean success, int boxesSorted, int itemsMoved, String errorKey) implements CustomPacketPayload {
 
-    public static final Type<SortResultPayload> TYPE = new Type<>(
-            Identifier.fromNamespaceAndPath(ShulkerSorter.MOD_ID, "sort_result"));
+    public static final Type<SortResultPayload> TYPE =
+            Platforms.get().createPayloadType(ShulkerSorter.MOD_ID, "sort_result");
 
     public static final StreamCodec<FriendlyByteBuf, SortResultPayload> CODEC =
             CustomPacketPayload.codec(SortResultPayload::write, SortResultPayload::read);

@@ -1,4 +1,9 @@
-# Changelog
+﻿# Changelog
+
+## [1.1.2]
+
+### Fixed
+- **NeoForge jar crashed on Minecraft 1.21.9/1.21.10** (`ClassNotFoundException: net.minecraft.resources.Identifier`): NeoForge jars run directly on the Mojang class names of the runtime version, and Mojang renamed `ResourceLocation` to `Identifier` in 1.21.11. All direct references were removed from version-critical paths: the sort keybind now uses the vanilla "Inventory" category, the network payload types are created through the loader-specific `Platform` service (reflective on NeoForge), and item ids are read via `Item.toString()` instead of `Registry.getKey`. A full symbol diff of the shipped jar against the 1.21.9/1.21.10/1.21.11 mappings shows no remaining version-unstable references
 
 ## [1.1.1]
 

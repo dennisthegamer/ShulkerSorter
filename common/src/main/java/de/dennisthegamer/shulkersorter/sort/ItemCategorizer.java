@@ -3,8 +3,6 @@ package de.dennisthegamer.shulkersorter.sort;
 import de.dennisthegamer.shulkersorter.config.CategoryDefinition;
 import de.dennisthegamer.shulkersorter.config.ShulkerSorterConfig;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -15,8 +13,15 @@ public class ItemCategorizer {
         if (stack.isEmpty()) return "misc";
 
         ShulkerSorterConfig config = ShulkerSorterConfig.getInstance();
-        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        String itemId = id.getPath(); // e.g. "oak_planks"
+        // Item.toString() returns the registered id ("minecraft:oak_planks", via
+        // Holder.getRegisteredName, identical bytecode on 1.21.9-1.21.11). Using it
+        // avoids Registry.getKey, whose descriptor contains the id class that was
+        // renamed between 1.21.10 and 1.21.11 and breaks NeoForge cross-version.
+        String itemId = stack.getItem().toString();
+        int colon = itemId.indexOf(':');
+        if (colon >= 0) {
+            itemId = itemId.substring(colon + 1); // e.g. "oak_planks"
+        }
 
         // Check food component first (special handling)
         boolean isFood = stack.has(DataComponents.FOOD);

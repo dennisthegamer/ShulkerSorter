@@ -1,17 +1,17 @@
 package de.dennisthegamer.shulkersorter.network;
 
 import de.dennisthegamer.shulkersorter.ShulkerSorter;
+import de.dennisthegamer.shulkersorter.platform.Platforms;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
 
 public record SortRequestPayload(Action action) implements CustomPacketPayload {
 
     public enum Action { SORT, UNDO }
 
-    public static final Type<SortRequestPayload> TYPE = new Type<>(
-            Identifier.fromNamespaceAndPath(ShulkerSorter.MOD_ID, "sort_request"));
+    public static final Type<SortRequestPayload> TYPE =
+            Platforms.get().createPayloadType(ShulkerSorter.MOD_ID, "sort_request");
 
     public static final StreamCodec<FriendlyByteBuf, SortRequestPayload> CODEC =
             CustomPacketPayload.codec(SortRequestPayload::write, SortRequestPayload::read);

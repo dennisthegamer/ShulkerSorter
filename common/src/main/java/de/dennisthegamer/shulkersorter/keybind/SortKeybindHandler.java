@@ -13,7 +13,6 @@ import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -25,8 +24,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class SortKeybindHandler {
-    private static final KeyMapping.Category CATEGORY =
-            KeyMapping.Category.register(Identifier.fromNamespaceAndPath("shulkersorter", "shulkersorter"));
+    // Vanilla INVENTORY category: registering a custom one needs the Identifier
+    // class, whose mojmap name differs between 1.21.10 (ResourceLocation) and
+    // 1.21.11 (Identifier) — a direct reference crashes NeoForge on 1.21.9/1.21.10.
+    // The Category constants keep their names across all three versions.
+    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.INVENTORY;
 
     private static KeyMapping sortKeybind;
 

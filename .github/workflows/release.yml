@@ -34,8 +34,10 @@ jobs:
           echo "minecraft_version=$MC_VERSION" >> $GITHUB_OUTPUT
           echo "branch_name=$BRANCH" >> $GITHUB_OUTPUT
 
-          # Detect Java version from the fabric subproject build file
-          JAVA_VER=$(grep 'options.release' fabric/build.gradle | grep -oP '\d+')
+          # Detect Java version from the build files; on the Architectury-template
+          # branches options.release lives in the ROOT build.gradle, not fabric/.
+          JAVA_VER=$(grep -h 'options.release' build.gradle fabric/build.gradle common/build.gradle neoforge/build.gradle 2>/dev/null | grep -oP '\d+' | head -1)
+          JAVA_VER=${JAVA_VER:-21}
           echo "java_version=$JAVA_VER" >> $GITHUB_OUTPUT
 
       - name: Validate Gradle wrapper

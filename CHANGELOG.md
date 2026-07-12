@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1]
+
+### Fixed
+- **Lowered the required Architectury API to 20.0.4** on both loaders — 20.0.5 and newer only run on Minecraft 26.1.2, so requiring 20.0.7 made the mod uninstallable on 26.1/26.1.1 (Fabric)
+- **The NeoForge jar now requires Minecraft 26.1.2** — no Architectury 20.x release can load on NeoForge below 26.1.2 (it needs NeoForge's `BreakBlockEvent`, added in 26.1.2), so 26.1/26.1.1 support is Fabric-only
+
 ## [1.1.0]
 
 ### Added

@@ -29,7 +29,7 @@
 		"minecraft": "~26.1-",
 		"java": ">=25",
 		"fabric-api": "*",
-		"architectury": ">=20.0.7"
+		"architectury": ">=20.0.4"
 	},
 	"suggests": {
 		"modmenu": ">=18.0.0",

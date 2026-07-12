@@ -27,9 +27,11 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.shulkersorter]]
+# Architectury tracks MC minors: 13.x=1.21/1.21.1, 14.x=1.21.2/3, 15.x=1.21.4,
+# 16.x=1.21.5, 17.x=1.21.6-8 — the floor must match the OLDEST supported MC.
 modId = "architectury"
 type = "required"
-versionRange = "[17.0,)"
+versionRange = "[13.0,)"
 ordering = "AFTER"
 side = "BOTH"
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.1]
+
+### Fixed
+- Mod refused to load on Minecraft 1.21-1.21.5 with the correct Architectury API for that version: the declared requirement `>=17.0.0` matches only the 1.21.6-1.21.8 line (Architectury tracks MC minors: 13.x=1.21/1.21.1 … 16.x=1.21.5). The floor is now `13.0.0` on both loaders; every Architectury class the mod uses is verified present in 13.0.8
+
 ## [1.1.0]
 
 ### Added

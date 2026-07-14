@@ -2,11 +2,13 @@ modLoader = "javafml"
 loaderVersion = "[1,)"
 license = "MIT"
 
+issueTrackerURL = "https://github.com/DennisTheGamer/ShulkerSorter/issues"
 [[mods]]
 modId = "shulkersorter"
 version = "${version}"
 displayName = "ShulkerSorter"
-authors = "DennisTheGamer"
+displayURL = "https://modrinth.com/mod/shulkersorter"
+authors = "Dennis_thegamer"
 description = '''
 Automatically sorts, merges and labels shulker boxes in your inventory by item category.
 '''

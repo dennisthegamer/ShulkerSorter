@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## [1.2.0] - 2026-07-14
+
+### Changed
+- Unified the mod version across all loaders (Fabric & NeoForge) and every supported Minecraft version, so all builds now ship as `1.2.0`
+- Standardized jar file naming to `shulkersorter-<loader>-<version>+mc<range>.jar` (e.g. `shulkersorter-fabric-1.2.0+mc1.21.9-1.21.11.jar`, `shulkersorter-neoforge-1.2.0+mc1.21.9-1.21.11.jar`)
+- Corrected author and contact metadata (Modrinth page and GitHub links)
+
 ## [1.1.2]
 
 ### Fixed

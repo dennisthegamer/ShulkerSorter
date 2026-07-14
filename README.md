@@ -1,10 +1,10 @@
 # ShulkerSorter
 
-A Fabric mod that automatically sorts, merges and labels shulker boxes in your inventory by item category. Works in singleplayer, multiplayer survival (mod on server), and multiplayer creative.
+A Fabric and NeoForge mod that automatically sorts, merges and labels shulker boxes in your inventory by item category. Works in singleplayer, multiplayer survival (mod on server), and multiplayer creative.
 
-![Mod Loader](https://img.shields.io/badge/Mod%20Loader-Fabric-blue)
+![Mod Loader](https://img.shields.io/badge/Mod%20Loader-Fabric%20%7C%20NeoForge-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
-![Version](https://img.shields.io/badge/Version-1.0.0-orange)
+![Version](https://img.shields.io/badge/Version-1.2.0-orange)
 
 ## Supported Minecraft Versions
 
@@ -59,15 +59,16 @@ A Fabric mod that automatically sorts, merges and labels shulker boxes in your i
 ## Installation
 
 ### Requirements
-- [Fabric Loader](https://fabricmc.net/) and [Fabric API](https://modrinth.com/mod/fabric-api)
+- **Fabric:** [Fabric Loader](https://fabricmc.net/), [Fabric API](https://modrinth.com/mod/fabric-api) and [Architectury API](https://modrinth.com/mod/architectury-api)
+- **NeoForge:** [NeoForge](https://neoforged.net/) and [Architectury API](https://modrinth.com/mod/architectury-api)
 
 ### Optional
 - [YACL](https://modrinth.com/mod/yacl) (for in-game configuration screen)
-- [Mod Menu](https://modrinth.com/mod/modmenu) (for accessing config via mod list)
+- [Mod Menu](https://modrinth.com/mod/modmenu) (Fabric only — for accessing config via mod list; on NeoForge the config button in the mod list works out of the box)
 
 ### Steps
-1. Install Fabric Loader and Fabric API
-2. Download the latest `shulkersorter-x.x.x.jar` from [Releases](../../releases)
+1. Install your mod loader and the requirements listed above
+2. Download the latest `shulkersorter-fabric-1.2.0+mc1.21.9-1.21.11.jar` or `shulkersorter-neoforge-1.2.0+mc1.21.9-1.21.11.jar` from [Releases](../../releases)
 3. Place the JAR in your `.minecraft/mods/` folder
 4. Launch Minecraft
 
@@ -108,12 +109,12 @@ Pattern types:
 ## Building from Source
 
 ```bash
-git clone https://github.com/dennisthegamer/ShulkerSorter.git
+git clone https://github.com/DennisTheGamer/ShulkerSorter.git
 cd ShulkerSorter
 ./gradlew build
 ```
 
-The built JAR will be in `build/libs/`.
+The built JARs will be in `fabric/build/libs/` and `neoforge/build/libs/`.
 
 ## License
 

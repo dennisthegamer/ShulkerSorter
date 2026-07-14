@@ -4,7 +4,7 @@ A Fabric and NeoForge mod that automatically sorts, merges and labels shulker bo
 
 ![Mod Loader](https://img.shields.io/badge/Mod%20Loader-Fabric%20%7C%20NeoForge-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
-![Version](https://img.shields.io/badge/Version-1.1.0-orange)
+![Version](https://img.shields.io/badge/Version-1.2.0-orange)
 
 ## Supported Minecraft Versions
 
@@ -68,7 +68,7 @@ A Fabric and NeoForge mod that automatically sorts, merges and labels shulker bo
 
 ### Steps
 1. Install your mod loader and the requirements listed above
-2. Download the latest `shulkersorter-fabric-x.x.x.jar` or `shulkersorter-neoforge-x.x.x.jar` from [Releases](../../releases)
+2. Download the latest `shulkersorter-fabric-1.2.0+mc26.1-26.1.2.jar` or `shulkersorter-neoforge-1.2.0+mc26.1-26.1.2.jar` from [Releases](../../releases)
 3. Place the JAR in your `.minecraft/mods/` folder
 4. Launch Minecraft
 
@@ -109,7 +109,7 @@ Pattern types:
 ## Building from Source
 
 ```bash
-git clone https://github.com/dennisthegamer/ShulkerSorter.git
+git clone https://github.com/DennisTheGamer/ShulkerSorter.git
 cd ShulkerSorter
 ./gradlew build
 ```

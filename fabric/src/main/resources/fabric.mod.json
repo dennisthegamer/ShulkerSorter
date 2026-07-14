@@ -5,8 +5,12 @@
 	"name": "ShulkerSorter",
 	"description": "Automatically sorts, merges and labels shulker boxes in your inventory by item category.",
 	"authors": [
-		"DennisTheGamer"
+		"Dennis_thegamer"
 	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/shulkersorter",
+		"issues": "https://github.com/DennisTheGamer/ShulkerSorter/issues"
+	},
 	"license": "MIT",
 	"icon": "assets/shulkersorter/icon.png",
 	"environment": "*",

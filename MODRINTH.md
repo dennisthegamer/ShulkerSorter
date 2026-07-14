@@ -2,7 +2,7 @@
 
 **Sort, merge and label your shulker boxes with a single keypress.**
 
-ShulkerSorter is a lightweight Fabric mod that automatically organizes all items across your shulker boxes by category. Press one key — your ores go into one box, your redstone into another, your tools into a third. Every box gets a clean label. No more shulker box chaos.
+ShulkerSorter is a lightweight Fabric and NeoForge mod that automatically organizes all items across your shulker boxes by category. Press one key — your ores go into one box, your redstone into another, your tools into a third. Every box gets a clean label. No more shulker box chaos.
 
 Works in **singleplayer**, **multiplayer survival** (with mod on server), and **multiplayer creative** (no server mod needed).
 
@@ -70,9 +70,10 @@ Configure the mod via [Mod Menu](https://modrinth.com/mod/modmenu) + [YACL](http
 
 ## Requirements
 
-- **Fabric Loader** and **Fabric API**
+- **Fabric:** Fabric Loader, Fabric API, and Architectury API
+- **NeoForge:** NeoForge and Architectury API
 - **YACL** — Optional (for in-game config screen)
-- **Mod Menu** — Optional (for accessing config via mod list)
+- **Mod Menu** — Optional, Fabric only (for accessing config via mod list)
 
 ### Supported Minecraft Versions
 
@@ -131,8 +132,8 @@ Available in **English** and **German**.
 
 ## Links
 
-- **Issues & Bugs:** [GitHub Issues](https://github.com/dennisthegamer/ShulkerSorter/issues)
-- **Source Code:** [GitHub Repository](https://github.com/dennisthegamer/ShulkerSorter)
+- **Issues & Bugs:** [GitHub Issues](https://github.com/DennisTheGamer/ShulkerSorter/issues)
+- **Source Code:** [GitHub Repository](https://github.com/DennisTheGamer/ShulkerSorter)
 
 ## License
 

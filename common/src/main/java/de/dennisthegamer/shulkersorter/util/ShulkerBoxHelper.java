@@ -24,8 +24,10 @@ public class ShulkerBoxHelper {
     public static List<ItemStack> getContents(ItemStack shulkerStack) {
         if (!isShulkerBox(shulkerStack)) return List.of();
 
-        ItemContainerContents container = shulkerStack.getOrDefault(
-                DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+        // Version-stable: ItemStack.get() exists since 1.20.5; getOrDefault(DataComponentType,..)
+        // was only added after 1.21.2 and crashes there with NoSuchMethodError.
+        ItemContainerContents container = shulkerStack.get(DataComponents.CONTAINER);
+        if (container == null) container = ItemContainerContents.EMPTY;
 
         NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
         container.copyInto(items);

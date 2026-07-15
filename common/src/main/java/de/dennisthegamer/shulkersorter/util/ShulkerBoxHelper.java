@@ -3,6 +3,7 @@ package de.dennisthegamer.shulkersorter.util;
 import de.dennisthegamer.shulkersorter.config.ShulkerSorterConfig;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
@@ -24,10 +25,17 @@ public class ShulkerBoxHelper {
     public static List<ItemStack> getContents(ItemStack shulkerStack) {
         if (!isShulkerBox(shulkerStack)) return List.of();
 
-        // Version-stable: ItemStack.get() exists since 1.20.5; getOrDefault(DataComponentType,..)
-        // was only added after 1.21.2 and crashes there with NoSuchMethodError.
-        ItemContainerContents container = shulkerStack.get(DataComponents.CONTAINER);
-        if (container == null) container = ItemContainerContents.EMPTY;
+        // Version-stable read: get()/getOrDefault() moved to the new DataComponentGetter
+        // interface after 1.21.2 (new intermediary -> NoSuchMethodError below 1.21.5).
+        // getComponents() + iterating TypedDataComponent (type()/value()) is byte-identical
+        // across 1.21.2..1.21.5, so this one jar works on the whole range.
+        ItemContainerContents container = ItemContainerContents.EMPTY;
+        for (TypedDataComponent<?> comp : shulkerStack.getComponents()) {
+            if (comp.type() == DataComponents.CONTAINER) {
+                container = (ItemContainerContents) comp.value();
+                break;
+            }
+        }
 
         NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
         container.copyInto(items);

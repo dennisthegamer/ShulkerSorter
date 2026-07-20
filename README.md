@@ -10,7 +10,8 @@ A Fabric and NeoForge mod that automatically sorts, merges and labels shulker bo
 
 | Branch | Minecraft | Java |
 |--------|-----------|------|
-| mc1.21-1.21.8 | 1.21 – 1.21.8 | 21+ |
+| mc1.21.5 | 1.21 – 1.21.5 | 21+ |
+| mc1.21.6-1.21.8 | 1.21.6 – 1.21.8 | 21+ |
 | mc1.21.9-1.21.11 | 1.21.9 – 1.21.11 | 21+ |
 | mc26.1 | 26.1+ | 25+ |
 | mc26.2 | 26.2+ | 25+ |

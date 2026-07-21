@@ -1,5 +1,10 @@
 ﻿# Changelog
 
+## [1.2.1] - 2026-07-21
+
+### Changed
+- Housekeeping only: internal working files are no longer tracked in the repository.
+
 ## [1.2.0] - 2026-07-14
 
 ### Changed

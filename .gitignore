@@ -16,3 +16,10 @@ logs/
 # system
 .DS_Store
 Thumbs.db
+
+# Lokale Arbeitsdateien der KI-Assistenz -- bleiben auf der Platte, nicht im Repo
+CLAUDE.md
+AGENTS.md
+.claude/
+.superpowers/
+docs/superpowers/

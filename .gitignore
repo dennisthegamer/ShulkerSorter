@@ -21,3 +21,8 @@ CLAUDE.md
 !/docs/superpowers/
 .superpowers/
 # Worktree scratch dirs
+
+# Lokale Arbeitsdateien der KI-Assistenz -- bleiben auf der Platte, nicht im Repo
+AGENTS.md
+.claude/
+docs/superpowers/
